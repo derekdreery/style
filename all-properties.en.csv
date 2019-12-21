@@ -1,0 +1,1242 @@
+property,url,status,title
+--*,http://www.w3.org/TR/2015/CR-css-variables-1-20151203/#propdef-,CR,CSS Custom Properties for Cascading Variables Module Level 1
+--*,https://drafts.csswg.org/css-variables/#propdef-,ED,CSS Custom Properties for Cascading Variables Module Level 1
+align-content,https://drafts.csswg.org/css-align/#propdef-align-content,ED,CSS Box Alignment Module Level 3
+align-content,https://drafts.csswg.org/css-flexbox-1/#propdef-align-content,ED,CSS Flexible Box Layout Module Level 1
+align-content,https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#propdef-align-content,CR,CSS Flexible Box Layout Module Level 1
+align-content,https://www.w3.org/TR/2018/WD-css-align-3-20181206/#propdef-align-content,WD,CSS Box Alignment Module Level 3
+align-items,https://drafts.csswg.org/css-align/#propdef-align-items,ED,CSS Box Alignment Module Level 3
+align-items,https://drafts.csswg.org/css-flexbox-1/#propdef-align-items,ED,CSS Flexible Box Layout Module Level 1
+align-items,https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#propdef-align-items,CR,CSS Flexible Box Layout Module Level 1
+align-items,https://www.w3.org/TR/2018/WD-css-align-3-20181206/#propdef-align-items,WD,CSS Box Alignment Module Level 3
+align-self,https://drafts.csswg.org/css-align/#propdef-align-self,ED,CSS Box Alignment Module Level 3
+align-self,https://drafts.csswg.org/css-flexbox-1/#propdef-align-self,ED,CSS Flexible Box Layout Module Level 1
+align-self,https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#propdef-align-self,CR,CSS Flexible Box Layout Module Level 1
+align-self,https://www.w3.org/TR/2018/WD-css-align-3-20181206/#propdef-align-self,WD,CSS Box Alignment Module Level 3
+alignment-baseline,https://drafts.csswg.org/css-inline-3/#propdef-alignment-baseline,ED,CSS Inline Layout Module Level 3
+alignment-baseline,https://www.w3.org/TR/2018/WD-css-inline-3-20180808/#propdef-alignment-baseline,WD,CSS Inline Layout Module Level 3
+all,https://drafts.csswg.org/css-cascade-3/#propdef-all,ED,CSS Cascading and Inheritance Level 3
+all,https://drafts.csswg.org/css-cascade/#propdef-all,ED,CSS Cascading and Inheritance Level 4
+all,https://www.w3.org/TR/2018/CR-css-cascade-3-20180828/#propdef-all,CR,CSS Cascading and Inheritance Level 3
+all,https://www.w3.org/TR/2018/CR-css-cascade-4-20180828/#propdef-all,CR,CSS Cascading and Inheritance Level 4
+animation,https://drafts.csswg.org/css-animations/#propdef-animation,ED,CSS Animations Level 1
+animation,https://www.w3.org/TR/2018/WD-css-animations-1-20181011/#propdef-animation,WD,CSS Animations Level 1
+animation-delay,https://drafts.csswg.org/css-animations/#propdef-animation-delay,ED,CSS Animations Level 1
+animation-delay,https://www.w3.org/TR/2018/WD-css-animations-1-20181011/#propdef-animation-delay,WD,CSS Animations Level 1
+animation-direction,https://drafts.csswg.org/css-animations/#propdef-animation-direction,ED,CSS Animations Level 1
+animation-direction,https://www.w3.org/TR/2018/WD-css-animations-1-20181011/#propdef-animation-direction,WD,CSS Animations Level 1
+animation-duration,https://drafts.csswg.org/css-animations/#propdef-animation-duration,ED,CSS Animations Level 1
+animation-duration,https://www.w3.org/TR/2018/WD-css-animations-1-20181011/#propdef-animation-duration,WD,CSS Animations Level 1
+animation-fill-mode,https://drafts.csswg.org/css-animations/#propdef-animation-fill-mode,ED,CSS Animations Level 1
+animation-fill-mode,https://www.w3.org/TR/2018/WD-css-animations-1-20181011/#propdef-animation-fill-mode,WD,CSS Animations Level 1
+animation-iteration-count,https://drafts.csswg.org/css-animations/#propdef-animation-iteration-count,ED,CSS Animations Level 1
+animation-iteration-count,https://www.w3.org/TR/2018/WD-css-animations-1-20181011/#propdef-animation-iteration-count,WD,CSS Animations Level 1
+animation-name,https://drafts.csswg.org/css-animations/#propdef-animation-name,ED,CSS Animations Level 1
+animation-name,https://www.w3.org/TR/2018/WD-css-animations-1-20181011/#propdef-animation-name,WD,CSS Animations Level 1
+animation-play-state,https://drafts.csswg.org/css-animations/#propdef-animation-play-state,ED,CSS Animations Level 1
+animation-play-state,https://www.w3.org/TR/2018/WD-css-animations-1-20181011/#propdef-animation-play-state,WD,CSS Animations Level 1
+animation-timing-function,https://drafts.csswg.org/css-animations/#propdef-animation-timing-function,ED,CSS Animations Level 1
+animation-timing-function,https://www.w3.org/TR/2018/WD-css-animations-1-20181011/#propdef-animation-timing-function,WD,CSS Animations Level 1
+appearance,https://drafts.csswg.org/css-ui-4/#propdef-appearance,ED,CSS Basic User Interface Module Level 4
+appearance,https://drafts.csswg.org/css-ui/#propdef-appearance,ED,CSS Basic User Interface Module Level 3 (CSS3 UI)
+appearance,https://www.w3.org/TR/2017/WD-css-ui-4-20171222/#propdef-appearance,WD,CSS Basic User Interface Module Level 4
+azimuth,http://www.w3.org/TR/2011/REC-CSS2-20110607/aural.html#propdef-azimuth,REC,CSS 2.1
+background,http://www.w3.org/TR/2011/REC-CSS2-20110607/colors.html#propdef-background,REC,CSS 2.1
+background,https://drafts.csswg.org/css-backgrounds/#propdef-background,ED,CSS Backgrounds and Borders Module Level 3
+background,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-background,CR,CSS Backgrounds and Borders Module Level 3
+background-attachment,http://www.w3.org/TR/2011/REC-CSS2-20110607/colors.html#propdef-background-attachment,REC,CSS 2.1
+background-attachment,https://drafts.csswg.org/css-backgrounds/#propdef-background-attachment,ED,CSS Backgrounds and Borders Module Level 3
+background-attachment,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-background-attachment,CR,CSS Backgrounds and Borders Module Level 3
+background-blend-mode,http://www.w3.org/TR/2015/CR-compositing-1-20150113/#propdef-background-blend-mode,CR,Compositing and Blending Level 1
+background-blend-mode,https://drafts.fxtf.org/compositing-1/#propdef-background-blend-mode,ED,Compositing and Blending Level 1
+background-clip,https://drafts.csswg.org/css-backgrounds/#propdef-background-clip,ED,CSS Backgrounds and Borders Module Level 3
+background-clip,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-background-clip,CR,CSS Backgrounds and Borders Module Level 3
+background-color,http://www.w3.org/TR/2011/REC-CSS2-20110607/colors.html#propdef-background-color,REC,CSS 2.1
+background-color,https://drafts.csswg.org/css-backgrounds/#propdef-background-color,ED,CSS Backgrounds and Borders Module Level 3
+background-color,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-background-color,CR,CSS Backgrounds and Borders Module Level 3
+background-image,http://www.w3.org/TR/2011/REC-CSS2-20110607/colors.html#propdef-background-image,REC,CSS 2.1
+background-image,https://drafts.csswg.org/css-backgrounds/#propdef-background-image,ED,CSS Backgrounds and Borders Module Level 3
+background-image,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-background-image,CR,CSS Backgrounds and Borders Module Level 3
+background-origin,https://drafts.csswg.org/css-backgrounds/#propdef-background-origin,ED,CSS Backgrounds and Borders Module Level 3
+background-origin,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-background-origin,CR,CSS Backgrounds and Borders Module Level 3
+background-position,http://www.w3.org/TR/2011/REC-CSS2-20110607/colors.html#propdef-background-position,REC,CSS 2.1
+background-position,https://drafts.csswg.org/css-backgrounds/#propdef-background-position,ED,CSS Backgrounds and Borders Module Level 3
+background-position,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-background-position,CR,CSS Backgrounds and Borders Module Level 3
+background-repeat,http://www.w3.org/TR/2011/REC-CSS2-20110607/colors.html#propdef-background-repeat,REC,CSS 2.1
+background-repeat,https://drafts.csswg.org/css-backgrounds/#propdef-background-repeat,ED,CSS Backgrounds and Borders Module Level 3
+background-repeat,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-background-repeat,CR,CSS Backgrounds and Borders Module Level 3
+background-size,https://drafts.csswg.org/css-backgrounds/#propdef-background-size,ED,CSS Backgrounds and Borders Module Level 3
+background-size,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-background-size,CR,CSS Backgrounds and Borders Module Level 3
+baseline-shift,https://drafts.csswg.org/css-inline-3/#propdef-baseline-shift,ED,CSS Inline Layout Module Level 3
+baseline-shift,https://www.w3.org/TR/2018/WD-css-inline-3-20180808/#propdef-baseline-shift,WD,CSS Inline Layout Module Level 3
+baseline-source,https://drafts.csswg.org/css-inline-3/#propdef-baseline-source,ED,CSS Inline Layout Module Level 3
+block-ellipsis,https://drafts.csswg.org/css-overflow-3/#propdef-block-ellipsis,ED,CSS Overflow Module Level 3
+block-overflow,https://www.w3.org/TR/2018/WD-css-overflow-3-20180731/#propdef-block-overflow,WD,CSS Overflow Module Level 3
+block-size,https://drafts.csswg.org/css-logical-1/#propdef-block-size,ED,CSS Logical Properties and Values Level 1
+block-size,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-block-size,WD,CSS Logical Properties and Values Level 1
+block-step,https://drafts.csswg.org/css-rhythm/#propdef-block-step,ED,CSS Rhythmic Sizing
+block-step,https://www.w3.org/TR/2017/WD-css-rhythm-1-20170302/#propdef-block-step,FPWD,CSS Rhythmic Sizing
+block-step-align,https://drafts.csswg.org/css-rhythm/#propdef-block-step-align,ED,CSS Rhythmic Sizing
+block-step-align,https://www.w3.org/TR/2017/WD-css-rhythm-1-20170302/#propdef-block-step-align,FPWD,CSS Rhythmic Sizing
+block-step-insert,https://drafts.csswg.org/css-rhythm/#propdef-block-step-insert,ED,CSS Rhythmic Sizing
+block-step-insert,https://www.w3.org/TR/2017/WD-css-rhythm-1-20170302/#propdef-block-step-insert,FPWD,CSS Rhythmic Sizing
+block-step-round,https://drafts.csswg.org/css-rhythm/#propdef-block-step-round,ED,CSS Rhythmic Sizing
+block-step-round,https://www.w3.org/TR/2017/WD-css-rhythm-1-20170302/#propdef-block-step-round,FPWD,CSS Rhythmic Sizing
+block-step-size,https://drafts.csswg.org/css-rhythm/#propdef-block-step-size,ED,CSS Rhythmic Sizing
+block-step-size,https://www.w3.org/TR/2017/WD-css-rhythm-1-20170302/#propdef-block-step-size,FPWD,CSS Rhythmic Sizing
+bookmark-label,http://www.w3.org/TR/2014/WD-css-gcpm-3-20140513/#propdef-bookmark-label,WD,CSS Generated Content for Paged Media Module
+bookmark-label,https://drafts.csswg.org/css-content-3/#propdef-bookmark-label,ED,CSS Generated Content Module Level 3
+bookmark-label,https://www.w3.org/TR/2019/WD-css-content-3-20190802/#propdef-bookmark-label,WD,CSS Generated Content Module Level 3
+bookmark-level,http://www.w3.org/TR/2014/WD-css-gcpm-3-20140513/#propdef-bookmark-level,WD,CSS Generated Content for Paged Media Module
+bookmark-level,https://drafts.csswg.org/css-content-3/#propdef-bookmark-level,ED,CSS Generated Content Module Level 3
+bookmark-level,https://www.w3.org/TR/2019/WD-css-content-3-20190802/#propdef-bookmark-level,WD,CSS Generated Content Module Level 3
+bookmark-state,http://www.w3.org/TR/2014/WD-css-gcpm-3-20140513/#propdef-bookmark-state,WD,CSS Generated Content for Paged Media Module
+bookmark-state,https://drafts.csswg.org/css-content-3/#propdef-bookmark-state,ED,CSS Generated Content Module Level 3
+bookmark-state,https://www.w3.org/TR/2019/WD-css-content-3-20190802/#propdef-bookmark-state,WD,CSS Generated Content Module Level 3
+border,http://www.w3.org/TR/2011/REC-CSS2-20110607/box.html#propdef-border,REC,CSS 2.1
+border,https://drafts.csswg.org/css-backgrounds/#propdef-border,ED,CSS Backgrounds and Borders Module Level 3
+border,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-border,CR,CSS Backgrounds and Borders Module Level 3
+border-block,https://drafts.csswg.org/css-logical-1/#propdef-border-block,ED,CSS Logical Properties and Values Level 1
+border-block,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-border-block,WD,CSS Logical Properties and Values Level 1
+border-block-color,https://drafts.csswg.org/css-logical-1/#propdef-border-block-color,ED,CSS Logical Properties and Values Level 1
+border-block-color,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-border-block-color,WD,CSS Logical Properties and Values Level 1
+border-block-end,https://drafts.csswg.org/css-logical-1/#propdef-border-block-end,ED,CSS Logical Properties and Values Level 1
+border-block-end,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-border-block-end,WD,CSS Logical Properties and Values Level 1
+border-block-end-color,https://drafts.csswg.org/css-logical-1/#propdef-border-block-end-color,ED,CSS Logical Properties and Values Level 1
+border-block-end-color,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-border-block-end-color,WD,CSS Logical Properties and Values Level 1
+border-block-end-style,https://drafts.csswg.org/css-logical-1/#propdef-border-block-end-style,ED,CSS Logical Properties and Values Level 1
+border-block-end-style,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-border-block-end-style,WD,CSS Logical Properties and Values Level 1
+border-block-end-width,https://drafts.csswg.org/css-logical-1/#propdef-border-block-end-width,ED,CSS Logical Properties and Values Level 1
+border-block-end-width,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-border-block-end-width,WD,CSS Logical Properties and Values Level 1
+border-block-start,https://drafts.csswg.org/css-logical-1/#propdef-border-block-start,ED,CSS Logical Properties and Values Level 1
+border-block-start,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-border-block-start,WD,CSS Logical Properties and Values Level 1
+border-block-start-color,https://drafts.csswg.org/css-logical-1/#propdef-border-block-start-color,ED,CSS Logical Properties and Values Level 1
+border-block-start-color,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-border-block-start-color,WD,CSS Logical Properties and Values Level 1
+border-block-start-style,https://drafts.csswg.org/css-logical-1/#propdef-border-block-start-style,ED,CSS Logical Properties and Values Level 1
+border-block-start-style,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-border-block-start-style,WD,CSS Logical Properties and Values Level 1
+border-block-start-width,https://drafts.csswg.org/css-logical-1/#propdef-border-block-start-width,ED,CSS Logical Properties and Values Level 1
+border-block-start-width,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-border-block-start-width,WD,CSS Logical Properties and Values Level 1
+border-block-style,https://drafts.csswg.org/css-logical-1/#propdef-border-block-style,ED,CSS Logical Properties and Values Level 1
+border-block-style,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-border-block-style,WD,CSS Logical Properties and Values Level 1
+border-block-width,https://drafts.csswg.org/css-logical-1/#propdef-border-block-width,ED,CSS Logical Properties and Values Level 1
+border-block-width,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-border-block-width,WD,CSS Logical Properties and Values Level 1
+border-bottom,http://www.w3.org/TR/2011/REC-CSS2-20110607/box.html#propdef-border-bottom,REC,CSS 2.1
+border-bottom,https://drafts.csswg.org/css-backgrounds/#propdef-border-bottom,ED,CSS Backgrounds and Borders Module Level 3
+border-bottom,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-border-bottom,CR,CSS Backgrounds and Borders Module Level 3
+border-bottom-color,http://www.w3.org/TR/2011/REC-CSS2-20110607/box.html#propdef-border-bottom-color,REC,CSS 2.1
+border-bottom-color,https://drafts.csswg.org/css-backgrounds/#propdef-border-bottom-color,ED,CSS Backgrounds and Borders Module Level 3
+border-bottom-color,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-border-bottom-color,CR,CSS Backgrounds and Borders Module Level 3
+border-bottom-left-radius,https://drafts.csswg.org/css-backgrounds/#propdef-border-bottom-left-radius,ED,CSS Backgrounds and Borders Module Level 3
+border-bottom-left-radius,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-border-bottom-left-radius,CR,CSS Backgrounds and Borders Module Level 3
+border-bottom-right-radius,https://drafts.csswg.org/css-backgrounds/#propdef-border-bottom-right-radius,ED,CSS Backgrounds and Borders Module Level 3
+border-bottom-right-radius,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-border-bottom-right-radius,CR,CSS Backgrounds and Borders Module Level 3
+border-bottom-style,http://www.w3.org/TR/2011/REC-CSS2-20110607/box.html#propdef-border-bottom-style,REC,CSS 2.1
+border-bottom-style,https://drafts.csswg.org/css-backgrounds/#propdef-border-bottom-style,ED,CSS Backgrounds and Borders Module Level 3
+border-bottom-style,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-border-bottom-style,CR,CSS Backgrounds and Borders Module Level 3
+border-bottom-width,http://www.w3.org/TR/2011/REC-CSS2-20110607/box.html#propdef-border-bottom-width,REC,CSS 2.1
+border-bottom-width,https://drafts.csswg.org/css-backgrounds/#propdef-border-bottom-width,ED,CSS Backgrounds and Borders Module Level 3
+border-bottom-width,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-border-bottom-width,CR,CSS Backgrounds and Borders Module Level 3
+border-boundary,https://drafts.csswg.org/css-round-display/#propdef-border-boundary,ED,CSS Round Display Level 1
+border-boundary,https://www.w3.org/TR/2016/WD-css-round-display-1-20161222/#propdef-border-boundary,WD,CSS Round Display Level 1
+border-collapse,http://www.w3.org/TR/2011/REC-CSS2-20110607/tables.html#propdef-border-collapse,REC,CSS 2.1
+border-collapse,https://drafts.csswg.org/css-tables-3/#propdef-border-collapse,ED,CSS Table Module Level 3
+border-collapse,https://www.w3.org/TR/2019/WD-css-tables-3-20190727/#propdef-border-collapse,WD,CSS Table Module Level 3
+border-color,http://www.w3.org/TR/2011/REC-CSS2-20110607/box.html#propdef-border-color,REC,CSS 2.1
+border-color,https://drafts.csswg.org/css-backgrounds/#propdef-border-color,ED,CSS Backgrounds and Borders Module Level 3
+border-color,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-border-color,CR,CSS Backgrounds and Borders Module Level 3
+border-end-end-radius,https://drafts.csswg.org/css-logical-1/#propdef-border-end-end-radius,ED,CSS Logical Properties and Values Level 1
+border-end-end-radius,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-border-end-end-radius,WD,CSS Logical Properties and Values Level 1
+border-end-start-radius,https://drafts.csswg.org/css-logical-1/#propdef-border-end-start-radius,ED,CSS Logical Properties and Values Level 1
+border-end-start-radius,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-border-end-start-radius,WD,CSS Logical Properties and Values Level 1
+border-image,https://drafts.csswg.org/css-backgrounds/#propdef-border-image,ED,CSS Backgrounds and Borders Module Level 3
+border-image,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-border-image,CR,CSS Backgrounds and Borders Module Level 3
+border-image-outset,https://drafts.csswg.org/css-backgrounds/#propdef-border-image-outset,ED,CSS Backgrounds and Borders Module Level 3
+border-image-outset,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-border-image-outset,CR,CSS Backgrounds and Borders Module Level 3
+border-image-repeat,https://drafts.csswg.org/css-backgrounds/#propdef-border-image-repeat,ED,CSS Backgrounds and Borders Module Level 3
+border-image-repeat,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-border-image-repeat,CR,CSS Backgrounds and Borders Module Level 3
+border-image-slice,https://drafts.csswg.org/css-backgrounds/#propdef-border-image-slice,ED,CSS Backgrounds and Borders Module Level 3
+border-image-slice,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-border-image-slice,CR,CSS Backgrounds and Borders Module Level 3
+border-image-source,https://drafts.csswg.org/css-backgrounds/#propdef-border-image-source,ED,CSS Backgrounds and Borders Module Level 3
+border-image-source,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-border-image-source,CR,CSS Backgrounds and Borders Module Level 3
+border-image-width,https://drafts.csswg.org/css-backgrounds/#propdef-border-image-width,ED,CSS Backgrounds and Borders Module Level 3
+border-image-width,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-border-image-width,CR,CSS Backgrounds and Borders Module Level 3
+border-inline,https://drafts.csswg.org/css-logical-1/#propdef-border-inline,ED,CSS Logical Properties and Values Level 1
+border-inline,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-border-inline,WD,CSS Logical Properties and Values Level 1
+border-inline-color,https://drafts.csswg.org/css-logical-1/#propdef-border-inline-color,ED,CSS Logical Properties and Values Level 1
+border-inline-color,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-border-inline-color,WD,CSS Logical Properties and Values Level 1
+border-inline-end,https://drafts.csswg.org/css-logical-1/#propdef-border-inline-end,ED,CSS Logical Properties and Values Level 1
+border-inline-end,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-border-inline-end,WD,CSS Logical Properties and Values Level 1
+border-inline-end-color,https://drafts.csswg.org/css-logical-1/#propdef-border-inline-end-color,ED,CSS Logical Properties and Values Level 1
+border-inline-end-color,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-border-inline-end-color,WD,CSS Logical Properties and Values Level 1
+border-inline-end-style,https://drafts.csswg.org/css-logical-1/#propdef-border-inline-end-style,ED,CSS Logical Properties and Values Level 1
+border-inline-end-style,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-border-inline-end-style,WD,CSS Logical Properties and Values Level 1
+border-inline-end-width,https://drafts.csswg.org/css-logical-1/#propdef-border-inline-end-width,ED,CSS Logical Properties and Values Level 1
+border-inline-end-width,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-border-inline-end-width,WD,CSS Logical Properties and Values Level 1
+border-inline-start,https://drafts.csswg.org/css-logical-1/#propdef-border-inline-start,ED,CSS Logical Properties and Values Level 1
+border-inline-start,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-border-inline-start,WD,CSS Logical Properties and Values Level 1
+border-inline-start-color,https://drafts.csswg.org/css-logical-1/#propdef-border-inline-start-color,ED,CSS Logical Properties and Values Level 1
+border-inline-start-color,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-border-inline-start-color,WD,CSS Logical Properties and Values Level 1
+border-inline-start-style,https://drafts.csswg.org/css-logical-1/#propdef-border-inline-start-style,ED,CSS Logical Properties and Values Level 1
+border-inline-start-style,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-border-inline-start-style,WD,CSS Logical Properties and Values Level 1
+border-inline-start-width,https://drafts.csswg.org/css-logical-1/#propdef-border-inline-start-width,ED,CSS Logical Properties and Values Level 1
+border-inline-start-width,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-border-inline-start-width,WD,CSS Logical Properties and Values Level 1
+border-inline-style,https://drafts.csswg.org/css-logical-1/#propdef-border-inline-style,ED,CSS Logical Properties and Values Level 1
+border-inline-style,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-border-inline-style,WD,CSS Logical Properties and Values Level 1
+border-inline-width,https://drafts.csswg.org/css-logical-1/#propdef-border-inline-width,ED,CSS Logical Properties and Values Level 1
+border-inline-width,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-border-inline-width,WD,CSS Logical Properties and Values Level 1
+border-left,http://www.w3.org/TR/2011/REC-CSS2-20110607/box.html#propdef-border-left,REC,CSS 2.1
+border-left,https://drafts.csswg.org/css-backgrounds/#propdef-border-left,ED,CSS Backgrounds and Borders Module Level 3
+border-left,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-border-left,CR,CSS Backgrounds and Borders Module Level 3
+border-left-color,http://www.w3.org/TR/2011/REC-CSS2-20110607/box.html#propdef-border-left-color,REC,CSS 2.1
+border-left-color,https://drafts.csswg.org/css-backgrounds/#propdef-border-left-color,ED,CSS Backgrounds and Borders Module Level 3
+border-left-color,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-border-left-color,CR,CSS Backgrounds and Borders Module Level 3
+border-left-style,http://www.w3.org/TR/2011/REC-CSS2-20110607/box.html#propdef-border-left-style,REC,CSS 2.1
+border-left-style,https://drafts.csswg.org/css-backgrounds/#propdef-border-left-style,ED,CSS Backgrounds and Borders Module Level 3
+border-left-style,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-border-left-style,CR,CSS Backgrounds and Borders Module Level 3
+border-left-width,http://www.w3.org/TR/2011/REC-CSS2-20110607/box.html#propdef-border-left-width,REC,CSS 2.1
+border-left-width,https://drafts.csswg.org/css-backgrounds/#propdef-border-left-width,ED,CSS Backgrounds and Borders Module Level 3
+border-left-width,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-border-left-width,CR,CSS Backgrounds and Borders Module Level 3
+border-radius,https://drafts.csswg.org/css-backgrounds/#propdef-border-radius,ED,CSS Backgrounds and Borders Module Level 3
+border-radius,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-border-radius,CR,CSS Backgrounds and Borders Module Level 3
+border-right,http://www.w3.org/TR/2011/REC-CSS2-20110607/box.html#propdef-border-right,REC,CSS 2.1
+border-right,https://drafts.csswg.org/css-backgrounds/#propdef-border-right,ED,CSS Backgrounds and Borders Module Level 3
+border-right,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-border-right,CR,CSS Backgrounds and Borders Module Level 3
+border-right-color,http://www.w3.org/TR/2011/REC-CSS2-20110607/box.html#propdef-border-right-color,REC,CSS 2.1
+border-right-color,https://drafts.csswg.org/css-backgrounds/#propdef-border-right-color,ED,CSS Backgrounds and Borders Module Level 3
+border-right-color,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-border-right-color,CR,CSS Backgrounds and Borders Module Level 3
+border-right-style,http://www.w3.org/TR/2011/REC-CSS2-20110607/box.html#propdef-border-right-style,REC,CSS 2.1
+border-right-style,https://drafts.csswg.org/css-backgrounds/#propdef-border-right-style,ED,CSS Backgrounds and Borders Module Level 3
+border-right-style,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-border-right-style,CR,CSS Backgrounds and Borders Module Level 3
+border-right-width,http://www.w3.org/TR/2011/REC-CSS2-20110607/box.html#propdef-border-right-width,REC,CSS 2.1
+border-right-width,https://drafts.csswg.org/css-backgrounds/#propdef-border-right-width,ED,CSS Backgrounds and Borders Module Level 3
+border-right-width,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-border-right-width,CR,CSS Backgrounds and Borders Module Level 3
+border-spacing,http://www.w3.org/TR/2011/REC-CSS2-20110607/tables.html#propdef-border-spacing,REC,CSS 2.1
+border-spacing,https://drafts.csswg.org/css-tables-3/#propdef-border-spacing,ED,CSS Table Module Level 3
+border-spacing,https://www.w3.org/TR/2019/WD-css-tables-3-20190727/#propdef-border-spacing,WD,CSS Table Module Level 3
+border-start-end-radius,https://drafts.csswg.org/css-logical-1/#propdef-border-start-end-radius,ED,CSS Logical Properties and Values Level 1
+border-start-end-radius,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-border-start-end-radius,WD,CSS Logical Properties and Values Level 1
+border-start-start-radius,https://drafts.csswg.org/css-logical-1/#propdef-border-start-start-radius,ED,CSS Logical Properties and Values Level 1
+border-start-start-radius,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-border-start-start-radius,WD,CSS Logical Properties and Values Level 1
+border-style,http://www.w3.org/TR/2011/REC-CSS2-20110607/box.html#propdef-border-style,REC,CSS 2.1
+border-style,https://drafts.csswg.org/css-backgrounds/#propdef-border-style,ED,CSS Backgrounds and Borders Module Level 3
+border-style,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-border-style,CR,CSS Backgrounds and Borders Module Level 3
+border-top,http://www.w3.org/TR/2011/REC-CSS2-20110607/box.html#propdef-border-top,REC,CSS 2.1
+border-top,https://drafts.csswg.org/css-backgrounds/#propdef-border-top,ED,CSS Backgrounds and Borders Module Level 3
+border-top,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-border-top,CR,CSS Backgrounds and Borders Module Level 3
+border-top-color,http://www.w3.org/TR/2011/REC-CSS2-20110607/box.html#propdef-border-top-color,REC,CSS 2.1
+border-top-color,https://drafts.csswg.org/css-backgrounds/#propdef-border-top-color,ED,CSS Backgrounds and Borders Module Level 3
+border-top-color,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-border-top-color,CR,CSS Backgrounds and Borders Module Level 3
+border-top-left-radius,https://drafts.csswg.org/css-backgrounds/#propdef-border-top-left-radius,ED,CSS Backgrounds and Borders Module Level 3
+border-top-left-radius,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-border-top-left-radius,CR,CSS Backgrounds and Borders Module Level 3
+border-top-right-radius,https://drafts.csswg.org/css-backgrounds/#propdef-border-top-right-radius,ED,CSS Backgrounds and Borders Module Level 3
+border-top-right-radius,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-border-top-right-radius,CR,CSS Backgrounds and Borders Module Level 3
+border-top-style,http://www.w3.org/TR/2011/REC-CSS2-20110607/box.html#propdef-border-top-style,REC,CSS 2.1
+border-top-style,https://drafts.csswg.org/css-backgrounds/#propdef-border-top-style,ED,CSS Backgrounds and Borders Module Level 3
+border-top-style,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-border-top-style,CR,CSS Backgrounds and Borders Module Level 3
+border-top-width,http://www.w3.org/TR/2011/REC-CSS2-20110607/box.html#propdef-border-top-width,REC,CSS 2.1
+border-top-width,https://drafts.csswg.org/css-backgrounds/#propdef-border-top-width,ED,CSS Backgrounds and Borders Module Level 3
+border-top-width,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-border-top-width,CR,CSS Backgrounds and Borders Module Level 3
+border-width,http://www.w3.org/TR/2011/REC-CSS2-20110607/box.html#propdef-border-width,REC,CSS 2.1
+border-width,https://drafts.csswg.org/css-backgrounds/#propdef-border-width,ED,CSS Backgrounds and Borders Module Level 3
+border-width,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-border-width,CR,CSS Backgrounds and Borders Module Level 3
+bottom,http://www.w3.org/TR/2011/REC-CSS2-20110607/visuren.html#propdef-bottom,REC,CSS 2.1
+bottom,http://www.w3.org/TR/2016/WD-css-position-3-20160517/#propdef-bottom,WD,CSS Positioned Layout Module Level 3
+bottom,https://drafts.csswg.org/css-position/#propdef-bottom,ED,CSS Positioned Layout Module Level 3
+box-decoration-break,https://drafts.csswg.org/css-break-4/#propdef-box-decoration-break,ED,CSS Fragmentation Module Level 4
+box-decoration-break,https://drafts.csswg.org/css-break/#propdef-box-decoration-break,ED,CSS Fragmentation Module Level 3
+box-decoration-break,https://www.w3.org/TR/2018/CR-css-break-3-20181204/#propdef-box-decoration-break,CR,CSS Fragmentation Module Level 3
+box-decoration-break,https://www.w3.org/TR/2018/WD-css-break-4-20181218/#propdef-box-decoration-break,FPWD,CSS Fragmentation Module Level 4
+box-shadow,https://drafts.csswg.org/css-backgrounds/#propdef-box-shadow,ED,CSS Backgrounds and Borders Module Level 3
+box-shadow,https://www.w3.org/TR/2017/CR-css-backgrounds-3-20171017/#propdef-box-shadow,CR,CSS Backgrounds and Borders Module Level 3
+box-sizing,https://drafts.csswg.org/css-sizing-3/#propdef-box-sizing,ED,CSS Intrinsic & Extrinsic Sizing Module Level 3
+box-sizing,https://www.w3.org/TR/2017/WD-css-ui-4-20171222/#propdef-box-sizing,WD,CSS Basic User Interface Module Level 4
+box-sizing,https://www.w3.org/TR/2018/REC-css-ui-3-20180621/#propdef-box-sizing,REC,CSS Basic User Interface Module Level 3 (CSS3 UI)
+box-sizing,https://www.w3.org/TR/2019/WD-css-sizing-3-20190522/#propdef-box-sizing,WD,CSS Intrinsic & Extrinsic Sizing Module Level 3
+box-snap,http://www.w3.org/TR/2014/WD-css-line-grid-1-20140916/#propdef-box-snap,WD,CSS Line Grid Module Level 1
+box-snap,https://drafts.csswg.org/css-line-grid/#propdef-box-snap,ED,CSS Line Grid Module Level 1
+break-after,http://www.w3.org/TR/2014/WD-css-regions-1-20141009/#propdef-break-after,WD,CSS Regions Module Level 1
+break-after,https://drafts.csswg.org/css-break-4/#propdef-break-after,ED,CSS Fragmentation Module Level 4
+break-after,https://drafts.csswg.org/css-break/#propdef-break-after,ED,CSS Fragmentation Module Level 3
+break-after,https://www.w3.org/TR/2018/CR-css-break-3-20181204/#propdef-break-after,CR,CSS Fragmentation Module Level 3
+break-after,https://www.w3.org/TR/2018/WD-css-break-4-20181218/#propdef-break-after,FPWD,CSS Fragmentation Module Level 4
+break-before,http://www.w3.org/TR/2014/WD-css-regions-1-20141009/#propdef-break-before,WD,CSS Regions Module Level 1
+break-before,https://drafts.csswg.org/css-break-4/#propdef-break-before,ED,CSS Fragmentation Module Level 4
+break-before,https://drafts.csswg.org/css-break/#propdef-break-before,ED,CSS Fragmentation Module Level 3
+break-before,https://www.w3.org/TR/2018/CR-css-break-3-20181204/#propdef-break-before,CR,CSS Fragmentation Module Level 3
+break-before,https://www.w3.org/TR/2018/WD-css-break-4-20181218/#propdef-break-before,FPWD,CSS Fragmentation Module Level 4
+break-inside,http://www.w3.org/TR/2014/WD-css-regions-1-20141009/#propdef-break-inside,WD,CSS Regions Module Level 1
+break-inside,https://drafts.csswg.org/css-break-4/#propdef-break-inside,ED,CSS Fragmentation Module Level 4
+break-inside,https://drafts.csswg.org/css-break/#propdef-break-inside,ED,CSS Fragmentation Module Level 3
+break-inside,https://www.w3.org/TR/2018/CR-css-break-3-20181204/#propdef-break-inside,CR,CSS Fragmentation Module Level 3
+break-inside,https://www.w3.org/TR/2018/WD-css-break-4-20181218/#propdef-break-inside,FPWD,CSS Fragmentation Module Level 4
+caption-side,http://www.w3.org/TR/2011/REC-CSS2-20110607/tables.html#propdef-caption-side,REC,CSS 2.1
+caption-side,https://drafts.csswg.org/css-tables-3/#propdef-caption-side,ED,CSS Table Module Level 3
+caption-side,https://www.w3.org/TR/2019/WD-css-tables-3-20190727/#propdef-caption-side,WD,CSS Table Module Level 3
+caret,https://drafts.csswg.org/css-ui-4/#propdef-caret,ED,CSS Basic User Interface Module Level 4
+caret,https://drafts.csswg.org/css-ui/#propdef-caret,ED,CSS Basic User Interface Module Level 3 (CSS3 UI)
+caret,https://www.w3.org/TR/2017/WD-css-ui-4-20171222/#propdef-caret,WD,CSS Basic User Interface Module Level 4
+caret-color,https://drafts.csswg.org/css-ui-4/#propdef-caret-color,ED,CSS Basic User Interface Module Level 4
+caret-color,https://drafts.csswg.org/css-ui/#propdef-caret-color,ED,CSS Basic User Interface Module Level 3 (CSS3 UI)
+caret-color,https://www.w3.org/TR/2017/WD-css-ui-4-20171222/#propdef-caret-color,WD,CSS Basic User Interface Module Level 4
+caret-color,https://www.w3.org/TR/2018/REC-css-ui-3-20180621/#propdef-caret-color,REC,CSS Basic User Interface Module Level 3 (CSS3 UI)
+caret-shape,https://drafts.csswg.org/css-ui-4/#propdef-caret-shape,ED,CSS Basic User Interface Module Level 4
+caret-shape,https://drafts.csswg.org/css-ui/#propdef-caret-shape,ED,CSS Basic User Interface Module Level 3 (CSS3 UI)
+caret-shape,https://www.w3.org/TR/2017/WD-css-ui-4-20171222/#propdef-caret-shape,WD,CSS Basic User Interface Module Level 4
+chains,http://www.w3.org/TR/2015/NOTE-css-template-3-20150326/#chains0,NOTE,CSS Template Layout Module
+chains,https://drafts.csswg.org/css-template/#chains0,ED,CSS Template Layout Module
+clear,http://www.w3.org/TR/2011/REC-CSS2-20110607/visuren.html#propdef-clear,REC,CSS 2.1
+clear,http://www.w3.org/TR/2015/WD-css-page-floats-3-20150915/#propdef-clear,FPWD,CSS Page Floats
+clear,https://drafts.csswg.org/css-page-floats/#propdef-clear,ED,CSS Page Floats
+clip,http://www.w3.org/TR/2011/REC-CSS2-20110607/visufx.html#propdef-clip,REC,CSS 2.1
+clip,http://www.w3.org/TR/2014/CR-css-masking-1-20140826/#propdef-clip,CR,CSS Masking Module Level 1
+clip,https://drafts.fxtf.org/css-masking-1/#propdef-clip,ED,CSS Masking Module Level 1
+clip-path,http://www.w3.org/TR/2014/CR-css-masking-1-20140826/#propdef-clip-path,CR,CSS Masking Module Level 1
+clip-path,https://drafts.fxtf.org/css-masking-1/#propdef-clip-path,ED,CSS Masking Module Level 1
+clip-rule,http://www.w3.org/TR/2014/CR-css-masking-1-20140826/#propdef-clip-rule,CR,CSS Masking Module Level 1
+clip-rule,https://drafts.fxtf.org/css-masking-1/#propdef-clip-rule,ED,CSS Masking Module Level 1
+color,http://www.w3.org/TR/2011/REC-CSS2-20110607/colors.html#propdef-color,REC,CSS 2.1
+color,https://drafts.csswg.org/css-color-3/#color0,ED,CSS Color Module Level 3
+color,https://drafts.csswg.org/css-color/#propdef-color,ED,CSS Color Module Level 4
+color,https://www.w3.org/TR/2018/REC-css-color-3-20180619/#color0,REC,CSS Color Module Level 3
+color,https://www.w3.org/TR/2019/WD-css-color-4-20191105/#propdef-color,WD,CSS Color Module Level 4
+color-adjust,https://drafts.csswg.org/css-color-adjust-1/#propdef-color-adjust,ED,CSS Color Adjustment Module Level 1
+color-adjust,https://www.w3.org/TR/2019/WD-css-color-adjust-1-20190523/#propdef-color-adjust,WD,CSS Color Adjustment Module Level 1
+color-interpolation-filters,https://drafts.fxtf.org/filter-effects-1/#propdef-color-interpolation-filters,ED,Filter Effects Module Level 1
+color-interpolation-filters,https://www.w3.org/TR/2018/WD-filter-effects-1-20181218/#propdef-color-interpolation-filters,WD,Filter Effects Module Level 1
+color-scheme,https://drafts.csswg.org/css-color-adjust-1/#propdef-color-scheme,ED,CSS Color Adjustment Module Level 1
+color-scheme,https://www.w3.org/TR/2019/WD-css-color-adjust-1-20190523/#propdef-color-scheme,WD,CSS Color Adjustment Module Level 1
+column-count,https://drafts.csswg.org/css-multicol/#propdef-column-count,ED,CSS Multi-column Layout Module Level 1
+column-count,https://www.w3.org/TR/2019/WD-css-multicol-1-20191015/#propdef-column-count,WD,CSS Multi-column Layout Module Level 1
+column-fill,https://drafts.csswg.org/css-multicol/#propdef-column-fill,ED,CSS Multi-column Layout Module Level 1
+column-fill,https://www.w3.org/TR/2019/WD-css-multicol-1-20191015/#propdef-column-fill,WD,CSS Multi-column Layout Module Level 1
+column-gap,https://drafts.csswg.org/css-align/#propdef-column-gap,ED,CSS Box Alignment Module Level 3
+column-gap,https://www.w3.org/TR/2018/WD-css-align-3-20181206/#propdef-column-gap,WD,CSS Box Alignment Module Level 3
+column-rule,https://drafts.csswg.org/css-multicol/#propdef-column-rule,ED,CSS Multi-column Layout Module Level 1
+column-rule,https://www.w3.org/TR/2019/WD-css-multicol-1-20191015/#propdef-column-rule,WD,CSS Multi-column Layout Module Level 1
+column-rule-color,https://drafts.csswg.org/css-multicol/#propdef-column-rule-color,ED,CSS Multi-column Layout Module Level 1
+column-rule-color,https://www.w3.org/TR/2019/WD-css-multicol-1-20191015/#propdef-column-rule-color,WD,CSS Multi-column Layout Module Level 1
+column-rule-style,https://drafts.csswg.org/css-multicol/#propdef-column-rule-style,ED,CSS Multi-column Layout Module Level 1
+column-rule-style,https://www.w3.org/TR/2019/WD-css-multicol-1-20191015/#propdef-column-rule-style,WD,CSS Multi-column Layout Module Level 1
+column-rule-width,https://drafts.csswg.org/css-multicol/#propdef-column-rule-width,ED,CSS Multi-column Layout Module Level 1
+column-rule-width,https://www.w3.org/TR/2019/WD-css-multicol-1-20191015/#propdef-column-rule-width,WD,CSS Multi-column Layout Module Level 1
+column-span,https://drafts.csswg.org/css-multicol/#propdef-column-span,ED,CSS Multi-column Layout Module Level 1
+column-span,https://www.w3.org/TR/2019/WD-css-multicol-1-20191015/#propdef-column-span,WD,CSS Multi-column Layout Module Level 1
+column-width,https://drafts.csswg.org/css-multicol/#propdef-column-width,ED,CSS Multi-column Layout Module Level 1
+column-width,https://www.w3.org/TR/2019/WD-css-multicol-1-20191015/#propdef-column-width,WD,CSS Multi-column Layout Module Level 1
+columns,https://drafts.csswg.org/css-multicol/#propdef-columns,ED,CSS Multi-column Layout Module Level 1
+columns,https://www.w3.org/TR/2019/WD-css-multicol-1-20191015/#propdef-columns,WD,CSS Multi-column Layout Module Level 1
+contain,https://drafts.csswg.org/css-contain-2/#propdef-contain,ED,CSS Containment Module Level 2
+contain,https://drafts.csswg.org/css-contain/#propdef-contain,ED,CSS Containment Module Level 1
+contain,https://www.w3.org/TR/2019/REC-css-contain-1-20191121/#propdef-contain,REC,CSS Containment Module Level 1
+contain,https://www.w3.org/TR/2019/WD-css-contain-2-20191111/#propdef-contain,WD,CSS Containment Module Level 2
+content,http://www.w3.org/TR/2011/REC-CSS2-20110607/generate.html#propdef-content,REC,CSS 2.1
+content,https://drafts.csswg.org/css-content-3/#propdef-content,ED,CSS Generated Content Module Level 3
+content,https://www.w3.org/TR/2019/WD-css-content-3-20190802/#propdef-content,WD,CSS Generated Content Module Level 3
+continue,https://drafts.csswg.org/css-overflow-3/#propdef-continue,ED,CSS Overflow Module Level 3
+continue,https://drafts.csswg.org/css-overflow-4/#propdef-continue,ED,CSS Overflow Module Level 4
+continue,https://www.w3.org/TR/2017/WD-css-overflow-4-20170613/#propdef-continue,FPWD,CSS Overflow Module Level 4
+continue,https://www.w3.org/TR/2018/WD-css-overflow-3-20180731/#propdef-continue,WD,CSS Overflow Module Level 3
+counter-increment,http://www.w3.org/TR/2011/REC-CSS2-20110607/generate.html#propdef-counter-increment,REC,CSS 2.1
+counter-increment,https://drafts.csswg.org/css-lists-3/#propdef-counter-increment,ED,CSS Lists Module Level 3
+counter-increment,https://www.w3.org/TR/2019/WD-css-lists-3-20190817/#propdef-counter-increment,WD,CSS Lists Module Level 3
+counter-reset,http://www.w3.org/TR/2011/REC-CSS2-20110607/generate.html#propdef-counter-reset,REC,CSS 2.1
+counter-reset,https://drafts.csswg.org/css-lists-3/#propdef-counter-reset,ED,CSS Lists Module Level 3
+counter-reset,https://www.w3.org/TR/2019/WD-css-lists-3-20190817/#propdef-counter-reset,WD,CSS Lists Module Level 3
+counter-set,https://drafts.csswg.org/css-lists-3/#propdef-counter-set,ED,CSS Lists Module Level 3
+counter-set,https://www.w3.org/TR/2019/WD-css-lists-3-20190817/#propdef-counter-set,WD,CSS Lists Module Level 3
+cue,http://www.w3.org/TR/2011/REC-CSS2-20110607/aural.html#propdef-cue,REC,CSS 2.1
+cue-after,http://www.w3.org/TR/2011/REC-CSS2-20110607/aural.html#propdef-cue-after,REC,CSS 2.1
+cue-before,http://www.w3.org/TR/2011/REC-CSS2-20110607/aural.html#propdef-cue-before,REC,CSS 2.1
+cursor,http://www.w3.org/TR/2011/REC-CSS2-20110607/ui.html#propdef-cursor,REC,CSS 2.1
+cursor,https://drafts.csswg.org/css-ui-4/#propdef-cursor,ED,CSS Basic User Interface Module Level 4
+cursor,https://drafts.csswg.org/css-ui/#propdef-cursor,ED,CSS Basic User Interface Module Level 3 (CSS3 UI)
+cursor,https://www.w3.org/TR/2017/WD-css-ui-4-20171222/#propdef-cursor,WD,CSS Basic User Interface Module Level 4
+cursor,https://www.w3.org/TR/2018/REC-css-ui-3-20180621/#propdef-cursor,REC,CSS Basic User Interface Module Level 3 (CSS3 UI)
+direction,http://www.w3.org/TR/2011/REC-CSS2-20110607/visuren.html#propdef-direction,REC,CSS 2.1
+direction,https://drafts.csswg.org/css-writing-modes-3/#propdef-direction,ED,CSS Writing Modes Level 3
+direction,https://drafts.csswg.org/css-writing-modes-4/#propdef-direction,ED,CSS Writing Modes Level 4
+direction,https://www.w3.org/TR/2019/CR-css-writing-modes-4-20190730/#propdef-direction,CR,CSS Writing Modes Level 4
+direction,https://www.w3.org/TR/2019/REC-css-writing-modes-3-20191210/#propdef-direction,REC,CSS Writing Modes Level 3
+display,http://www.w3.org/TR/2011/REC-CSS2-20110607/visuren.html#propdef-display,REC,CSS 2.1
+display,http://www.w3.org/TR/2014/WD-css-ruby-1-20140805/#propdef-display,WD,CSS Ruby Layout Module Level 1
+display,https://drafts.csswg.org/css-display/#propdef-display,ED,CSS Display Module Level 3
+display,https://www.w3.org/TR/2019/CR-css-display-3-20190711/#propdef-display,CR,CSS Display Module Level 3
+dominant-baseline,https://drafts.csswg.org/css-inline-3/#propdef-dominant-baseline,ED,CSS Inline Layout Module Level 3
+dominant-baseline,https://www.w3.org/TR/2018/WD-css-inline-3-20180808/#propdef-dominant-baseline,WD,CSS Inline Layout Module Level 3
+elevation,http://www.w3.org/TR/2011/REC-CSS2-20110607/aural.html#propdef-elevation,REC,CSS 2.1
+empty-cells,http://www.w3.org/TR/2011/REC-CSS2-20110607/tables.html#propdef-empty-cells,REC,CSS 2.1
+empty-cells,https://drafts.csswg.org/css-tables-3/#propdef-empty-cells,ED,CSS Table Module Level 3
+empty-cells,https://www.w3.org/TR/2019/WD-css-tables-3-20190727/#propdef-empty-cells,WD,CSS Table Module Level 3
+fill,https://drafts.fxtf.org/fill-stroke/#propdef-fill,ED,CSS Fill and Stroke Module Level 3
+fill,https://www.w3.org/TR/2017/WD-fill-stroke-3-20170413/#propdef-fill,FPWD,CSS Fill and Stroke Module Level 3
+fill-break,https://drafts.fxtf.org/fill-stroke/#propdef-fill-break,ED,CSS Fill and Stroke Module Level 3
+fill-break,https://www.w3.org/TR/2017/WD-fill-stroke-3-20170413/#propdef-fill-break,FPWD,CSS Fill and Stroke Module Level 3
+fill-color,https://drafts.fxtf.org/fill-stroke/#propdef-fill-color,ED,CSS Fill and Stroke Module Level 3
+fill-color,https://www.w3.org/TR/2017/WD-fill-stroke-3-20170413/#propdef-fill-color,FPWD,CSS Fill and Stroke Module Level 3
+fill-image,https://drafts.fxtf.org/fill-stroke/#propdef-fill-image,ED,CSS Fill and Stroke Module Level 3
+fill-image,https://www.w3.org/TR/2017/WD-fill-stroke-3-20170413/#propdef-fill-image,FPWD,CSS Fill and Stroke Module Level 3
+fill-opacity,https://drafts.fxtf.org/fill-stroke/#propdef-fill-opacity,ED,CSS Fill and Stroke Module Level 3
+fill-opacity,https://www.w3.org/TR/2017/WD-fill-stroke-3-20170413/#propdef-fill-opacity,FPWD,CSS Fill and Stroke Module Level 3
+fill-origin,https://drafts.fxtf.org/fill-stroke/#propdef-fill-origin,ED,CSS Fill and Stroke Module Level 3
+fill-origin,https://www.w3.org/TR/2017/WD-fill-stroke-3-20170413/#propdef-fill-origin,FPWD,CSS Fill and Stroke Module Level 3
+fill-position,https://drafts.fxtf.org/fill-stroke/#propdef-fill-position,ED,CSS Fill and Stroke Module Level 3
+fill-position,https://www.w3.org/TR/2017/WD-fill-stroke-3-20170413/#propdef-fill-position,FPWD,CSS Fill and Stroke Module Level 3
+fill-repeat,https://drafts.fxtf.org/fill-stroke/#propdef-fill-repeat,ED,CSS Fill and Stroke Module Level 3
+fill-repeat,https://www.w3.org/TR/2017/WD-fill-stroke-3-20170413/#propdef-fill-repeat,FPWD,CSS Fill and Stroke Module Level 3
+fill-rule,https://drafts.fxtf.org/fill-stroke/#propdef-fill-rule,ED,CSS Fill and Stroke Module Level 3
+fill-rule,https://www.w3.org/TR/2017/WD-fill-stroke-3-20170413/#propdef-fill-rule,FPWD,CSS Fill and Stroke Module Level 3
+fill-size,https://drafts.fxtf.org/fill-stroke/#propdef-fill-size,ED,CSS Fill and Stroke Module Level 3
+fill-size,https://www.w3.org/TR/2017/WD-fill-stroke-3-20170413/#propdef-fill-size,FPWD,CSS Fill and Stroke Module Level 3
+filter,https://drafts.fxtf.org/filter-effects-1/#propdef-filter,ED,Filter Effects Module Level 1
+filter,https://www.w3.org/TR/2018/WD-filter-effects-1-20181218/#propdef-filter,WD,Filter Effects Module Level 1
+flex,https://drafts.csswg.org/css-flexbox-1/#propdef-flex,ED,CSS Flexible Box Layout Module Level 1
+flex,https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#propdef-flex,CR,CSS Flexible Box Layout Module Level 1
+flex-basis,https://drafts.csswg.org/css-flexbox-1/#propdef-flex-basis,ED,CSS Flexible Box Layout Module Level 1
+flex-basis,https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#propdef-flex-basis,CR,CSS Flexible Box Layout Module Level 1
+flex-direction,https://drafts.csswg.org/css-flexbox-1/#propdef-flex-direction,ED,CSS Flexible Box Layout Module Level 1
+flex-direction,https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#propdef-flex-direction,CR,CSS Flexible Box Layout Module Level 1
+flex-flow,https://drafts.csswg.org/css-flexbox-1/#propdef-flex-flow,ED,CSS Flexible Box Layout Module Level 1
+flex-flow,https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#propdef-flex-flow,CR,CSS Flexible Box Layout Module Level 1
+flex-grow,https://drafts.csswg.org/css-flexbox-1/#propdef-flex-grow,ED,CSS Flexible Box Layout Module Level 1
+flex-grow,https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#propdef-flex-grow,CR,CSS Flexible Box Layout Module Level 1
+flex-shrink,https://drafts.csswg.org/css-flexbox-1/#propdef-flex-shrink,ED,CSS Flexible Box Layout Module Level 1
+flex-shrink,https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#propdef-flex-shrink,CR,CSS Flexible Box Layout Module Level 1
+flex-wrap,https://drafts.csswg.org/css-flexbox-1/#propdef-flex-wrap,ED,CSS Flexible Box Layout Module Level 1
+flex-wrap,https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#propdef-flex-wrap,CR,CSS Flexible Box Layout Module Level 1
+float,http://www.w3.org/TR/2011/REC-CSS2-20110607/visuren.html#propdef-float,REC,CSS 2.1
+float,http://www.w3.org/TR/2015/WD-css-page-floats-3-20150915/#propdef-float,FPWD,CSS Page Floats
+float,https://drafts.csswg.org/css-page-floats/#propdef-float,ED,CSS Page Floats
+float-defer,http://www.w3.org/TR/2015/WD-css-page-floats-3-20150915/#propdef-float-defer,FPWD,CSS Page Floats
+float-defer,https://drafts.csswg.org/css-page-floats/#propdef-float-defer,ED,CSS Page Floats
+float-offset,http://www.w3.org/TR/2015/WD-css-page-floats-3-20150915/#propdef-float-offset,FPWD,CSS Page Floats
+float-offset,https://drafts.csswg.org/css-page-floats/#propdef-float-offset,ED,CSS Page Floats
+float-reference,http://www.w3.org/TR/2015/WD-css-page-floats-3-20150915/#propdef-float-reference,FPWD,CSS Page Floats
+float-reference,https://drafts.csswg.org/css-page-floats/#propdef-float-reference,ED,CSS Page Floats
+flood-color,https://drafts.fxtf.org/filter-effects-1/#propdef-flood-color,ED,Filter Effects Module Level 1
+flood-color,https://www.w3.org/TR/2018/WD-filter-effects-1-20181218/#propdef-flood-color,WD,Filter Effects Module Level 1
+flood-opacity,https://drafts.fxtf.org/filter-effects-1/#propdef-flood-opacity,ED,Filter Effects Module Level 1
+flood-opacity,https://www.w3.org/TR/2018/WD-filter-effects-1-20181218/#propdef-flood-opacity,WD,Filter Effects Module Level 1
+flow,http://www.w3.org/TR/2015/NOTE-css-template-3-20150326/#flow0,NOTE,CSS Template Layout Module
+flow,https://drafts.csswg.org/css-template/#flow0,ED,CSS Template Layout Module
+flow-from,http://www.w3.org/TR/2014/WD-css-regions-1-20141009/#propdef-flow-from,WD,CSS Regions Module Level 1
+flow-from,https://drafts.csswg.org/css-regions/#propdef-flow-from,ED,CSS Regions Module Level 1
+flow-into,http://www.w3.org/TR/2014/WD-css-regions-1-20141009/#propdef-flow-into,WD,CSS Regions Module Level 1
+flow-into,https://drafts.csswg.org/css-regions/#propdef-flow-into,ED,CSS Regions Module Level 1
+font,http://www.w3.org/TR/2011/REC-CSS2-20110607/fonts.html#propdef-font,REC,CSS 2.1
+font,https://drafts.csswg.org/css-fonts-4/#propdef-font,ED,CSS Fonts Module Level 4
+font,https://drafts.csswg.org/css-fonts/#propdef-font,ED,CSS Fonts Module Level 3
+font,https://www.w3.org/TR/2018/REC-css-fonts-3-20180920/#propdef-font,REC,CSS Fonts Module Level 3
+font,https://www.w3.org/TR/2019/WD-css-fonts-4-20191113/#propdef-font,WD,CSS Fonts Module Level 4
+font-family,http://www.w3.org/TR/2011/REC-CSS2-20110607/fonts.html#propdef-font-family,REC,CSS 2.1
+font-family,https://drafts.csswg.org/css-fonts-4/#propdef-font-family,ED,CSS Fonts Module Level 4
+font-family,https://drafts.csswg.org/css-fonts/#propdef-font-family,ED,CSS Fonts Module Level 3
+font-family,https://www.w3.org/TR/2018/REC-css-fonts-3-20180920/#propdef-font-family,REC,CSS Fonts Module Level 3
+font-family,https://www.w3.org/TR/2019/WD-css-fonts-4-20191113/#propdef-font-family,WD,CSS Fonts Module Level 4
+font-feature-settings,https://drafts.csswg.org/css-fonts-4/#propdef-font-feature-settings,ED,CSS Fonts Module Level 4
+font-feature-settings,https://drafts.csswg.org/css-fonts/#propdef-font-feature-settings,ED,CSS Fonts Module Level 3
+font-feature-settings,https://www.w3.org/TR/2018/REC-css-fonts-3-20180920/#propdef-font-feature-settings,REC,CSS Fonts Module Level 3
+font-feature-settings,https://www.w3.org/TR/2019/WD-css-fonts-4-20191113/#propdef-font-feature-settings,WD,CSS Fonts Module Level 4
+font-kerning,https://drafts.csswg.org/css-fonts-4/#propdef-font-kerning,ED,CSS Fonts Module Level 4
+font-kerning,https://drafts.csswg.org/css-fonts/#propdef-font-kerning,ED,CSS Fonts Module Level 3
+font-kerning,https://www.w3.org/TR/2018/REC-css-fonts-3-20180920/#propdef-font-kerning,REC,CSS Fonts Module Level 3
+font-kerning,https://www.w3.org/TR/2019/WD-css-fonts-4-20191113/#propdef-font-kerning,WD,CSS Fonts Module Level 4
+font-language-override,https://drafts.csswg.org/css-fonts-4/#propdef-font-language-override,ED,CSS Fonts Module Level 4
+font-language-override,https://drafts.csswg.org/css-fonts/#propdef-font-language-override,ED,CSS Fonts Module Level 3
+font-language-override,https://www.w3.org/TR/2019/WD-css-fonts-4-20191113/#propdef-font-language-override,WD,CSS Fonts Module Level 4
+font-optical-sizing,https://drafts.csswg.org/css-fonts-4/#propdef-font-optical-sizing,ED,CSS Fonts Module Level 4
+font-optical-sizing,https://drafts.csswg.org/css-fonts/#propdef-font-optical-sizing,ED,CSS Fonts Module Level 3
+font-optical-sizing,https://www.w3.org/TR/2019/WD-css-fonts-4-20191113/#propdef-font-optical-sizing,WD,CSS Fonts Module Level 4
+font-palette,https://drafts.csswg.org/css-fonts-4/#propdef-font-palette,ED,CSS Fonts Module Level 4
+font-palette,https://drafts.csswg.org/css-fonts/#propdef-font-palette,ED,CSS Fonts Module Level 3
+font-palette,https://www.w3.org/TR/2019/WD-css-fonts-4-20191113/#propdef-font-palette,WD,CSS Fonts Module Level 4
+font-size,http://www.w3.org/TR/2011/REC-CSS2-20110607/fonts.html#propdef-font-size,REC,CSS 2.1
+font-size,https://drafts.csswg.org/css-fonts-4/#propdef-font-size,ED,CSS Fonts Module Level 4
+font-size,https://drafts.csswg.org/css-fonts/#propdef-font-size,ED,CSS Fonts Module Level 3
+font-size,https://www.w3.org/TR/2018/REC-css-fonts-3-20180920/#propdef-font-size,REC,CSS Fonts Module Level 3
+font-size,https://www.w3.org/TR/2019/WD-css-fonts-4-20191113/#propdef-font-size,WD,CSS Fonts Module Level 4
+font-size-adjust,https://drafts.csswg.org/css-fonts-4/#propdef-font-size-adjust,ED,CSS Fonts Module Level 4
+font-size-adjust,https://drafts.csswg.org/css-fonts/#propdef-font-size-adjust,ED,CSS Fonts Module Level 3
+font-size-adjust,https://www.w3.org/TR/2018/REC-css-fonts-3-20180920/#propdef-font-size-adjust,REC,CSS Fonts Module Level 3
+font-size-adjust,https://www.w3.org/TR/2019/WD-css-fonts-4-20191113/#propdef-font-size-adjust,WD,CSS Fonts Module Level 4
+font-stretch,https://drafts.csswg.org/css-fonts-4/#propdef-font-stretch,ED,CSS Fonts Module Level 4
+font-stretch,https://drafts.csswg.org/css-fonts/#propdef-font-stretch,ED,CSS Fonts Module Level 3
+font-stretch,https://www.w3.org/TR/2018/REC-css-fonts-3-20180920/#propdef-font-stretch,REC,CSS Fonts Module Level 3
+font-stretch,https://www.w3.org/TR/2019/WD-css-fonts-4-20191113/#propdef-font-stretch,WD,CSS Fonts Module Level 4
+font-style,http://www.w3.org/TR/2011/REC-CSS2-20110607/fonts.html#propdef-font-style,REC,CSS 2.1
+font-style,https://drafts.csswg.org/css-fonts-4/#propdef-font-style,ED,CSS Fonts Module Level 4
+font-style,https://drafts.csswg.org/css-fonts/#propdef-font-style,ED,CSS Fonts Module Level 3
+font-style,https://www.w3.org/TR/2018/REC-css-fonts-3-20180920/#propdef-font-style,REC,CSS Fonts Module Level 3
+font-style,https://www.w3.org/TR/2019/WD-css-fonts-4-20191113/#propdef-font-style,WD,CSS Fonts Module Level 4
+font-synthesis,https://drafts.csswg.org/css-fonts-4/#propdef-font-synthesis,ED,CSS Fonts Module Level 4
+font-synthesis,https://drafts.csswg.org/css-fonts/#propdef-font-synthesis,ED,CSS Fonts Module Level 3
+font-synthesis,https://www.w3.org/TR/2018/REC-css-fonts-3-20180920/#propdef-font-synthesis,REC,CSS Fonts Module Level 3
+font-synthesis,https://www.w3.org/TR/2019/WD-css-fonts-4-20191113/#propdef-font-synthesis,WD,CSS Fonts Module Level 4
+font-synthesis-small-caps,https://drafts.csswg.org/css-fonts-4/#propdef-font-synthesis-small-caps,ED,CSS Fonts Module Level 4
+font-synthesis-small-caps,https://drafts.csswg.org/css-fonts/#propdef-font-synthesis-small-caps,ED,CSS Fonts Module Level 3
+font-synthesis-small-caps,https://www.w3.org/TR/2019/WD-css-fonts-4-20191113/#propdef-font-synthesis-small-caps,WD,CSS Fonts Module Level 4
+font-synthesis-style,https://drafts.csswg.org/css-fonts-4/#propdef-font-synthesis-style,ED,CSS Fonts Module Level 4
+font-synthesis-style,https://drafts.csswg.org/css-fonts/#propdef-font-synthesis-style,ED,CSS Fonts Module Level 3
+font-synthesis-style,https://www.w3.org/TR/2019/WD-css-fonts-4-20191113/#propdef-font-synthesis-style,WD,CSS Fonts Module Level 4
+font-synthesis-weight,https://drafts.csswg.org/css-fonts-4/#propdef-font-synthesis-weight,ED,CSS Fonts Module Level 4
+font-synthesis-weight,https://drafts.csswg.org/css-fonts/#propdef-font-synthesis-weight,ED,CSS Fonts Module Level 3
+font-synthesis-weight,https://www.w3.org/TR/2019/WD-css-fonts-4-20191113/#propdef-font-synthesis-weight,WD,CSS Fonts Module Level 4
+font-variant,http://www.w3.org/TR/2011/REC-CSS2-20110607/fonts.html#propdef-font-variant,REC,CSS 2.1
+font-variant,https://drafts.csswg.org/css-fonts-4/#propdef-font-variant,ED,CSS Fonts Module Level 4
+font-variant,https://drafts.csswg.org/css-fonts/#propdef-font-variant,ED,CSS Fonts Module Level 3
+font-variant,https://www.w3.org/TR/2018/REC-css-fonts-3-20180920/#propdef-font-variant,REC,CSS Fonts Module Level 3
+font-variant,https://www.w3.org/TR/2019/WD-css-fonts-4-20191113/#propdef-font-variant,WD,CSS Fonts Module Level 4
+font-variant-alternates,https://drafts.csswg.org/css-fonts-4/#propdef-font-variant-alternates,ED,CSS Fonts Module Level 4
+font-variant-alternates,https://drafts.csswg.org/css-fonts/#propdef-font-variant-alternates,ED,CSS Fonts Module Level 3
+font-variant-alternates,https://www.w3.org/TR/2019/WD-css-fonts-4-20191113/#propdef-font-variant-alternates,WD,CSS Fonts Module Level 4
+font-variant-caps,https://drafts.csswg.org/css-fonts-4/#propdef-font-variant-caps,ED,CSS Fonts Module Level 4
+font-variant-caps,https://drafts.csswg.org/css-fonts/#propdef-font-variant-caps,ED,CSS Fonts Module Level 3
+font-variant-caps,https://www.w3.org/TR/2018/REC-css-fonts-3-20180920/#propdef-font-variant-caps,REC,CSS Fonts Module Level 3
+font-variant-caps,https://www.w3.org/TR/2019/WD-css-fonts-4-20191113/#propdef-font-variant-caps,WD,CSS Fonts Module Level 4
+font-variant-east-asian,https://drafts.csswg.org/css-fonts-4/#propdef-font-variant-east-asian,ED,CSS Fonts Module Level 4
+font-variant-east-asian,https://drafts.csswg.org/css-fonts/#propdef-font-variant-east-asian,ED,CSS Fonts Module Level 3
+font-variant-east-asian,https://www.w3.org/TR/2018/REC-css-fonts-3-20180920/#propdef-font-variant-east-asian,REC,CSS Fonts Module Level 3
+font-variant-east-asian,https://www.w3.org/TR/2019/WD-css-fonts-4-20191113/#propdef-font-variant-east-asian,WD,CSS Fonts Module Level 4
+font-variant-emoji,https://drafts.csswg.org/css-fonts-4/#propdef-font-variant-emoji,ED,CSS Fonts Module Level 4
+font-variant-emoji,https://drafts.csswg.org/css-fonts/#propdef-font-variant-emoji,ED,CSS Fonts Module Level 3
+font-variant-emoji,https://www.w3.org/TR/2019/WD-css-fonts-4-20191113/#propdef-font-variant-emoji,WD,CSS Fonts Module Level 4
+font-variant-ligatures,https://drafts.csswg.org/css-fonts-4/#propdef-font-variant-ligatures,ED,CSS Fonts Module Level 4
+font-variant-ligatures,https://drafts.csswg.org/css-fonts/#propdef-font-variant-ligatures,ED,CSS Fonts Module Level 3
+font-variant-ligatures,https://www.w3.org/TR/2018/REC-css-fonts-3-20180920/#propdef-font-variant-ligatures,REC,CSS Fonts Module Level 3
+font-variant-ligatures,https://www.w3.org/TR/2019/WD-css-fonts-4-20191113/#propdef-font-variant-ligatures,WD,CSS Fonts Module Level 4
+font-variant-numeric,https://drafts.csswg.org/css-fonts-4/#propdef-font-variant-numeric,ED,CSS Fonts Module Level 4
+font-variant-numeric,https://drafts.csswg.org/css-fonts/#propdef-font-variant-numeric,ED,CSS Fonts Module Level 3
+font-variant-numeric,https://www.w3.org/TR/2018/REC-css-fonts-3-20180920/#propdef-font-variant-numeric,REC,CSS Fonts Module Level 3
+font-variant-numeric,https://www.w3.org/TR/2019/WD-css-fonts-4-20191113/#propdef-font-variant-numeric,WD,CSS Fonts Module Level 4
+font-variant-position,https://drafts.csswg.org/css-fonts-4/#propdef-font-variant-position,ED,CSS Fonts Module Level 4
+font-variant-position,https://drafts.csswg.org/css-fonts/#propdef-font-variant-position,ED,CSS Fonts Module Level 3
+font-variant-position,https://www.w3.org/TR/2018/REC-css-fonts-3-20180920/#propdef-font-variant-position,REC,CSS Fonts Module Level 3
+font-variant-position,https://www.w3.org/TR/2019/WD-css-fonts-4-20191113/#propdef-font-variant-position,WD,CSS Fonts Module Level 4
+font-variation-settings,https://drafts.csswg.org/css-fonts-4/#propdef-font-variation-settings,ED,CSS Fonts Module Level 4
+font-variation-settings,https://drafts.csswg.org/css-fonts/#propdef-font-variation-settings,ED,CSS Fonts Module Level 3
+font-variation-settings,https://www.w3.org/TR/2019/WD-css-fonts-4-20191113/#propdef-font-variation-settings,WD,CSS Fonts Module Level 4
+font-weight,http://www.w3.org/TR/2011/REC-CSS2-20110607/fonts.html#propdef-font-weight,REC,CSS 2.1
+font-weight,https://drafts.csswg.org/css-fonts-4/#propdef-font-weight,ED,CSS Fonts Module Level 4
+font-weight,https://drafts.csswg.org/css-fonts/#propdef-font-weight,ED,CSS Fonts Module Level 3
+font-weight,https://www.w3.org/TR/2018/REC-css-fonts-3-20180920/#propdef-font-weight,REC,CSS Fonts Module Level 3
+font-weight,https://www.w3.org/TR/2019/WD-css-fonts-4-20191113/#propdef-font-weight,WD,CSS Fonts Module Level 4
+footnote-display,http://www.w3.org/TR/2014/WD-css-gcpm-3-20140513/#propdef-footnote-display,WD,CSS Generated Content for Paged Media Module
+footnote-display,https://drafts.csswg.org/css-gcpm/#propdef-footnote-display,ED,CSS Generated Content for Paged Media Module
+footnote-policy,http://www.w3.org/TR/2014/WD-css-gcpm-3-20140513/#propdef-footnote-policy,WD,CSS Generated Content for Paged Media Module
+footnote-policy,https://drafts.csswg.org/css-gcpm/#propdef-footnote-policy,ED,CSS Generated Content for Paged Media Module
+forced-color-adjust,https://drafts.csswg.org/css-color-adjust-1/#propdef-forced-color-adjust,ED,CSS Color Adjustment Module Level 1
+forced-color-adjust,https://www.w3.org/TR/2019/WD-css-color-adjust-1-20190523/#propdef-forced-color-adjust,WD,CSS Color Adjustment Module Level 1
+gap,https://drafts.csswg.org/css-align/#propdef-gap,ED,CSS Box Alignment Module Level 3
+gap,https://www.w3.org/TR/2018/WD-css-align-3-20181206/#propdef-gap,WD,CSS Box Alignment Module Level 3
+glyph-orientation-vertical,https://drafts.csswg.org/css-writing-modes-3/#propdef-glyph-orientation-vertical,ED,CSS Writing Modes Level 3
+glyph-orientation-vertical,https://drafts.csswg.org/css-writing-modes-4/#propdef-glyph-orientation-vertical,ED,CSS Writing Modes Level 4
+glyph-orientation-vertical,https://www.w3.org/TR/2019/CR-css-writing-modes-4-20190730/#propdef-glyph-orientation-vertical,CR,CSS Writing Modes Level 4
+glyph-orientation-vertical,https://www.w3.org/TR/2019/REC-css-writing-modes-3-20191210/#propdef-glyph-orientation-vertical,REC,CSS Writing Modes Level 3
+grid,http://www.w3.org/TR/2015/NOTE-css-template-3-20150326/#grid,NOTE,CSS Template Layout Module
+grid,https://drafts.csswg.org/css-grid/#propdef-grid,ED,CSS Grid Layout Module Level 1
+grid,https://drafts.csswg.org/css-template/#grid,ED,CSS Template Layout Module
+grid,https://www.w3.org/TR/2017/CR-css-grid-1-20171214/#propdef-grid,CR,CSS Grid Layout Module Level 1
+grid-area,https://drafts.csswg.org/css-grid/#propdef-grid-area,ED,CSS Grid Layout Module Level 1
+grid-area,https://www.w3.org/TR/2017/CR-css-grid-1-20171214/#propdef-grid-area,CR,CSS Grid Layout Module Level 1
+grid-auto-columns,https://drafts.csswg.org/css-grid/#propdef-grid-auto-columns,ED,CSS Grid Layout Module Level 1
+grid-auto-columns,https://www.w3.org/TR/2017/CR-css-grid-1-20171214/#propdef-grid-auto-columns,CR,CSS Grid Layout Module Level 1
+grid-auto-flow,https://drafts.csswg.org/css-grid/#propdef-grid-auto-flow,ED,CSS Grid Layout Module Level 1
+grid-auto-flow,https://www.w3.org/TR/2017/CR-css-grid-1-20171214/#propdef-grid-auto-flow,CR,CSS Grid Layout Module Level 1
+grid-auto-rows,https://drafts.csswg.org/css-grid/#propdef-grid-auto-rows,ED,CSS Grid Layout Module Level 1
+grid-auto-rows,https://www.w3.org/TR/2017/CR-css-grid-1-20171214/#propdef-grid-auto-rows,CR,CSS Grid Layout Module Level 1
+grid-column,https://drafts.csswg.org/css-grid/#propdef-grid-column,ED,CSS Grid Layout Module Level 1
+grid-column,https://www.w3.org/TR/2017/CR-css-grid-1-20171214/#propdef-grid-column,CR,CSS Grid Layout Module Level 1
+grid-column-end,https://drafts.csswg.org/css-grid/#propdef-grid-column-end,ED,CSS Grid Layout Module Level 1
+grid-column-end,https://www.w3.org/TR/2017/CR-css-grid-1-20171214/#propdef-grid-column-end,CR,CSS Grid Layout Module Level 1
+grid-column-start,https://drafts.csswg.org/css-grid/#propdef-grid-column-start,ED,CSS Grid Layout Module Level 1
+grid-column-start,https://www.w3.org/TR/2017/CR-css-grid-1-20171214/#propdef-grid-column-start,CR,CSS Grid Layout Module Level 1
+grid-row,https://drafts.csswg.org/css-grid/#propdef-grid-row,ED,CSS Grid Layout Module Level 1
+grid-row,https://www.w3.org/TR/2017/CR-css-grid-1-20171214/#propdef-grid-row,CR,CSS Grid Layout Module Level 1
+grid-row-end,https://drafts.csswg.org/css-grid/#propdef-grid-row-end,ED,CSS Grid Layout Module Level 1
+grid-row-end,https://www.w3.org/TR/2017/CR-css-grid-1-20171214/#propdef-grid-row-end,CR,CSS Grid Layout Module Level 1
+grid-row-start,https://drafts.csswg.org/css-grid/#propdef-grid-row-start,ED,CSS Grid Layout Module Level 1
+grid-row-start,https://www.w3.org/TR/2017/CR-css-grid-1-20171214/#propdef-grid-row-start,CR,CSS Grid Layout Module Level 1
+grid-template,http://www.w3.org/TR/2015/NOTE-css-template-3-20150326/#grid-template0,NOTE,CSS Template Layout Module
+grid-template,https://drafts.csswg.org/css-grid/#propdef-grid-template,ED,CSS Grid Layout Module Level 1
+grid-template,https://drafts.csswg.org/css-template/#grid-template0,ED,CSS Template Layout Module
+grid-template,https://www.w3.org/TR/2017/CR-css-grid-1-20171214/#propdef-grid-template,CR,CSS Grid Layout Module Level 1
+grid-template-areas,http://www.w3.org/TR/2015/NOTE-css-template-3-20150326/#grid-template-areas,NOTE,CSS Template Layout Module
+grid-template-areas,https://drafts.csswg.org/css-grid/#propdef-grid-template-areas,ED,CSS Grid Layout Module Level 1
+grid-template-areas,https://drafts.csswg.org/css-template/#grid-template-areas,ED,CSS Template Layout Module
+grid-template-areas,https://www.w3.org/TR/2017/CR-css-grid-1-20171214/#propdef-grid-template-areas,CR,CSS Grid Layout Module Level 1
+grid-template-columns,http://www.w3.org/TR/2015/NOTE-css-template-3-20150326/#grid-template-columns,NOTE,CSS Template Layout Module
+grid-template-columns,https://drafts.csswg.org/css-grid/#propdef-grid-template-columns,ED,CSS Grid Layout Module Level 1
+grid-template-columns,https://drafts.csswg.org/css-template/#grid-template-columns,ED,CSS Template Layout Module
+grid-template-columns,https://www.w3.org/TR/2017/CR-css-grid-1-20171214/#propdef-grid-template-columns,CR,CSS Grid Layout Module Level 1
+grid-template-rows,http://www.w3.org/TR/2015/NOTE-css-template-3-20150326/#grid-template-rows,NOTE,CSS Template Layout Module
+grid-template-rows,https://drafts.csswg.org/css-grid/#propdef-grid-template-rows,ED,CSS Grid Layout Module Level 1
+grid-template-rows,https://drafts.csswg.org/css-template/#grid-template-rows,ED,CSS Template Layout Module
+grid-template-rows,https://www.w3.org/TR/2017/CR-css-grid-1-20171214/#propdef-grid-template-rows,CR,CSS Grid Layout Module Level 1
+hanging-punctuation,https://drafts.csswg.org/css-text-3/#propdef-hanging-punctuation,ED,CSS Text Module Level 3
+hanging-punctuation,https://www.w3.org/TR/2019/WD-css-text-3-20191113/#propdef-hanging-punctuation,WD,CSS Text Module Level 3
+height,http://www.w3.org/TR/2011/REC-CSS2-20110607/visudet.html#propdef-height,REC,CSS 2.1
+height,https://drafts.csswg.org/css-sizing-3/#propdef-height,ED,CSS Intrinsic & Extrinsic Sizing Module Level 3
+height,https://www.w3.org/TR/2019/WD-css-sizing-3-20190522/#propdef-height,WD,CSS Intrinsic & Extrinsic Sizing Module Level 3
+hyphenate-character,https://drafts.csswg.org/css-text-4/#propdef-hyphenate-character,ED,CSS Text Module Level 4
+hyphenate-character,https://www.w3.org/TR/2019/WD-css-text-4-20191113/#propdef-hyphenate-character,WD,CSS Text Module Level 4
+hyphenate-limit-chars,https://drafts.csswg.org/css-text-4/#propdef-hyphenate-limit-chars,ED,CSS Text Module Level 4
+hyphenate-limit-chars,https://www.w3.org/TR/2019/WD-css-text-4-20191113/#propdef-hyphenate-limit-chars,WD,CSS Text Module Level 4
+hyphenate-limit-last,https://drafts.csswg.org/css-text-4/#propdef-hyphenate-limit-last,ED,CSS Text Module Level 4
+hyphenate-limit-last,https://www.w3.org/TR/2019/WD-css-text-4-20191113/#propdef-hyphenate-limit-last,WD,CSS Text Module Level 4
+hyphenate-limit-lines,https://drafts.csswg.org/css-text-4/#propdef-hyphenate-limit-lines,ED,CSS Text Module Level 4
+hyphenate-limit-lines,https://www.w3.org/TR/2019/WD-css-text-4-20191113/#propdef-hyphenate-limit-lines,WD,CSS Text Module Level 4
+hyphenate-limit-zone,https://drafts.csswg.org/css-text-4/#propdef-hyphenate-limit-zone,ED,CSS Text Module Level 4
+hyphenate-limit-zone,https://www.w3.org/TR/2019/WD-css-text-4-20191113/#propdef-hyphenate-limit-zone,WD,CSS Text Module Level 4
+hyphens,https://drafts.csswg.org/css-text-3/#propdef-hyphens,ED,CSS Text Module Level 3
+hyphens,https://www.w3.org/TR/2019/WD-css-text-3-20191113/#propdef-hyphens,WD,CSS Text Module Level 3
+image-orientation,https://drafts.csswg.org/css-images-3/#propdef-image-orientation,ED,CSS Images Module Level 3
+image-orientation,https://www.w3.org/TR/2019/CR-css-images-3-20191010/#propdef-image-orientation,CR,CSS Images Module Level 3
+image-rendering,https://drafts.csswg.org/css-images-3/#propdef-image-rendering,ED,CSS Images Module Level 3
+image-rendering,https://www.w3.org/TR/2019/CR-css-images-3-20191010/#propdef-image-rendering,CR,CSS Images Module Level 3
+image-resolution,https://drafts.csswg.org/css-images-4/#propdef-image-resolution,ED,CSS Image Values and Replaced Content Module Level 4
+image-resolution,https://www.w3.org/TR/2017/WD-css-images-4-20170413/#propdef-image-resolution,WD,CSS Image Values and Replaced Content Module Level 4
+initial-letters,https://drafts.csswg.org/css-inline-3/#propdef-initial-letters,ED,CSS Inline Layout Module Level 3
+initial-letters,https://www.w3.org/TR/2018/WD-css-inline-3-20180808/#propdef-initial-letters,WD,CSS Inline Layout Module Level 3
+initial-letters-align,https://drafts.csswg.org/css-inline-3/#propdef-initial-letters-align,ED,CSS Inline Layout Module Level 3
+initial-letters-align,https://www.w3.org/TR/2018/WD-css-inline-3-20180808/#propdef-initial-letters-align,WD,CSS Inline Layout Module Level 3
+initial-letters-wrap,https://drafts.csswg.org/css-inline-3/#propdef-initial-letters-wrap,ED,CSS Inline Layout Module Level 3
+initial-letters-wrap,https://www.w3.org/TR/2018/WD-css-inline-3-20180808/#propdef-initial-letters-wrap,WD,CSS Inline Layout Module Level 3
+inline-size,https://drafts.csswg.org/css-logical-1/#propdef-inline-size,ED,CSS Logical Properties and Values Level 1
+inline-size,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-inline-size,WD,CSS Logical Properties and Values Level 1
+inline-sizing,https://drafts.csswg.org/css-inline-3/#propdef-inline-sizing,ED,CSS Inline Layout Module Level 3
+inline-sizing,https://www.w3.org/TR/2018/WD-css-inline-3-20180808/#propdef-inline-sizing,WD,CSS Inline Layout Module Level 3
+inset,https://drafts.csswg.org/css-logical-1/#propdef-inset,ED,CSS Logical Properties and Values Level 1
+inset,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-inset,WD,CSS Logical Properties and Values Level 1
+inset-after,https://drafts.csswg.org/css-position/#propdef-inset-after,ED,CSS Positioned Layout Module Level 3
+inset-before,https://drafts.csswg.org/css-position/#propdef-inset-before,ED,CSS Positioned Layout Module Level 3
+inset-block,https://drafts.csswg.org/css-logical-1/#propdef-inset-block,ED,CSS Logical Properties and Values Level 1
+inset-block,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-inset-block,WD,CSS Logical Properties and Values Level 1
+inset-block-end,https://drafts.csswg.org/css-logical-1/#propdef-inset-block-end,ED,CSS Logical Properties and Values Level 1
+inset-block-end,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-inset-block-end,WD,CSS Logical Properties and Values Level 1
+inset-block-start,https://drafts.csswg.org/css-logical-1/#propdef-inset-block-start,ED,CSS Logical Properties and Values Level 1
+inset-block-start,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-inset-block-start,WD,CSS Logical Properties and Values Level 1
+inset-end,https://drafts.csswg.org/css-position/#propdef-inset-end,ED,CSS Positioned Layout Module Level 3
+inset-inline,https://drafts.csswg.org/css-logical-1/#propdef-inset-inline,ED,CSS Logical Properties and Values Level 1
+inset-inline,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-inset-inline,WD,CSS Logical Properties and Values Level 1
+inset-inline-end,https://drafts.csswg.org/css-logical-1/#propdef-inset-inline-end,ED,CSS Logical Properties and Values Level 1
+inset-inline-end,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-inset-inline-end,WD,CSS Logical Properties and Values Level 1
+inset-inline-start,https://drafts.csswg.org/css-logical-1/#propdef-inset-inline-start,ED,CSS Logical Properties and Values Level 1
+inset-inline-start,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-inset-inline-start,WD,CSS Logical Properties and Values Level 1
+inset-start,https://drafts.csswg.org/css-position/#propdef-inset-start,ED,CSS Positioned Layout Module Level 3
+isolation,http://www.w3.org/TR/2015/CR-compositing-1-20150113/#propdef-isolation,CR,Compositing and Blending Level 1
+isolation,https://drafts.fxtf.org/compositing-1/#propdef-isolation,ED,Compositing and Blending Level 1
+justify-content,https://drafts.csswg.org/css-align/#propdef-justify-content,ED,CSS Box Alignment Module Level 3
+justify-content,https://drafts.csswg.org/css-flexbox-1/#propdef-justify-content,ED,CSS Flexible Box Layout Module Level 1
+justify-content,https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#propdef-justify-content,CR,CSS Flexible Box Layout Module Level 1
+justify-content,https://www.w3.org/TR/2018/WD-css-align-3-20181206/#propdef-justify-content,WD,CSS Box Alignment Module Level 3
+justify-items,https://drafts.csswg.org/css-align/#propdef-justify-items,ED,CSS Box Alignment Module Level 3
+justify-items,https://www.w3.org/TR/2018/WD-css-align-3-20181206/#propdef-justify-items,WD,CSS Box Alignment Module Level 3
+justify-self,https://drafts.csswg.org/css-align/#propdef-justify-self,ED,CSS Box Alignment Module Level 3
+justify-self,https://www.w3.org/TR/2018/WD-css-align-3-20181206/#propdef-justify-self,WD,CSS Box Alignment Module Level 3
+leading-trim,https://drafts.csswg.org/css-inline-3/#propdef-leading-trim,ED,CSS Inline Layout Module Level 3
+leading-trim-over,https://drafts.csswg.org/css-inline-3/#propdef-leading-trim-over,ED,CSS Inline Layout Module Level 3
+leading-trim-under,https://drafts.csswg.org/css-inline-3/#propdef-leading-trim-under,ED,CSS Inline Layout Module Level 3
+left,http://www.w3.org/TR/2011/REC-CSS2-20110607/visuren.html#propdef-left,REC,CSS 2.1
+left,http://www.w3.org/TR/2016/WD-css-position-3-20160517/#propdef-left,WD,CSS Positioned Layout Module Level 3
+left,https://drafts.csswg.org/css-position/#propdef-left,ED,CSS Positioned Layout Module Level 3
+letter-spacing,http://www.w3.org/TR/2011/REC-CSS2-20110607/text.html#propdef-letter-spacing,REC,CSS 2.1
+letter-spacing,https://drafts.csswg.org/css-text-3/#propdef-letter-spacing,ED,CSS Text Module Level 3
+letter-spacing,https://www.w3.org/TR/2019/WD-css-text-3-20191113/#propdef-letter-spacing,WD,CSS Text Module Level 3
+lighting-color,https://drafts.fxtf.org/filter-effects-1/#propdef-lighting-color,ED,Filter Effects Module Level 1
+lighting-color,https://www.w3.org/TR/2018/WD-filter-effects-1-20181218/#propdef-lighting-color,WD,Filter Effects Module Level 1
+line-break,https://drafts.csswg.org/css-text-3/#propdef-line-break,ED,CSS Text Module Level 3
+line-break,https://www.w3.org/TR/2019/WD-css-text-3-20191113/#propdef-line-break,WD,CSS Text Module Level 3
+line-clamp,https://drafts.csswg.org/css-overflow-3/#propdef-line-clamp,ED,CSS Overflow Module Level 3
+line-clamp,https://www.w3.org/TR/2018/WD-css-overflow-3-20180731/#propdef-line-clamp,WD,CSS Overflow Module Level 3
+line-grid,http://www.w3.org/TR/2014/WD-css-line-grid-1-20140916/#propdef-line-grid,WD,CSS Line Grid Module Level 1
+line-grid,https://drafts.csswg.org/css-line-grid/#propdef-line-grid,ED,CSS Line Grid Module Level 1
+line-height,http://www.w3.org/TR/2011/REC-CSS2-20110607/visudet.html#propdef-line-height,REC,CSS 2.1
+line-height,https://drafts.csswg.org/css-inline-3/#propdef-line-height,ED,CSS Inline Layout Module Level 3
+line-height-step,https://drafts.csswg.org/css-rhythm/#propdef-line-height-step,ED,CSS Rhythmic Sizing
+line-height-step,https://www.w3.org/TR/2017/WD-css-rhythm-1-20170302/#propdef-line-height-step,FPWD,CSS Rhythmic Sizing
+line-padding,https://drafts.csswg.org/css-text-4/#propdef-line-padding,ED,CSS Text Module Level 4
+line-padding,https://www.w3.org/TR/2019/WD-css-text-4-20191113/#propdef-line-padding,WD,CSS Text Module Level 4
+line-sizing,https://drafts.csswg.org/css-inline-3/#propdef-line-sizing,ED,CSS Inline Layout Module Level 3
+line-snap,http://www.w3.org/TR/2014/WD-css-line-grid-1-20140916/#propdef-line-snap,WD,CSS Line Grid Module Level 1
+line-snap,https://drafts.csswg.org/css-line-grid/#propdef-line-snap,ED,CSS Line Grid Module Level 1
+list-style,http://www.w3.org/TR/2011/REC-CSS2-20110607/generate.html#propdef-list-style,REC,CSS 2.1
+list-style,https://drafts.csswg.org/css-lists-3/#propdef-list-style,ED,CSS Lists Module Level 3
+list-style,https://www.w3.org/TR/2019/WD-css-lists-3-20190817/#propdef-list-style,WD,CSS Lists Module Level 3
+list-style-image,http://www.w3.org/TR/2011/REC-CSS2-20110607/generate.html#propdef-list-style-image,REC,CSS 2.1
+list-style-image,https://drafts.csswg.org/css-lists-3/#propdef-list-style-image,ED,CSS Lists Module Level 3
+list-style-image,https://www.w3.org/TR/2019/WD-css-lists-3-20190817/#propdef-list-style-image,WD,CSS Lists Module Level 3
+list-style-position,http://www.w3.org/TR/2011/REC-CSS2-20110607/generate.html#propdef-list-style-position,REC,CSS 2.1
+list-style-position,https://drafts.csswg.org/css-lists-3/#propdef-list-style-position,ED,CSS Lists Module Level 3
+list-style-position,https://www.w3.org/TR/2019/WD-css-lists-3-20190817/#propdef-list-style-position,WD,CSS Lists Module Level 3
+list-style-type,http://www.w3.org/TR/2011/REC-CSS2-20110607/generate.html#propdef-list-style-type,REC,CSS 2.1
+list-style-type,https://drafts.csswg.org/css-lists-3/#propdef-list-style-type,ED,CSS Lists Module Level 3
+list-style-type,https://www.w3.org/TR/2019/WD-css-lists-3-20190817/#propdef-list-style-type,WD,CSS Lists Module Level 3
+margin,http://www.w3.org/TR/2011/REC-CSS2-20110607/box.html#propdef-margin,REC,CSS 2.1
+margin,https://drafts.csswg.org/css-box-3/#propdef-margin,ED,CSS Box Model Module Level 3
+margin,https://www.w3.org/TR/2018/WD-css-box-3-20181218/#propdef-margin,WD,CSS Box Model Module Level 3
+margin-block,https://drafts.csswg.org/css-logical-1/#propdef-margin-block,ED,CSS Logical Properties and Values Level 1
+margin-block,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-margin-block,WD,CSS Logical Properties and Values Level 1
+margin-block-end,https://drafts.csswg.org/css-logical-1/#propdef-margin-block-end,ED,CSS Logical Properties and Values Level 1
+margin-block-end,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-margin-block-end,WD,CSS Logical Properties and Values Level 1
+margin-block-start,https://drafts.csswg.org/css-logical-1/#propdef-margin-block-start,ED,CSS Logical Properties and Values Level 1
+margin-block-start,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-margin-block-start,WD,CSS Logical Properties and Values Level 1
+margin-bottom,http://www.w3.org/TR/2011/REC-CSS2-20110607/box.html#propdef-margin-bottom,REC,CSS 2.1
+margin-bottom,https://drafts.csswg.org/css-box-3/#propdef-margin-bottom,ED,CSS Box Model Module Level 3
+margin-bottom,https://www.w3.org/TR/2018/WD-css-box-3-20181218/#propdef-margin-bottom,WD,CSS Box Model Module Level 3
+margin-break,https://drafts.csswg.org/css-break-4/#propdef-margin-break,ED,CSS Fragmentation Module Level 4
+margin-break,https://www.w3.org/TR/2018/WD-css-break-4-20181218/#propdef-margin-break,FPWD,CSS Fragmentation Module Level 4
+margin-inline,https://drafts.csswg.org/css-logical-1/#propdef-margin-inline,ED,CSS Logical Properties and Values Level 1
+margin-inline,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-margin-inline,WD,CSS Logical Properties and Values Level 1
+margin-inline-end,https://drafts.csswg.org/css-logical-1/#propdef-margin-inline-end,ED,CSS Logical Properties and Values Level 1
+margin-inline-end,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-margin-inline-end,WD,CSS Logical Properties and Values Level 1
+margin-inline-start,https://drafts.csswg.org/css-logical-1/#propdef-margin-inline-start,ED,CSS Logical Properties and Values Level 1
+margin-inline-start,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-margin-inline-start,WD,CSS Logical Properties and Values Level 1
+margin-left,http://www.w3.org/TR/2011/REC-CSS2-20110607/box.html#propdef-margin-left,REC,CSS 2.1
+margin-left,https://drafts.csswg.org/css-box-3/#propdef-margin-left,ED,CSS Box Model Module Level 3
+margin-left,https://www.w3.org/TR/2018/WD-css-box-3-20181218/#propdef-margin-left,WD,CSS Box Model Module Level 3
+margin-right,http://www.w3.org/TR/2011/REC-CSS2-20110607/box.html#propdef-margin-right,REC,CSS 2.1
+margin-right,https://drafts.csswg.org/css-box-3/#propdef-margin-right,ED,CSS Box Model Module Level 3
+margin-right,https://www.w3.org/TR/2018/WD-css-box-3-20181218/#propdef-margin-right,WD,CSS Box Model Module Level 3
+margin-top,http://www.w3.org/TR/2011/REC-CSS2-20110607/box.html#propdef-margin-top,REC,CSS 2.1
+margin-top,https://drafts.csswg.org/css-box-3/#propdef-margin-top,ED,CSS Box Model Module Level 3
+margin-top,https://www.w3.org/TR/2018/WD-css-box-3-20181218/#propdef-margin-top,WD,CSS Box Model Module Level 3
+margin-trim,https://drafts.csswg.org/css-box-3/#propdef-margin-trim,ED,CSS Box Model Module Level 3
+margin-trim,https://www.w3.org/TR/2018/WD-css-box-3-20181218/#propdef-margin-trim,WD,CSS Box Model Module Level 3
+marker,http://www.w3.org/TR/2015/WD-svg-markers-20150409/#MarkerProperty,FPWD,SVG Markers
+marker,https://svgwg.org/specs/markers/#MarkerProperty,ED,SVG Markers
+marker-end,http://www.w3.org/TR/2015/WD-svg-markers-20150409/#MarkerEndProperty,FPWD,SVG Markers
+marker-end,https://svgwg.org/specs/markers/#MarkerEndProperty,ED,SVG Markers
+marker-knockout-left,http://www.w3.org/TR/2015/WD-svg-markers-20150409/#MarkerKnockoutLeftProperty,FPWD,SVG Markers
+marker-knockout-left,https://svgwg.org/specs/markers/#MarkerKnockoutLeftProperty,ED,SVG Markers
+marker-knockout-right,http://www.w3.org/TR/2015/WD-svg-markers-20150409/#MarkerKnockoutRightProperty,FPWD,SVG Markers
+marker-knockout-right,https://svgwg.org/specs/markers/#MarkerKnockoutRightProperty,ED,SVG Markers
+marker-mid,http://www.w3.org/TR/2015/WD-svg-markers-20150409/#MarkerMidProperty,FPWD,SVG Markers
+marker-mid,https://svgwg.org/specs/markers/#MarkerMidProperty,ED,SVG Markers
+marker-pattern,http://www.w3.org/TR/2015/WD-svg-markers-20150409/#MarkerPatternProperty,FPWD,SVG Markers
+marker-pattern,https://svgwg.org/specs/markers/#MarkerPatternProperty,ED,SVG Markers
+marker-segment,http://www.w3.org/TR/2015/WD-svg-markers-20150409/#MarkerSegmentProperty,FPWD,SVG Markers
+marker-segment,https://svgwg.org/specs/markers/#MarkerSegmentProperty,ED,SVG Markers
+marker-side,https://drafts.csswg.org/css-lists-3/#propdef-marker-side,ED,CSS Lists Module Level 3
+marker-side,https://www.w3.org/TR/2019/WD-css-lists-3-20190817/#propdef-marker-side,WD,CSS Lists Module Level 3
+marker-start,http://www.w3.org/TR/2015/WD-svg-markers-20150409/#MarkerStartProperty,FPWD,SVG Markers
+marker-start,https://svgwg.org/specs/markers/#MarkerStartProperty,ED,SVG Markers
+mask,http://www.w3.org/TR/2014/CR-css-masking-1-20140826/#propdef-mask,CR,CSS Masking Module Level 1
+mask,https://drafts.fxtf.org/css-masking-1/#propdef-mask,ED,CSS Masking Module Level 1
+mask-border,http://www.w3.org/TR/2014/CR-css-masking-1-20140826/#propdef-mask-border,CR,CSS Masking Module Level 1
+mask-border,https://drafts.fxtf.org/css-masking-1/#propdef-mask-border,ED,CSS Masking Module Level 1
+mask-border-mode,http://www.w3.org/TR/2014/CR-css-masking-1-20140826/#propdef-mask-border-mode,CR,CSS Masking Module Level 1
+mask-border-mode,https://drafts.fxtf.org/css-masking-1/#propdef-mask-border-mode,ED,CSS Masking Module Level 1
+mask-border-outset,http://www.w3.org/TR/2014/CR-css-masking-1-20140826/#propdef-mask-border-outset,CR,CSS Masking Module Level 1
+mask-border-outset,https://drafts.fxtf.org/css-masking-1/#propdef-mask-border-outset,ED,CSS Masking Module Level 1
+mask-border-repeat,http://www.w3.org/TR/2014/CR-css-masking-1-20140826/#propdef-mask-border-repeat,CR,CSS Masking Module Level 1
+mask-border-repeat,https://drafts.fxtf.org/css-masking-1/#propdef-mask-border-repeat,ED,CSS Masking Module Level 1
+mask-border-slice,http://www.w3.org/TR/2014/CR-css-masking-1-20140826/#propdef-mask-border-slice,CR,CSS Masking Module Level 1
+mask-border-slice,https://drafts.fxtf.org/css-masking-1/#propdef-mask-border-slice,ED,CSS Masking Module Level 1
+mask-border-source,http://www.w3.org/TR/2014/CR-css-masking-1-20140826/#propdef-mask-border-source,CR,CSS Masking Module Level 1
+mask-border-source,https://drafts.fxtf.org/css-masking-1/#propdef-mask-border-source,ED,CSS Masking Module Level 1
+mask-border-width,http://www.w3.org/TR/2014/CR-css-masking-1-20140826/#propdef-mask-border-width,CR,CSS Masking Module Level 1
+mask-border-width,https://drafts.fxtf.org/css-masking-1/#propdef-mask-border-width,ED,CSS Masking Module Level 1
+mask-clip,http://www.w3.org/TR/2014/CR-css-masking-1-20140826/#propdef-mask-clip,CR,CSS Masking Module Level 1
+mask-clip,https://drafts.fxtf.org/css-masking-1/#propdef-mask-clip,ED,CSS Masking Module Level 1
+mask-composite,http://www.w3.org/TR/2014/CR-css-masking-1-20140826/#propdef-mask-composite,CR,CSS Masking Module Level 1
+mask-composite,https://drafts.fxtf.org/css-masking-1/#propdef-mask-composite,ED,CSS Masking Module Level 1
+mask-image,http://www.w3.org/TR/2014/CR-css-masking-1-20140826/#propdef-mask-image,CR,CSS Masking Module Level 1
+mask-image,https://drafts.fxtf.org/css-masking-1/#propdef-mask-image,ED,CSS Masking Module Level 1
+mask-mode,http://www.w3.org/TR/2014/CR-css-masking-1-20140826/#propdef-mask-mode,CR,CSS Masking Module Level 1
+mask-mode,https://drafts.fxtf.org/css-masking-1/#propdef-mask-mode,ED,CSS Masking Module Level 1
+mask-origin,http://www.w3.org/TR/2014/CR-css-masking-1-20140826/#propdef-mask-origin,CR,CSS Masking Module Level 1
+mask-origin,https://drafts.fxtf.org/css-masking-1/#propdef-mask-origin,ED,CSS Masking Module Level 1
+mask-position,http://www.w3.org/TR/2014/CR-css-masking-1-20140826/#propdef-mask-position,CR,CSS Masking Module Level 1
+mask-position,https://drafts.fxtf.org/css-masking-1/#propdef-mask-position,ED,CSS Masking Module Level 1
+mask-repeat,http://www.w3.org/TR/2014/CR-css-masking-1-20140826/#propdef-mask-repeat,CR,CSS Masking Module Level 1
+mask-repeat,https://drafts.fxtf.org/css-masking-1/#propdef-mask-repeat,ED,CSS Masking Module Level 1
+mask-size,http://www.w3.org/TR/2014/CR-css-masking-1-20140826/#propdef-mask-size,CR,CSS Masking Module Level 1
+mask-size,https://drafts.fxtf.org/css-masking-1/#propdef-mask-size,ED,CSS Masking Module Level 1
+mask-type,http://www.w3.org/TR/2014/CR-css-masking-1-20140826/#propdef-mask-type,CR,CSS Masking Module Level 1
+mask-type,https://drafts.fxtf.org/css-masking-1/#propdef-mask-type,ED,CSS Masking Module Level 1
+max-block-size,https://drafts.csswg.org/css-logical-1/#propdef-max-block-size,ED,CSS Logical Properties and Values Level 1
+max-block-size,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-max-block-size,WD,CSS Logical Properties and Values Level 1
+max-height,http://www.w3.org/TR/2011/REC-CSS2-20110607/visudet.html#propdef-max-height,REC,CSS 2.1
+max-height,https://drafts.csswg.org/css-sizing-3/#propdef-max-height,ED,CSS Intrinsic & Extrinsic Sizing Module Level 3
+max-height,https://www.w3.org/TR/2019/WD-css-sizing-3-20190522/#propdef-max-height,WD,CSS Intrinsic & Extrinsic Sizing Module Level 3
+max-inline-size,https://drafts.csswg.org/css-logical-1/#propdef-max-inline-size,ED,CSS Logical Properties and Values Level 1
+max-inline-size,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-max-inline-size,WD,CSS Logical Properties and Values Level 1
+max-lines,https://drafts.csswg.org/css-overflow-3/#propdef-max-lines,ED,CSS Overflow Module Level 3
+max-lines,https://drafts.csswg.org/css-overflow-4/#propdef-max-lines,ED,CSS Overflow Module Level 4
+max-lines,https://www.w3.org/TR/2017/WD-css-overflow-4-20170613/#propdef-max-lines,FPWD,CSS Overflow Module Level 4
+max-lines,https://www.w3.org/TR/2018/WD-css-overflow-3-20180731/#propdef-max-lines,WD,CSS Overflow Module Level 3
+max-width,http://www.w3.org/TR/2011/REC-CSS2-20110607/visudet.html#propdef-max-width,REC,CSS 2.1
+max-width,https://drafts.csswg.org/css-sizing-3/#propdef-max-width,ED,CSS Intrinsic & Extrinsic Sizing Module Level 3
+max-width,https://www.w3.org/TR/2019/WD-css-sizing-3-20190522/#propdef-max-width,WD,CSS Intrinsic & Extrinsic Sizing Module Level 3
+min-block-size,https://drafts.csswg.org/css-logical-1/#propdef-min-block-size,ED,CSS Logical Properties and Values Level 1
+min-block-size,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-min-block-size,WD,CSS Logical Properties and Values Level 1
+min-height,http://www.w3.org/TR/2011/REC-CSS2-20110607/visudet.html#propdef-min-height,REC,CSS 2.1
+min-height,https://drafts.csswg.org/css-sizing-3/#propdef-min-height,ED,CSS Intrinsic & Extrinsic Sizing Module Level 3
+min-height,https://www.w3.org/TR/2019/WD-css-sizing-3-20190522/#propdef-min-height,WD,CSS Intrinsic & Extrinsic Sizing Module Level 3
+min-inline-size,https://drafts.csswg.org/css-logical-1/#propdef-min-inline-size,ED,CSS Logical Properties and Values Level 1
+min-inline-size,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-min-inline-size,WD,CSS Logical Properties and Values Level 1
+min-width,http://www.w3.org/TR/2011/REC-CSS2-20110607/visudet.html#propdef-min-width,REC,CSS 2.1
+min-width,https://drafts.csswg.org/css-sizing-3/#propdef-min-width,ED,CSS Intrinsic & Extrinsic Sizing Module Level 3
+min-width,https://www.w3.org/TR/2019/WD-css-sizing-3-20190522/#propdef-min-width,WD,CSS Intrinsic & Extrinsic Sizing Module Level 3
+mix-blend-mode,http://www.w3.org/TR/2015/CR-compositing-1-20150113/#propdef-mix-blend-mode,CR,Compositing and Blending Level 1
+mix-blend-mode,https://drafts.fxtf.org/compositing-1/#propdef-mix-blend-mode,ED,Compositing and Blending Level 1
+nav-down,https://drafts.csswg.org/css-ui-4/#propdef-nav-down,ED,CSS Basic User Interface Module Level 4
+nav-down,https://drafts.csswg.org/css-ui/#propdef-nav-down,ED,CSS Basic User Interface Module Level 3 (CSS3 UI)
+nav-down,https://www.w3.org/TR/2017/WD-css-ui-4-20171222/#propdef-nav-down,WD,CSS Basic User Interface Module Level 4
+nav-left,https://drafts.csswg.org/css-ui-4/#propdef-nav-left,ED,CSS Basic User Interface Module Level 4
+nav-left,https://drafts.csswg.org/css-ui/#propdef-nav-left,ED,CSS Basic User Interface Module Level 3 (CSS3 UI)
+nav-left,https://www.w3.org/TR/2017/WD-css-ui-4-20171222/#propdef-nav-left,WD,CSS Basic User Interface Module Level 4
+nav-right,https://drafts.csswg.org/css-ui-4/#propdef-nav-right,ED,CSS Basic User Interface Module Level 4
+nav-right,https://drafts.csswg.org/css-ui/#propdef-nav-right,ED,CSS Basic User Interface Module Level 3 (CSS3 UI)
+nav-right,https://www.w3.org/TR/2017/WD-css-ui-4-20171222/#propdef-nav-right,WD,CSS Basic User Interface Module Level 4
+nav-up,https://drafts.csswg.org/css-ui-4/#propdef-nav-up,ED,CSS Basic User Interface Module Level 4
+nav-up,https://drafts.csswg.org/css-ui/#propdef-nav-up,ED,CSS Basic User Interface Module Level 3 (CSS3 UI)
+nav-up,https://www.w3.org/TR/2017/WD-css-ui-4-20171222/#propdef-nav-up,WD,CSS Basic User Interface Module Level 4
+object-fit,https://drafts.csswg.org/css-images-3/#propdef-object-fit,ED,CSS Images Module Level 3
+object-fit,https://drafts.csswg.org/css-images-4/#propdef-object-fit,ED,CSS Image Values and Replaced Content Module Level 4
+object-fit,https://www.w3.org/TR/2019/CR-css-images-3-20191010/#propdef-object-fit,CR,CSS Images Module Level 3
+object-position,https://drafts.csswg.org/css-images-3/#propdef-object-position,ED,CSS Images Module Level 3
+object-position,https://www.w3.org/TR/2019/CR-css-images-3-20191010/#propdef-object-position,CR,CSS Images Module Level 3
+offset,https://drafts.fxtf.org/motion-1/#propdef-offset,ED,Motion Path Module Level 1
+offset,https://www.w3.org/TR/2018/WD-motion-1-20181218/#propdef-offset,WD,Motion Path Module Level 1
+offset-after,http://www.w3.org/TR/2016/WD-css-position-3-20160517/#propdef-offset-after,WD,CSS Positioned Layout Module Level 3
+offset-anchor,https://drafts.fxtf.org/motion-1/#propdef-offset-anchor,ED,Motion Path Module Level 1
+offset-anchor,https://www.w3.org/TR/2018/WD-motion-1-20181218/#propdef-offset-anchor,WD,Motion Path Module Level 1
+offset-before,http://www.w3.org/TR/2016/WD-css-position-3-20160517/#propdef-offset-before,WD,CSS Positioned Layout Module Level 3
+offset-distance,https://drafts.fxtf.org/motion-1/#propdef-offset-distance,ED,Motion Path Module Level 1
+offset-distance,https://www.w3.org/TR/2018/WD-motion-1-20181218/#propdef-offset-distance,WD,Motion Path Module Level 1
+offset-end,http://www.w3.org/TR/2016/WD-css-position-3-20160517/#propdef-offset-end,WD,CSS Positioned Layout Module Level 3
+offset-path,https://drafts.fxtf.org/motion-1/#propdef-offset-path,ED,Motion Path Module Level 1
+offset-path,https://www.w3.org/TR/2018/WD-motion-1-20181218/#propdef-offset-path,WD,Motion Path Module Level 1
+offset-position,https://drafts.fxtf.org/motion-1/#propdef-offset-position,ED,Motion Path Module Level 1
+offset-position,https://www.w3.org/TR/2018/WD-motion-1-20181218/#propdef-offset-position,WD,Motion Path Module Level 1
+offset-rotate,https://drafts.fxtf.org/motion-1/#propdef-offset-rotate,ED,Motion Path Module Level 1
+offset-rotate,https://www.w3.org/TR/2018/WD-motion-1-20181218/#propdef-offset-rotate,WD,Motion Path Module Level 1
+offset-start,http://www.w3.org/TR/2016/WD-css-position-3-20160517/#propdef-offset-start,WD,CSS Positioned Layout Module Level 3
+opacity,https://drafts.csswg.org/css-color-3/#opacity,ED,CSS Color Module Level 3
+opacity,https://drafts.csswg.org/css-color/#propdef-opacity,ED,CSS Color Module Level 4
+opacity,https://www.w3.org/TR/2018/REC-css-color-3-20180619/#opacity,REC,CSS Color Module Level 3
+opacity,https://www.w3.org/TR/2019/WD-css-color-4-20191105/#propdef-opacity,WD,CSS Color Module Level 4
+order,https://drafts.csswg.org/css-flexbox-1/#propdef-order,ED,CSS Flexible Box Layout Module Level 1
+order,https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#propdef-order,CR,CSS Flexible Box Layout Module Level 1
+orphans,http://www.w3.org/TR/2011/REC-CSS2-20110607/page.html#propdef-orphans,REC,CSS 2.1
+orphans,https://drafts.csswg.org/css-break-4/#propdef-orphans,ED,CSS Fragmentation Module Level 4
+orphans,https://drafts.csswg.org/css-break/#propdef-orphans,ED,CSS Fragmentation Module Level 3
+orphans,https://www.w3.org/TR/2018/CR-css-break-3-20181204/#propdef-orphans,CR,CSS Fragmentation Module Level 3
+orphans,https://www.w3.org/TR/2018/WD-css-break-4-20181218/#propdef-orphans,FPWD,CSS Fragmentation Module Level 4
+outline,http://www.w3.org/TR/2011/REC-CSS2-20110607/ui.html#propdef-outline,REC,CSS 2.1
+outline,https://drafts.csswg.org/css-ui-4/#propdef-outline,ED,CSS Basic User Interface Module Level 4
+outline,https://drafts.csswg.org/css-ui/#propdef-outline,ED,CSS Basic User Interface Module Level 3 (CSS3 UI)
+outline,https://www.w3.org/TR/2017/WD-css-ui-4-20171222/#propdef-outline,WD,CSS Basic User Interface Module Level 4
+outline,https://www.w3.org/TR/2018/REC-css-ui-3-20180621/#propdef-outline,REC,CSS Basic User Interface Module Level 3 (CSS3 UI)
+outline-color,http://www.w3.org/TR/2011/REC-CSS2-20110607/ui.html#propdef-outline-color,REC,CSS 2.1
+outline-color,https://drafts.csswg.org/css-ui-4/#propdef-outline-color,ED,CSS Basic User Interface Module Level 4
+outline-color,https://drafts.csswg.org/css-ui/#propdef-outline-color,ED,CSS Basic User Interface Module Level 3 (CSS3 UI)
+outline-color,https://www.w3.org/TR/2017/WD-css-ui-4-20171222/#propdef-outline-color,WD,CSS Basic User Interface Module Level 4
+outline-color,https://www.w3.org/TR/2018/REC-css-ui-3-20180621/#propdef-outline-color,REC,CSS Basic User Interface Module Level 3 (CSS3 UI)
+outline-offset,https://drafts.csswg.org/css-ui-4/#propdef-outline-offset,ED,CSS Basic User Interface Module Level 4
+outline-offset,https://drafts.csswg.org/css-ui/#propdef-outline-offset,ED,CSS Basic User Interface Module Level 3 (CSS3 UI)
+outline-offset,https://www.w3.org/TR/2017/WD-css-ui-4-20171222/#propdef-outline-offset,WD,CSS Basic User Interface Module Level 4
+outline-offset,https://www.w3.org/TR/2018/REC-css-ui-3-20180621/#propdef-outline-offset,REC,CSS Basic User Interface Module Level 3 (CSS3 UI)
+outline-style,http://www.w3.org/TR/2011/REC-CSS2-20110607/ui.html#propdef-outline-style,REC,CSS 2.1
+outline-style,https://drafts.csswg.org/css-ui-4/#propdef-outline-style,ED,CSS Basic User Interface Module Level 4
+outline-style,https://drafts.csswg.org/css-ui/#propdef-outline-style,ED,CSS Basic User Interface Module Level 3 (CSS3 UI)
+outline-style,https://www.w3.org/TR/2017/WD-css-ui-4-20171222/#propdef-outline-style,WD,CSS Basic User Interface Module Level 4
+outline-style,https://www.w3.org/TR/2018/REC-css-ui-3-20180621/#propdef-outline-style,REC,CSS Basic User Interface Module Level 3 (CSS3 UI)
+outline-width,http://www.w3.org/TR/2011/REC-CSS2-20110607/ui.html#propdef-outline-width,REC,CSS 2.1
+outline-width,https://drafts.csswg.org/css-ui-4/#propdef-outline-width,ED,CSS Basic User Interface Module Level 4
+outline-width,https://drafts.csswg.org/css-ui/#propdef-outline-width,ED,CSS Basic User Interface Module Level 3 (CSS3 UI)
+outline-width,https://www.w3.org/TR/2017/WD-css-ui-4-20171222/#propdef-outline-width,WD,CSS Basic User Interface Module Level 4
+outline-width,https://www.w3.org/TR/2018/REC-css-ui-3-20180621/#propdef-outline-width,REC,CSS Basic User Interface Module Level 3 (CSS3 UI)
+overflow,http://www.w3.org/TR/2011/REC-CSS2-20110607/visufx.html#propdef-overflow,REC,CSS 2.1
+overflow,https://drafts.csswg.org/css-overflow-3/#propdef-overflow,ED,CSS Overflow Module Level 3
+overflow,https://www.w3.org/TR/2018/WD-css-overflow-3-20180731/#propdef-overflow,WD,CSS Overflow Module Level 3
+overflow-block,https://drafts.csswg.org/css-overflow-3/#propdef-overflow-block,ED,CSS Overflow Module Level 3
+overflow-block,https://www.w3.org/TR/2018/WD-css-overflow-3-20180731/#propdef-overflow-block,WD,CSS Overflow Module Level 3
+overflow-inline,https://drafts.csswg.org/css-overflow-3/#propdef-overflow-inline,ED,CSS Overflow Module Level 3
+overflow-inline,https://www.w3.org/TR/2018/WD-css-overflow-3-20180731/#propdef-overflow-inline,WD,CSS Overflow Module Level 3
+overflow-wrap,https://drafts.csswg.org/css-text-3/#propdef-overflow-wrap,ED,CSS Text Module Level 3
+overflow-wrap,https://www.w3.org/TR/2019/WD-css-text-3-20191113/#propdef-overflow-wrap,WD,CSS Text Module Level 3
+overflow-x,https://drafts.csswg.org/css-overflow-3/#propdef-overflow-x,ED,CSS Overflow Module Level 3
+overflow-x,https://www.w3.org/TR/2018/WD-css-overflow-3-20180731/#propdef-overflow-x,WD,CSS Overflow Module Level 3
+overflow-y,https://drafts.csswg.org/css-overflow-3/#propdef-overflow-y,ED,CSS Overflow Module Level 3
+overflow-y,https://www.w3.org/TR/2018/WD-css-overflow-3-20180731/#propdef-overflow-y,WD,CSS Overflow Module Level 3
+overscroll-behavior,https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior,ED,CSS Overscroll Behavior Module Level 1
+overscroll-behavior,https://www.w3.org/TR/2019/WD-css-overscroll-1-20190606/#propdef-overscroll-behavior,FPWD,CSS Overscroll Behavior Module Level 1
+overscroll-behavior-block,https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior-block,ED,CSS Overscroll Behavior Module Level 1
+overscroll-behavior-block,https://www.w3.org/TR/2019/WD-css-overscroll-1-20190606/#propdef-overscroll-behavior-block,FPWD,CSS Overscroll Behavior Module Level 1
+overscroll-behavior-inline,https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior-inline,ED,CSS Overscroll Behavior Module Level 1
+overscroll-behavior-inline,https://www.w3.org/TR/2019/WD-css-overscroll-1-20190606/#propdef-overscroll-behavior-inline,FPWD,CSS Overscroll Behavior Module Level 1
+overscroll-behavior-x,https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior-x,ED,CSS Overscroll Behavior Module Level 1
+overscroll-behavior-x,https://www.w3.org/TR/2019/WD-css-overscroll-1-20190606/#propdef-overscroll-behavior-x,FPWD,CSS Overscroll Behavior Module Level 1
+overscroll-behavior-y,https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior-y,ED,CSS Overscroll Behavior Module Level 1
+overscroll-behavior-y,https://www.w3.org/TR/2019/WD-css-overscroll-1-20190606/#propdef-overscroll-behavior-y,FPWD,CSS Overscroll Behavior Module Level 1
+padding,http://www.w3.org/TR/2011/REC-CSS2-20110607/box.html#propdef-padding,REC,CSS 2.1
+padding,https://drafts.csswg.org/css-box-3/#propdef-padding,ED,CSS Box Model Module Level 3
+padding,https://www.w3.org/TR/2018/WD-css-box-3-20181218/#propdef-padding,WD,CSS Box Model Module Level 3
+padding-block,https://drafts.csswg.org/css-logical-1/#propdef-padding-block,ED,CSS Logical Properties and Values Level 1
+padding-block,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-padding-block,WD,CSS Logical Properties and Values Level 1
+padding-block-end,https://drafts.csswg.org/css-logical-1/#propdef-padding-block-end,ED,CSS Logical Properties and Values Level 1
+padding-block-end,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-padding-block-end,WD,CSS Logical Properties and Values Level 1
+padding-block-start,https://drafts.csswg.org/css-logical-1/#propdef-padding-block-start,ED,CSS Logical Properties and Values Level 1
+padding-block-start,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-padding-block-start,WD,CSS Logical Properties and Values Level 1
+padding-bottom,http://www.w3.org/TR/2011/REC-CSS2-20110607/box.html#propdef-padding-bottom,REC,CSS 2.1
+padding-bottom,https://drafts.csswg.org/css-box-3/#propdef-padding-bottom,ED,CSS Box Model Module Level 3
+padding-bottom,https://www.w3.org/TR/2018/WD-css-box-3-20181218/#propdef-padding-bottom,WD,CSS Box Model Module Level 3
+padding-inline,https://drafts.csswg.org/css-logical-1/#propdef-padding-inline,ED,CSS Logical Properties and Values Level 1
+padding-inline,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-padding-inline,WD,CSS Logical Properties and Values Level 1
+padding-inline-end,https://drafts.csswg.org/css-logical-1/#propdef-padding-inline-end,ED,CSS Logical Properties and Values Level 1
+padding-inline-end,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-padding-inline-end,WD,CSS Logical Properties and Values Level 1
+padding-inline-start,https://drafts.csswg.org/css-logical-1/#propdef-padding-inline-start,ED,CSS Logical Properties and Values Level 1
+padding-inline-start,https://www.w3.org/TR/2018/WD-css-logical-1-20180827/#propdef-padding-inline-start,WD,CSS Logical Properties and Values Level 1
+padding-left,http://www.w3.org/TR/2011/REC-CSS2-20110607/box.html#propdef-padding-left,REC,CSS 2.1
+padding-left,https://drafts.csswg.org/css-box-3/#propdef-padding-left,ED,CSS Box Model Module Level 3
+padding-left,https://www.w3.org/TR/2018/WD-css-box-3-20181218/#propdef-padding-left,WD,CSS Box Model Module Level 3
+padding-right,http://www.w3.org/TR/2011/REC-CSS2-20110607/box.html#propdef-padding-right,REC,CSS 2.1
+padding-right,https://drafts.csswg.org/css-box-3/#propdef-padding-right,ED,CSS Box Model Module Level 3
+padding-right,https://www.w3.org/TR/2018/WD-css-box-3-20181218/#propdef-padding-right,WD,CSS Box Model Module Level 3
+padding-top,http://www.w3.org/TR/2011/REC-CSS2-20110607/box.html#propdef-padding-top,REC,CSS 2.1
+padding-top,https://drafts.csswg.org/css-box-3/#propdef-padding-top,ED,CSS Box Model Module Level 3
+padding-top,https://www.w3.org/TR/2018/WD-css-box-3-20181218/#propdef-padding-top,WD,CSS Box Model Module Level 3
+page,https://drafts.csswg.org/css-page-3/#propdef-page,ED,CSS Paged Media Module Level 3
+page,https://www.w3.org/TR/2018/WD-css-page-3-20181018/#propdef-page,WD,CSS Paged Media Module Level 3
+page-break-after,http://www.w3.org/TR/2011/REC-CSS2-20110607/page.html#propdef-page-break-after,REC,CSS 2.1
+page-break-before,http://www.w3.org/TR/2011/REC-CSS2-20110607/page.html#propdef-page-break-before,REC,CSS 2.1
+page-break-inside,http://www.w3.org/TR/2011/REC-CSS2-20110607/page.html#propdef-page-break-inside,REC,CSS 2.1
+pause,http://www.w3.org/TR/2011/REC-CSS2-20110607/aural.html#propdef-pause,REC,CSS 2.1
+pause-after,http://www.w3.org/TR/2011/REC-CSS2-20110607/aural.html#propdef-pause-after,REC,CSS 2.1
+pause-before,http://www.w3.org/TR/2011/REC-CSS2-20110607/aural.html#propdef-pause-before,REC,CSS 2.1
+pitch,http://www.w3.org/TR/2011/REC-CSS2-20110607/aural.html#propdef-pitch,REC,CSS 2.1
+pitch-range,http://www.w3.org/TR/2011/REC-CSS2-20110607/aural.html#propdef-pitch-range,REC,CSS 2.1
+place-content,https://drafts.csswg.org/css-align/#propdef-place-content,ED,CSS Box Alignment Module Level 3
+place-content,https://www.w3.org/TR/2018/WD-css-align-3-20181206/#propdef-place-content,WD,CSS Box Alignment Module Level 3
+place-items,https://drafts.csswg.org/css-align/#propdef-place-items,ED,CSS Box Alignment Module Level 3
+place-items,https://www.w3.org/TR/2018/WD-css-align-3-20181206/#propdef-place-items,WD,CSS Box Alignment Module Level 3
+place-self,https://drafts.csswg.org/css-align/#propdef-place-self,ED,CSS Box Alignment Module Level 3
+place-self,https://www.w3.org/TR/2018/WD-css-align-3-20181206/#propdef-place-self,WD,CSS Box Alignment Module Level 3
+play-during,http://www.w3.org/TR/2011/REC-CSS2-20110607/aural.html#propdef-play-during,REC,CSS 2.1
+position,http://www.w3.org/TR/2011/REC-CSS2-20110607/visuren.html#propdef-position,REC,CSS 2.1
+position,http://www.w3.org/TR/2016/WD-css-position-3-20160517/#propdef-position,WD,CSS Positioned Layout Module Level 3
+position,https://drafts.csswg.org/css-position/#propdef-position,ED,CSS Positioned Layout Module Level 3
+quotes,http://www.w3.org/TR/2011/REC-CSS2-20110607/generate.html#propdef-quotes,REC,CSS 2.1
+quotes,https://drafts.csswg.org/css-content-3/#propdef-quotes,ED,CSS Generated Content Module Level 3
+quotes,https://www.w3.org/TR/2019/WD-css-content-3-20190802/#propdef-quotes,WD,CSS Generated Content Module Level 3
+region-fragment,http://www.w3.org/TR/2014/WD-css-regions-1-20141009/#propdef-region-fragment,WD,CSS Regions Module Level 1
+region-fragment,https://drafts.csswg.org/css-regions/#propdef-region-fragment,ED,CSS Regions Module Level 1
+resize,https://drafts.csswg.org/css-ui-4/#propdef-resize,ED,CSS Basic User Interface Module Level 4
+resize,https://drafts.csswg.org/css-ui/#propdef-resize,ED,CSS Basic User Interface Module Level 3 (CSS3 UI)
+resize,https://www.w3.org/TR/2017/WD-css-ui-4-20171222/#propdef-resize,WD,CSS Basic User Interface Module Level 4
+resize,https://www.w3.org/TR/2018/REC-css-ui-3-20180621/#propdef-resize,REC,CSS Basic User Interface Module Level 3 (CSS3 UI)
+richness,http://www.w3.org/TR/2011/REC-CSS2-20110607/aural.html#propdef-richness,REC,CSS 2.1
+right,http://www.w3.org/TR/2011/REC-CSS2-20110607/visuren.html#propdef-right,REC,CSS 2.1
+right,http://www.w3.org/TR/2016/WD-css-position-3-20160517/#propdef-right,WD,CSS Positioned Layout Module Level 3
+right,https://drafts.csswg.org/css-position/#propdef-right,ED,CSS Positioned Layout Module Level 3
+row-gap,https://drafts.csswg.org/css-align/#propdef-row-gap,ED,CSS Box Alignment Module Level 3
+row-gap,https://www.w3.org/TR/2018/WD-css-align-3-20181206/#propdef-row-gap,WD,CSS Box Alignment Module Level 3
+ruby-align,http://www.w3.org/TR/2014/WD-css-ruby-1-20140805/#propdef-ruby-align,WD,CSS Ruby Layout Module Level 1
+ruby-align,https://drafts.csswg.org/css-ruby-1/#propdef-ruby-align,ED,CSS Ruby Layout Module Level 1
+ruby-merge,http://www.w3.org/TR/2014/WD-css-ruby-1-20140805/#propdef-ruby-merge,WD,CSS Ruby Layout Module Level 1
+ruby-merge,https://drafts.csswg.org/css-ruby-1/#propdef-ruby-merge,ED,CSS Ruby Layout Module Level 1
+ruby-position,http://www.w3.org/TR/2014/WD-css-ruby-1-20140805/#propdef-ruby-position,WD,CSS Ruby Layout Module Level 1
+ruby-position,https://drafts.csswg.org/css-ruby-1/#propdef-ruby-position,ED,CSS Ruby Layout Module Level 1
+running,http://www.w3.org/TR/2014/WD-css-gcpm-3-20140513/#propdef-running,WD,CSS Generated Content for Paged Media Module
+running,https://drafts.csswg.org/css-gcpm/#propdef-running,ED,CSS Generated Content for Paged Media Module
+scroll-behavior,http://www.w3.org/TR/2016/WD-cssom-view-1-20160317/#propdef-scroll-behavior,WD,CSSOM View Module
+scroll-behavior,https://drafts.csswg.org/cssom-view/#propdef-scroll-behavior,ED,CSSOM View Module
+scroll-margin,https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin,ED,CSS Scroll Snap Module Level 1
+scroll-margin,https://www.w3.org/TR/2019/CR-css-scroll-snap-1-20190319/#propdef-scroll-margin,CR,CSS Scroll Snap Module Level 1
+scroll-margin-block,https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin-block,ED,CSS Scroll Snap Module Level 1
+scroll-margin-block,https://www.w3.org/TR/2019/CR-css-scroll-snap-1-20190319/#propdef-scroll-margin-block,CR,CSS Scroll Snap Module Level 1
+scroll-margin-block-end,https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin-block-end,ED,CSS Scroll Snap Module Level 1
+scroll-margin-block-end,https://www.w3.org/TR/2019/CR-css-scroll-snap-1-20190319/#propdef-scroll-margin-block-end,CR,CSS Scroll Snap Module Level 1
+scroll-margin-block-start,https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin-block-start,ED,CSS Scroll Snap Module Level 1
+scroll-margin-block-start,https://www.w3.org/TR/2019/CR-css-scroll-snap-1-20190319/#propdef-scroll-margin-block-start,CR,CSS Scroll Snap Module Level 1
+scroll-margin-bottom,https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin-bottom,ED,CSS Scroll Snap Module Level 1
+scroll-margin-bottom,https://www.w3.org/TR/2019/CR-css-scroll-snap-1-20190319/#propdef-scroll-margin-bottom,CR,CSS Scroll Snap Module Level 1
+scroll-margin-inline,https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin-inline,ED,CSS Scroll Snap Module Level 1
+scroll-margin-inline,https://www.w3.org/TR/2019/CR-css-scroll-snap-1-20190319/#propdef-scroll-margin-inline,CR,CSS Scroll Snap Module Level 1
+scroll-margin-inline-end,https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin-inline-end,ED,CSS Scroll Snap Module Level 1
+scroll-margin-inline-end,https://www.w3.org/TR/2019/CR-css-scroll-snap-1-20190319/#propdef-scroll-margin-inline-end,CR,CSS Scroll Snap Module Level 1
+scroll-margin-inline-start,https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin-inline-start,ED,CSS Scroll Snap Module Level 1
+scroll-margin-inline-start,https://www.w3.org/TR/2019/CR-css-scroll-snap-1-20190319/#propdef-scroll-margin-inline-start,CR,CSS Scroll Snap Module Level 1
+scroll-margin-left,https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin-left,ED,CSS Scroll Snap Module Level 1
+scroll-margin-left,https://www.w3.org/TR/2019/CR-css-scroll-snap-1-20190319/#propdef-scroll-margin-left,CR,CSS Scroll Snap Module Level 1
+scroll-margin-right,https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin-right,ED,CSS Scroll Snap Module Level 1
+scroll-margin-right,https://www.w3.org/TR/2019/CR-css-scroll-snap-1-20190319/#propdef-scroll-margin-right,CR,CSS Scroll Snap Module Level 1
+scroll-margin-top,https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin-top,ED,CSS Scroll Snap Module Level 1
+scroll-margin-top,https://www.w3.org/TR/2019/CR-css-scroll-snap-1-20190319/#propdef-scroll-margin-top,CR,CSS Scroll Snap Module Level 1
+scroll-padding,https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding,ED,CSS Scroll Snap Module Level 1
+scroll-padding,https://www.w3.org/TR/2019/CR-css-scroll-snap-1-20190319/#propdef-scroll-padding,CR,CSS Scroll Snap Module Level 1
+scroll-padding-block,https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-block,ED,CSS Scroll Snap Module Level 1
+scroll-padding-block,https://www.w3.org/TR/2019/CR-css-scroll-snap-1-20190319/#propdef-scroll-padding-block,CR,CSS Scroll Snap Module Level 1
+scroll-padding-block-end,https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-block-end,ED,CSS Scroll Snap Module Level 1
+scroll-padding-block-end,https://www.w3.org/TR/2019/CR-css-scroll-snap-1-20190319/#propdef-scroll-padding-block-end,CR,CSS Scroll Snap Module Level 1
+scroll-padding-block-start,https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-block-start,ED,CSS Scroll Snap Module Level 1
+scroll-padding-block-start,https://www.w3.org/TR/2019/CR-css-scroll-snap-1-20190319/#propdef-scroll-padding-block-start,CR,CSS Scroll Snap Module Level 1
+scroll-padding-bottom,https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-bottom,ED,CSS Scroll Snap Module Level 1
+scroll-padding-bottom,https://www.w3.org/TR/2019/CR-css-scroll-snap-1-20190319/#propdef-scroll-padding-bottom,CR,CSS Scroll Snap Module Level 1
+scroll-padding-inline,https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-inline,ED,CSS Scroll Snap Module Level 1
+scroll-padding-inline,https://www.w3.org/TR/2019/CR-css-scroll-snap-1-20190319/#propdef-scroll-padding-inline,CR,CSS Scroll Snap Module Level 1
+scroll-padding-inline-end,https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-inline-end,ED,CSS Scroll Snap Module Level 1
+scroll-padding-inline-end,https://www.w3.org/TR/2019/CR-css-scroll-snap-1-20190319/#propdef-scroll-padding-inline-end,CR,CSS Scroll Snap Module Level 1
+scroll-padding-inline-start,https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-inline-start,ED,CSS Scroll Snap Module Level 1
+scroll-padding-inline-start,https://www.w3.org/TR/2019/CR-css-scroll-snap-1-20190319/#propdef-scroll-padding-inline-start,CR,CSS Scroll Snap Module Level 1
+scroll-padding-left,https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-left,ED,CSS Scroll Snap Module Level 1
+scroll-padding-left,https://www.w3.org/TR/2019/CR-css-scroll-snap-1-20190319/#propdef-scroll-padding-left,CR,CSS Scroll Snap Module Level 1
+scroll-padding-right,https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-right,ED,CSS Scroll Snap Module Level 1
+scroll-padding-right,https://www.w3.org/TR/2019/CR-css-scroll-snap-1-20190319/#propdef-scroll-padding-right,CR,CSS Scroll Snap Module Level 1
+scroll-padding-top,https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-top,ED,CSS Scroll Snap Module Level 1
+scroll-padding-top,https://www.w3.org/TR/2019/CR-css-scroll-snap-1-20190319/#propdef-scroll-padding-top,CR,CSS Scroll Snap Module Level 1
+scroll-snap-align,https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-snap-align,ED,CSS Scroll Snap Module Level 1
+scroll-snap-align,https://www.w3.org/TR/2019/CR-css-scroll-snap-1-20190319/#propdef-scroll-snap-align,CR,CSS Scroll Snap Module Level 1
+scroll-snap-stop,https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-snap-stop,ED,CSS Scroll Snap Module Level 1
+scroll-snap-stop,https://www.w3.org/TR/2019/CR-css-scroll-snap-1-20190319/#propdef-scroll-snap-stop,CR,CSS Scroll Snap Module Level 1
+scroll-snap-type,https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-snap-type,ED,CSS Scroll Snap Module Level 1
+scroll-snap-type,https://www.w3.org/TR/2019/CR-css-scroll-snap-1-20190319/#propdef-scroll-snap-type,CR,CSS Scroll Snap Module Level 1
+scrollbar-color,https://drafts.csswg.org/css-scrollbars/#propdef-scrollbar-color,ED,CSS Scrollbars Module Level 1
+scrollbar-color,https://www.w3.org/TR/2018/WD-css-scrollbars-1-20180925/#propdef-scrollbar-color,FPWD,CSS Scrollbars Module Level 1
+scrollbar-gutter,https://drafts.csswg.org/css-overflow-4/#propdef-scrollbar-gutter,ED,CSS Overflow Module Level 4
+scrollbar-gutter,https://www.w3.org/TR/2017/WD-css-overflow-4-20170613/#propdef-scrollbar-gutter,FPWD,CSS Overflow Module Level 4
+scrollbar-width,https://drafts.csswg.org/css-scrollbars/#propdef-scrollbar-width,ED,CSS Scrollbars Module Level 1
+scrollbar-width,https://www.w3.org/TR/2018/WD-css-scrollbars-1-20180925/#propdef-scrollbar-width,FPWD,CSS Scrollbars Module Level 1
+shape-image-threshold,http://www.w3.org/TR/2014/CR-css-shapes-1-20140320/#propdef-shape-image-threshold,CR,CSS Shapes Module Level 1
+shape-image-threshold,https://drafts.csswg.org/css-shapes/#propdef-shape-image-threshold,ED,CSS Shapes Module Level 1
+shape-inside,https://drafts.csswg.org/css-round-display/#propdef-shape-inside,ED,CSS Round Display Level 1
+shape-inside,https://www.w3.org/TR/2016/WD-css-round-display-1-20161222/#propdef-shape-inside,WD,CSS Round Display Level 1
+shape-margin,http://www.w3.org/TR/2014/CR-css-shapes-1-20140320/#propdef-shape-margin,CR,CSS Shapes Module Level 1
+shape-margin,https://drafts.csswg.org/css-shapes/#propdef-shape-margin,ED,CSS Shapes Module Level 1
+shape-outside,http://www.w3.org/TR/2014/CR-css-shapes-1-20140320/#propdef-shape-outside,CR,CSS Shapes Module Level 1
+shape-outside,https://drafts.csswg.org/css-shapes/#propdef-shape-outside,ED,CSS Shapes Module Level 1
+spatial-navigation-action,https://drafts.csswg.org/css-nav-1/#propdef-spatial-navigation-action,ED,CSS Spatial Navigation Level 1
+spatial-navigation-action,https://www.w3.org/TR/2019/WD-css-nav-1-20191126/#propdef-spatial-navigation-action,WD,CSS Spatial Navigation Level 1
+spatial-navigation-contain,https://drafts.csswg.org/css-nav-1/#propdef-spatial-navigation-contain,ED,CSS Spatial Navigation Level 1
+spatial-navigation-contain,https://www.w3.org/TR/2019/WD-css-nav-1-20191126/#propdef-spatial-navigation-contain,WD,CSS Spatial Navigation Level 1
+spatial-navigation-function,https://drafts.csswg.org/css-nav-1/#propdef-spatial-navigation-function,ED,CSS Spatial Navigation Level 1
+spatial-navigation-function,https://www.w3.org/TR/2019/WD-css-nav-1-20191126/#propdef-spatial-navigation-function,WD,CSS Spatial Navigation Level 1
+speak,http://www.w3.org/TR/2011/REC-CSS2-20110607/aural.html#propdef-speak,REC,CSS 2.1
+speak-header,http://www.w3.org/TR/2011/REC-CSS2-20110607/aural.html#propdef-speak-header,REC,CSS 2.1
+speak-numeral,http://www.w3.org/TR/2011/REC-CSS2-20110607/aural.html#propdef-speak-numeral,REC,CSS 2.1
+speak-punctuation,http://www.w3.org/TR/2011/REC-CSS2-20110607/aural.html#propdef-speak-punctuation,REC,CSS 2.1
+speech-rate,http://www.w3.org/TR/2011/REC-CSS2-20110607/aural.html#propdef-speech-rate,REC,CSS 2.1
+stress,http://www.w3.org/TR/2011/REC-CSS2-20110607/aural.html#propdef-stress,REC,CSS 2.1
+string-set,http://www.w3.org/TR/2014/WD-css-gcpm-3-20140513/#propdef-string-set,WD,CSS Generated Content for Paged Media Module
+string-set,https://drafts.csswg.org/css-content-3/#propdef-string-set,ED,CSS Generated Content Module Level 3
+string-set,https://drafts.csswg.org/css-gcpm/#propdef-string-set,ED,CSS Generated Content for Paged Media Module
+string-set,https://www.w3.org/TR/2019/WD-css-content-3-20190802/#propdef-string-set,WD,CSS Generated Content Module Level 3
+stroke,http://www.w3.org/TR/2015/WD-svg-strokes-20150409/#StrokeProperty,FPWD,SVG Strokes
+stroke,https://drafts.fxtf.org/fill-stroke/#propdef-stroke,ED,CSS Fill and Stroke Module Level 3
+stroke,https://svgwg.org/specs/strokes/#StrokeProperty,ED,SVG Strokes
+stroke,https://www.w3.org/TR/2017/WD-fill-stroke-3-20170413/#propdef-stroke,FPWD,CSS Fill and Stroke Module Level 3
+stroke-align,https://drafts.fxtf.org/fill-stroke/#propdef-stroke-align,ED,CSS Fill and Stroke Module Level 3
+stroke-align,https://www.w3.org/TR/2017/WD-fill-stroke-3-20170413/#propdef-stroke-align,FPWD,CSS Fill and Stroke Module Level 3
+stroke-alignment,http://www.w3.org/TR/2015/WD-svg-strokes-20150409/#StrokeAlignmentProperty,FPWD,SVG Strokes
+stroke-alignment,https://svgwg.org/specs/strokes/#StrokeAlignmentProperty,ED,SVG Strokes
+stroke-break,https://drafts.fxtf.org/fill-stroke/#propdef-stroke-break,ED,CSS Fill and Stroke Module Level 3
+stroke-break,https://www.w3.org/TR/2017/WD-fill-stroke-3-20170413/#propdef-stroke-break,FPWD,CSS Fill and Stroke Module Level 3
+stroke-color,https://drafts.fxtf.org/fill-stroke/#propdef-stroke-color,ED,CSS Fill and Stroke Module Level 3
+stroke-color,https://www.w3.org/TR/2017/WD-fill-stroke-3-20170413/#propdef-stroke-color,FPWD,CSS Fill and Stroke Module Level 3
+stroke-dash-corner,https://drafts.fxtf.org/fill-stroke/#propdef-stroke-dash-corner,ED,CSS Fill and Stroke Module Level 3
+stroke-dash-corner,https://www.w3.org/TR/2017/WD-fill-stroke-3-20170413/#propdef-stroke-dash-corner,FPWD,CSS Fill and Stroke Module Level 3
+stroke-dash-justify,https://drafts.fxtf.org/fill-stroke/#propdef-stroke-dash-justify,ED,CSS Fill and Stroke Module Level 3
+stroke-dash-justify,https://www.w3.org/TR/2017/WD-fill-stroke-3-20170413/#propdef-stroke-dash-justify,FPWD,CSS Fill and Stroke Module Level 3
+stroke-dashadjust,http://www.w3.org/TR/2015/WD-svg-strokes-20150409/#StrokeDashadjustProperty,FPWD,SVG Strokes
+stroke-dashadjust,https://svgwg.org/specs/strokes/#StrokeDashadjustProperty,ED,SVG Strokes
+stroke-dasharray,http://www.w3.org/TR/2015/WD-svg-strokes-20150409/#StrokeDasharrayProperty,FPWD,SVG Strokes
+stroke-dasharray,https://drafts.fxtf.org/fill-stroke/#propdef-stroke-dasharray,ED,CSS Fill and Stroke Module Level 3
+stroke-dasharray,https://svgwg.org/specs/strokes/#StrokeDasharrayProperty,ED,SVG Strokes
+stroke-dasharray,https://www.w3.org/TR/2017/WD-fill-stroke-3-20170413/#propdef-stroke-dasharray,FPWD,CSS Fill and Stroke Module Level 3
+stroke-dashcorner,http://www.w3.org/TR/2015/WD-svg-strokes-20150409/#StrokeDashcornerProperty,FPWD,SVG Strokes
+stroke-dashcorner,https://svgwg.org/specs/strokes/#StrokeDashcornerProperty,ED,SVG Strokes
+stroke-dashoffset,http://www.w3.org/TR/2015/WD-svg-strokes-20150409/#StrokeDashoffsetProperty,FPWD,SVG Strokes
+stroke-dashoffset,https://drafts.fxtf.org/fill-stroke/#propdef-stroke-dashoffset,ED,CSS Fill and Stroke Module Level 3
+stroke-dashoffset,https://svgwg.org/specs/strokes/#StrokeDashoffsetProperty,ED,SVG Strokes
+stroke-dashoffset,https://www.w3.org/TR/2017/WD-fill-stroke-3-20170413/#propdef-stroke-dashoffset,FPWD,CSS Fill and Stroke Module Level 3
+stroke-image,https://drafts.fxtf.org/fill-stroke/#propdef-stroke-image,ED,CSS Fill and Stroke Module Level 3
+stroke-image,https://www.w3.org/TR/2017/WD-fill-stroke-3-20170413/#propdef-stroke-image,FPWD,CSS Fill and Stroke Module Level 3
+stroke-linecap,http://www.w3.org/TR/2015/WD-svg-strokes-20150409/#StrokeLinecapProperty,FPWD,SVG Strokes
+stroke-linecap,https://drafts.fxtf.org/fill-stroke/#propdef-stroke-linecap,ED,CSS Fill and Stroke Module Level 3
+stroke-linecap,https://svgwg.org/specs/strokes/#StrokeLinecapProperty,ED,SVG Strokes
+stroke-linecap,https://www.w3.org/TR/2017/WD-fill-stroke-3-20170413/#propdef-stroke-linecap,FPWD,CSS Fill and Stroke Module Level 3
+stroke-linejoin,http://www.w3.org/TR/2015/WD-svg-strokes-20150409/#StrokeLinejoinProperty,FPWD,SVG Strokes
+stroke-linejoin,https://drafts.fxtf.org/fill-stroke/#propdef-stroke-linejoin,ED,CSS Fill and Stroke Module Level 3
+stroke-linejoin,https://svgwg.org/specs/strokes/#StrokeLinejoinProperty,ED,SVG Strokes
+stroke-linejoin,https://www.w3.org/TR/2017/WD-fill-stroke-3-20170413/#propdef-stroke-linejoin,FPWD,CSS Fill and Stroke Module Level 3
+stroke-miterlimit,http://www.w3.org/TR/2015/WD-svg-strokes-20150409/#StrokeMiterlimitProperty,FPWD,SVG Strokes
+stroke-miterlimit,https://drafts.fxtf.org/fill-stroke/#propdef-stroke-miterlimit,ED,CSS Fill and Stroke Module Level 3
+stroke-miterlimit,https://svgwg.org/specs/strokes/#StrokeMiterlimitProperty,ED,SVG Strokes
+stroke-miterlimit,https://www.w3.org/TR/2017/WD-fill-stroke-3-20170413/#propdef-stroke-miterlimit,FPWD,CSS Fill and Stroke Module Level 3
+stroke-opacity,http://www.w3.org/TR/2015/WD-svg-strokes-20150409/#StrokeOpacityProperty,FPWD,SVG Strokes
+stroke-opacity,https://drafts.fxtf.org/fill-stroke/#propdef-stroke-opacity,ED,CSS Fill and Stroke Module Level 3
+stroke-opacity,https://svgwg.org/specs/strokes/#StrokeOpacityProperty,ED,SVG Strokes
+stroke-opacity,https://www.w3.org/TR/2017/WD-fill-stroke-3-20170413/#propdef-stroke-opacity,FPWD,CSS Fill and Stroke Module Level 3
+stroke-origin,https://drafts.fxtf.org/fill-stroke/#propdef-stroke-origin,ED,CSS Fill and Stroke Module Level 3
+stroke-origin,https://www.w3.org/TR/2017/WD-fill-stroke-3-20170413/#propdef-stroke-origin,FPWD,CSS Fill and Stroke Module Level 3
+stroke-position,https://drafts.fxtf.org/fill-stroke/#propdef-stroke-position,ED,CSS Fill and Stroke Module Level 3
+stroke-position,https://www.w3.org/TR/2017/WD-fill-stroke-3-20170413/#propdef-stroke-position,FPWD,CSS Fill and Stroke Module Level 3
+stroke-repeat,https://drafts.fxtf.org/fill-stroke/#propdef-stroke-repeat,ED,CSS Fill and Stroke Module Level 3
+stroke-repeat,https://www.w3.org/TR/2017/WD-fill-stroke-3-20170413/#propdef-stroke-repeat,FPWD,CSS Fill and Stroke Module Level 3
+stroke-size,https://drafts.fxtf.org/fill-stroke/#propdef-stroke-size,ED,CSS Fill and Stroke Module Level 3
+stroke-size,https://www.w3.org/TR/2017/WD-fill-stroke-3-20170413/#propdef-stroke-size,FPWD,CSS Fill and Stroke Module Level 3
+stroke-width,http://www.w3.org/TR/2015/WD-svg-strokes-20150409/#StrokeWidthProperty,FPWD,SVG Strokes
+stroke-width,https://drafts.fxtf.org/fill-stroke/#propdef-stroke-width,ED,CSS Fill and Stroke Module Level 3
+stroke-width,https://svgwg.org/specs/strokes/#StrokeWidthProperty,ED,SVG Strokes
+stroke-width,https://www.w3.org/TR/2017/WD-fill-stroke-3-20170413/#propdef-stroke-width,FPWD,CSS Fill and Stroke Module Level 3
+tab-size,https://drafts.csswg.org/css-text-3/#propdef-tab-size,ED,CSS Text Module Level 3
+tab-size,https://www.w3.org/TR/2019/WD-css-text-3-20191113/#propdef-tab-size,WD,CSS Text Module Level 3
+table-layout,http://www.w3.org/TR/2011/REC-CSS2-20110607/tables.html#propdef-table-layout,REC,CSS 2.1
+table-layout,https://drafts.csswg.org/css-tables-3/#propdef-table-layout,ED,CSS Table Module Level 3
+table-layout,https://www.w3.org/TR/2019/WD-css-tables-3-20190727/#propdef-table-layout,WD,CSS Table Module Level 3
+text-align,http://www.w3.org/TR/2011/REC-CSS2-20110607/text.html#propdef-text-align,REC,CSS 2.1
+text-align,https://drafts.csswg.org/css-text-3/#propdef-text-align,ED,CSS Text Module Level 3
+text-align,https://www.w3.org/TR/2019/WD-css-text-3-20191113/#propdef-text-align,WD,CSS Text Module Level 3
+text-align-all,https://drafts.csswg.org/css-text-3/#propdef-text-align-all,ED,CSS Text Module Level 3
+text-align-all,https://www.w3.org/TR/2019/WD-css-text-3-20191113/#propdef-text-align-all,WD,CSS Text Module Level 3
+text-align-last,https://drafts.csswg.org/css-text-3/#propdef-text-align-last,ED,CSS Text Module Level 3
+text-align-last,https://www.w3.org/TR/2019/WD-css-text-3-20191113/#propdef-text-align-last,WD,CSS Text Module Level 3
+text-combine-upright,https://drafts.csswg.org/css-writing-modes-3/#propdef-text-combine-upright,ED,CSS Writing Modes Level 3
+text-combine-upright,https://drafts.csswg.org/css-writing-modes-4/#propdef-text-combine-upright,ED,CSS Writing Modes Level 4
+text-combine-upright,https://www.w3.org/TR/2019/CR-css-writing-modes-4-20190730/#propdef-text-combine-upright,CR,CSS Writing Modes Level 4
+text-combine-upright,https://www.w3.org/TR/2019/REC-css-writing-modes-3-20191210/#propdef-text-combine-upright,REC,CSS Writing Modes Level 3
+text-decoration,http://www.w3.org/TR/2011/REC-CSS2-20110607/text.html#propdef-text-decoration,REC,CSS 2.1
+text-decoration,https://drafts.csswg.org/css-text-decor-3/#propdef-text-decoration,ED,CSS Text Decoration Module Level 3
+text-decoration,https://drafts.csswg.org/css-text-decor-4/#propdef-text-decoration,ED,CSS Text Decoration Module Level 4
+text-decoration,https://www.w3.org/TR/2019/CR-css-text-decor-3-20190813/#propdef-text-decoration,CR,CSS Text Decoration Module Level 3
+text-decoration-color,https://drafts.csswg.org/css-text-decor-3/#propdef-text-decoration-color,ED,CSS Text Decoration Module Level 3
+text-decoration-color,https://drafts.csswg.org/css-text-decor-4/#propdef-text-decoration-color,ED,CSS Text Decoration Module Level 4
+text-decoration-color,https://www.w3.org/TR/2019/CR-css-text-decor-3-20190813/#propdef-text-decoration-color,CR,CSS Text Decoration Module Level 3
+text-decoration-line,https://drafts.csswg.org/css-text-decor-3/#propdef-text-decoration-line,ED,CSS Text Decoration Module Level 3
+text-decoration-line,https://drafts.csswg.org/css-text-decor-4/#propdef-text-decoration-line,ED,CSS Text Decoration Module Level 4
+text-decoration-line,https://www.w3.org/TR/2019/CR-css-text-decor-3-20190813/#propdef-text-decoration-line,CR,CSS Text Decoration Module Level 3
+text-decoration-skip,https://drafts.csswg.org/css-text-decor-4/#propdef-text-decoration-skip,ED,CSS Text Decoration Module Level 4
+text-decoration-skip,https://www.w3.org/TR/2018/WD-css-text-decor-4-20180313/#propdef-text-decoration-skip,FPWD,CSS Text Decoration Module Level 4
+text-decoration-skip-ink,https://drafts.csswg.org/css-text-decor-4/#propdef-text-decoration-skip-ink,ED,CSS Text Decoration Module Level 4
+text-decoration-skip-ink,https://www.w3.org/TR/2018/WD-css-text-decor-4-20180313/#propdef-text-decoration-skip-ink,FPWD,CSS Text Decoration Module Level 4
+text-decoration-style,https://drafts.csswg.org/css-text-decor-3/#propdef-text-decoration-style,ED,CSS Text Decoration Module Level 3
+text-decoration-style,https://drafts.csswg.org/css-text-decor-4/#propdef-text-decoration-style,ED,CSS Text Decoration Module Level 4
+text-decoration-style,https://www.w3.org/TR/2019/CR-css-text-decor-3-20190813/#propdef-text-decoration-style,CR,CSS Text Decoration Module Level 3
+text-decoration-thickness,https://drafts.csswg.org/css-text-decor-4/#propdef-text-decoration-thickness,ED,CSS Text Decoration Module Level 4
+text-decoration-width,https://www.w3.org/TR/2018/WD-css-text-decor-4-20180313/#propdef-text-decoration-width,FPWD,CSS Text Decoration Module Level 4
+text-emphasis,https://drafts.csswg.org/css-text-decor-3/#propdef-text-emphasis,ED,CSS Text Decoration Module Level 3
+text-emphasis,https://drafts.csswg.org/css-text-decor-4/#propdef-text-emphasis,ED,CSS Text Decoration Module Level 4
+text-emphasis,https://www.w3.org/TR/2019/CR-css-text-decor-3-20190813/#propdef-text-emphasis,CR,CSS Text Decoration Module Level 3
+text-emphasis-color,https://drafts.csswg.org/css-text-decor-3/#propdef-text-emphasis-color,ED,CSS Text Decoration Module Level 3
+text-emphasis-color,https://drafts.csswg.org/css-text-decor-4/#propdef-text-emphasis-color,ED,CSS Text Decoration Module Level 4
+text-emphasis-color,https://www.w3.org/TR/2019/CR-css-text-decor-3-20190813/#propdef-text-emphasis-color,CR,CSS Text Decoration Module Level 3
+text-emphasis-position,https://drafts.csswg.org/css-text-decor-3/#propdef-text-emphasis-position,ED,CSS Text Decoration Module Level 3
+text-emphasis-position,https://drafts.csswg.org/css-text-decor-4/#propdef-text-emphasis-position,ED,CSS Text Decoration Module Level 4
+text-emphasis-position,https://www.w3.org/TR/2019/CR-css-text-decor-3-20190813/#propdef-text-emphasis-position,CR,CSS Text Decoration Module Level 3
+text-emphasis-skip,https://drafts.csswg.org/css-text-decor-4/#propdef-text-emphasis-skip,ED,CSS Text Decoration Module Level 4
+text-emphasis-skip,https://www.w3.org/TR/2018/WD-css-text-decor-4-20180313/#propdef-text-emphasis-skip,FPWD,CSS Text Decoration Module Level 4
+text-emphasis-style,https://drafts.csswg.org/css-text-decor-3/#propdef-text-emphasis-style,ED,CSS Text Decoration Module Level 3
+text-emphasis-style,https://drafts.csswg.org/css-text-decor-4/#propdef-text-emphasis-style,ED,CSS Text Decoration Module Level 4
+text-emphasis-style,https://www.w3.org/TR/2019/CR-css-text-decor-3-20190813/#propdef-text-emphasis-style,CR,CSS Text Decoration Module Level 3
+text-group-align,https://drafts.csswg.org/css-text-4/#propdef-text-group-align,ED,CSS Text Module Level 4
+text-group-align,https://www.w3.org/TR/2019/WD-css-text-4-20191113/#propdef-text-group-align,WD,CSS Text Module Level 4
+text-indent,http://www.w3.org/TR/2011/REC-CSS2-20110607/text.html#propdef-text-indent,REC,CSS 2.1
+text-indent,https://drafts.csswg.org/css-text-3/#propdef-text-indent,ED,CSS Text Module Level 3
+text-indent,https://www.w3.org/TR/2019/WD-css-text-3-20191113/#propdef-text-indent,WD,CSS Text Module Level 3
+text-justify,https://drafts.csswg.org/css-text-3/#propdef-text-justify,ED,CSS Text Module Level 3
+text-justify,https://www.w3.org/TR/2019/WD-css-text-3-20191113/#propdef-text-justify,WD,CSS Text Module Level 3
+text-orientation,https://drafts.csswg.org/css-writing-modes-3/#propdef-text-orientation,ED,CSS Writing Modes Level 3
+text-orientation,https://drafts.csswg.org/css-writing-modes-4/#propdef-text-orientation,ED,CSS Writing Modes Level 4
+text-orientation,https://www.w3.org/TR/2019/CR-css-writing-modes-4-20190730/#propdef-text-orientation,CR,CSS Writing Modes Level 4
+text-orientation,https://www.w3.org/TR/2019/REC-css-writing-modes-3-20191210/#propdef-text-orientation,REC,CSS Writing Modes Level 3
+text-overflow,https://drafts.csswg.org/css-overflow-3/#propdef-text-overflow,ED,CSS Overflow Module Level 3
+text-overflow,https://drafts.csswg.org/css-overflow-4/#propdef-text-overflow,ED,CSS Overflow Module Level 4
+text-overflow,https://www.w3.org/TR/2017/WD-css-ui-4-20171222/#propdef-text-overflow,WD,CSS Basic User Interface Module Level 4
+text-overflow,https://www.w3.org/TR/2018/REC-css-ui-3-20180621/#propdef-text-overflow,REC,CSS Basic User Interface Module Level 3 (CSS3 UI)
+text-overflow,https://www.w3.org/TR/2018/WD-css-overflow-3-20180731/#propdef-text-overflow,WD,CSS Overflow Module Level 3
+text-shadow,https://drafts.csswg.org/css-text-decor-3/#propdef-text-shadow,ED,CSS Text Decoration Module Level 3
+text-shadow,https://drafts.csswg.org/css-text-decor-4/#propdef-text-shadow,ED,CSS Text Decoration Module Level 4
+text-shadow,https://www.w3.org/TR/2019/CR-css-text-decor-3-20190813/#propdef-text-shadow,CR,CSS Text Decoration Module Level 3
+text-space-collapse,https://drafts.csswg.org/css-text-4/#propdef-text-space-collapse,ED,CSS Text Module Level 4
+text-space-collapse,https://www.w3.org/TR/2019/WD-css-text-4-20191113/#propdef-text-space-collapse,WD,CSS Text Module Level 4
+text-space-trim,https://drafts.csswg.org/css-text-4/#propdef-text-space-trim,ED,CSS Text Module Level 4
+text-space-trim,https://www.w3.org/TR/2019/WD-css-text-4-20191113/#propdef-text-space-trim,WD,CSS Text Module Level 4
+text-spacing,https://drafts.csswg.org/css-text-4/#propdef-text-spacing,ED,CSS Text Module Level 4
+text-spacing,https://www.w3.org/TR/2019/WD-css-text-4-20191113/#propdef-text-spacing,WD,CSS Text Module Level 4
+text-transform,http://www.w3.org/TR/2011/REC-CSS2-20110607/text.html#propdef-text-transform,REC,CSS 2.1
+text-transform,https://drafts.csswg.org/css-text-3/#propdef-text-transform,ED,CSS Text Module Level 3
+text-transform,https://www.w3.org/TR/2019/WD-css-text-3-20191113/#propdef-text-transform,WD,CSS Text Module Level 3
+text-underline-offset,https://drafts.csswg.org/css-text-decor-4/#propdef-text-underline-offset,ED,CSS Text Decoration Module Level 4
+text-underline-offset,https://www.w3.org/TR/2018/WD-css-text-decor-4-20180313/#propdef-text-underline-offset,FPWD,CSS Text Decoration Module Level 4
+text-underline-position,https://drafts.csswg.org/css-text-decor-3/#propdef-text-underline-position,ED,CSS Text Decoration Module Level 3
+text-underline-position,https://drafts.csswg.org/css-text-decor-4/#propdef-text-underline-position,ED,CSS Text Decoration Module Level 4
+text-underline-position,https://www.w3.org/TR/2019/CR-css-text-decor-3-20190813/#propdef-text-underline-position,CR,CSS Text Decoration Module Level 3
+text-wrap,https://drafts.csswg.org/css-text-4/#propdef-text-wrap,ED,CSS Text Module Level 4
+text-wrap,https://www.w3.org/TR/2019/WD-css-text-4-20191113/#propdef-text-wrap,WD,CSS Text Module Level 4
+top,http://www.w3.org/TR/2011/REC-CSS2-20110607/visuren.html#propdef-top,REC,CSS 2.1
+top,http://www.w3.org/TR/2016/WD-css-position-3-20160517/#propdef-top,WD,CSS Positioned Layout Module Level 3
+top,https://drafts.csswg.org/css-position/#propdef-top,ED,CSS Positioned Layout Module Level 3
+transform,https://drafts.csswg.org/css-transforms/#propdef-transform,ED,CSS Transforms Module Level 1
+transform,https://www.w3.org/TR/2019/CR-css-transforms-1-20190214/#propdef-transform,CR,CSS Transforms Module Level 1
+transform-box,https://drafts.csswg.org/css-transforms/#propdef-transform-box,ED,CSS Transforms Module Level 1
+transform-box,https://www.w3.org/TR/2019/CR-css-transforms-1-20190214/#propdef-transform-box,CR,CSS Transforms Module Level 1
+transform-origin,https://drafts.csswg.org/css-transforms/#propdef-transform-origin,ED,CSS Transforms Module Level 1
+transform-origin,https://www.w3.org/TR/2019/CR-css-transforms-1-20190214/#propdef-transform-origin,CR,CSS Transforms Module Level 1
+transition,https://drafts.csswg.org/css-transitions/#propdef-transition,ED,CSS Transitions
+transition,https://www.w3.org/TR/2018/WD-css-transitions-1-20181011/#propdef-transition,WD,CSS Transitions
+transition-delay,https://drafts.csswg.org/css-transitions/#propdef-transition-delay,ED,CSS Transitions
+transition-delay,https://www.w3.org/TR/2018/WD-css-transitions-1-20181011/#propdef-transition-delay,WD,CSS Transitions
+transition-duration,https://drafts.csswg.org/css-transitions/#propdef-transition-duration,ED,CSS Transitions
+transition-duration,https://www.w3.org/TR/2018/WD-css-transitions-1-20181011/#propdef-transition-duration,WD,CSS Transitions
+transition-property,https://drafts.csswg.org/css-transitions/#propdef-transition-property,ED,CSS Transitions
+transition-property,https://www.w3.org/TR/2018/WD-css-transitions-1-20181011/#propdef-transition-property,WD,CSS Transitions
+transition-timing-function,https://drafts.csswg.org/css-transitions/#propdef-transition-timing-function,ED,CSS Transitions
+transition-timing-function,https://www.w3.org/TR/2018/WD-css-transitions-1-20181011/#propdef-transition-timing-function,WD,CSS Transitions
+unicode-bidi,http://www.w3.org/TR/2011/REC-CSS2-20110607/visuren.html#propdef-unicode-bidi,REC,CSS 2.1
+unicode-bidi,https://drafts.csswg.org/css-writing-modes-3/#propdef-unicode-bidi,ED,CSS Writing Modes Level 3
+unicode-bidi,https://drafts.csswg.org/css-writing-modes-4/#propdef-unicode-bidi,ED,CSS Writing Modes Level 4
+unicode-bidi,https://www.w3.org/TR/2019/CR-css-writing-modes-4-20190730/#propdef-unicode-bidi,CR,CSS Writing Modes Level 4
+unicode-bidi,https://www.w3.org/TR/2019/REC-css-writing-modes-3-20191210/#propdef-unicode-bidi,REC,CSS Writing Modes Level 3
+user-select,https://drafts.csswg.org/css-ui-4/#propdef-user-select,ED,CSS Basic User Interface Module Level 4
+user-select,https://drafts.csswg.org/css-ui/#propdef-user-select,ED,CSS Basic User Interface Module Level 3 (CSS3 UI)
+user-select,https://www.w3.org/TR/2017/WD-css-ui-4-20171222/#propdef-user-select,WD,CSS Basic User Interface Module Level 4
+vertical-align,http://www.w3.org/TR/2011/REC-CSS2-20110607/visudet.html#propdef-vertical-align,REC,CSS 2.1
+vertical-align,https://drafts.csswg.org/css-inline-3/#propdef-vertical-align,ED,CSS Inline Layout Module Level 3
+vertical-align,https://www.w3.org/TR/2018/WD-css-inline-3-20180808/#propdef-vertical-align,WD,CSS Inline Layout Module Level 3
+visibility,http://www.w3.org/TR/2011/REC-CSS2-20110607/visufx.html#propdef-visibility,REC,CSS 2.1
+voice-family,http://www.w3.org/TR/2011/REC-CSS2-20110607/aural.html#propdef-voice-family,REC,CSS 2.1
+volume,http://www.w3.org/TR/2011/REC-CSS2-20110607/aural.html#propdef-volume,REC,CSS 2.1
+white-space,http://www.w3.org/TR/2011/REC-CSS2-20110607/text.html#propdef-white-space,REC,CSS 2.1
+white-space,https://drafts.csswg.org/css-text-3/#propdef-white-space,ED,CSS Text Module Level 3
+white-space,https://drafts.csswg.org/css-text-4/#propdef-white-space,ED,CSS Text Module Level 4
+white-space,https://www.w3.org/TR/2019/WD-css-text-3-20191113/#propdef-white-space,WD,CSS Text Module Level 3
+white-space,https://www.w3.org/TR/2019/WD-css-text-4-20191113/#propdef-white-space,WD,CSS Text Module Level 4
+widows,http://www.w3.org/TR/2011/REC-CSS2-20110607/page.html#propdef-widows,REC,CSS 2.1
+widows,https://drafts.csswg.org/css-break-4/#propdef-widows,ED,CSS Fragmentation Module Level 4
+widows,https://drafts.csswg.org/css-break/#propdef-widows,ED,CSS Fragmentation Module Level 3
+widows,https://www.w3.org/TR/2018/CR-css-break-3-20181204/#propdef-widows,CR,CSS Fragmentation Module Level 3
+widows,https://www.w3.org/TR/2018/WD-css-break-4-20181218/#propdef-widows,FPWD,CSS Fragmentation Module Level 4
+width,http://www.w3.org/TR/2011/REC-CSS2-20110607/visudet.html#propdef-width,REC,CSS 2.1
+width,https://drafts.csswg.org/css-sizing-3/#propdef-width,ED,CSS Intrinsic & Extrinsic Sizing Module Level 3
+width,https://www.w3.org/TR/2019/WD-css-sizing-3-20190522/#propdef-width,WD,CSS Intrinsic & Extrinsic Sizing Module Level 3
+will-change,http://www.w3.org/TR/2015/CR-css-will-change-1-20151203/#propdef-will-change,CR,CSS Will Change Module Level 1
+will-change,https://drafts.csswg.org/css-will-change/#propdef-will-change,ED,CSS Will Change Module Level 1
+word-boundary-detection,https://drafts.csswg.org/css-text-4/#propdef-word-boundary-detection,ED,CSS Text Module Level 4
+word-boundary-detection,https://www.w3.org/TR/2019/WD-css-text-4-20191113/#propdef-word-boundary-detection,WD,CSS Text Module Level 4
+word-boundary-expansion,https://drafts.csswg.org/css-text-4/#propdef-word-boundary-expansion,ED,CSS Text Module Level 4
+word-boundary-expansion,https://www.w3.org/TR/2019/WD-css-text-4-20191113/#propdef-word-boundary-expansion,WD,CSS Text Module Level 4
+word-break,https://drafts.csswg.org/css-text-3/#propdef-word-break,ED,CSS Text Module Level 3
+word-break,https://www.w3.org/TR/2019/WD-css-text-3-20191113/#propdef-word-break,WD,CSS Text Module Level 3
+word-spacing,http://www.w3.org/TR/2011/REC-CSS2-20110607/text.html#propdef-word-spacing,REC,CSS 2.1
+word-spacing,https://drafts.csswg.org/css-text-3/#propdef-word-spacing,ED,CSS Text Module Level 3
+word-spacing,https://www.w3.org/TR/2019/WD-css-text-3-20191113/#propdef-word-spacing,WD,CSS Text Module Level 3
+word-wrap,https://drafts.csswg.org/css-text-3/#propdef-word-wrap,ED,CSS Text Module Level 3
+word-wrap,https://www.w3.org/TR/2019/WD-css-text-3-20191113/#propdef-word-wrap,WD,CSS Text Module Level 3
+wrap-after,https://drafts.csswg.org/css-text-4/#propdef-wrap-after,ED,CSS Text Module Level 4
+wrap-after,https://www.w3.org/TR/2019/WD-css-text-4-20191113/#propdef-wrap-after,WD,CSS Text Module Level 4
+wrap-before,https://drafts.csswg.org/css-text-4/#propdef-wrap-before,ED,CSS Text Module Level 4
+wrap-before,https://www.w3.org/TR/2019/WD-css-text-4-20191113/#propdef-wrap-before,WD,CSS Text Module Level 4
+wrap-flow,http://www.w3.org/TR/2015/WD-css3-exclusions-20150115/#propdef-wrap-flow,WD,CSS Exclusions Module Level 1
+wrap-flow,https://drafts.csswg.org/css-exclusions/#propdef-wrap-flow,ED,CSS Exclusions Module Level 1
+wrap-inside,https://drafts.csswg.org/css-text-4/#propdef-wrap-inside,ED,CSS Text Module Level 4
+wrap-inside,https://www.w3.org/TR/2019/WD-css-text-4-20191113/#propdef-wrap-inside,WD,CSS Text Module Level 4
+wrap-through,http://www.w3.org/TR/2015/WD-css3-exclusions-20150115/#propdef-wrap-through,WD,CSS Exclusions Module Level 1
+wrap-through,https://drafts.csswg.org/css-exclusions/#propdef-wrap-through,ED,CSS Exclusions Module Level 1
+writing-mode,https://drafts.csswg.org/css-writing-modes-3/#propdef-writing-mode,ED,CSS Writing Modes Level 3
+writing-mode,https://drafts.csswg.org/css-writing-modes-4/#propdef-writing-mode,ED,CSS Writing Modes Level 4
+writing-mode,https://www.w3.org/TR/2019/CR-css-writing-modes-4-20190730/#propdef-writing-mode,CR,CSS Writing Modes Level 4
+writing-mode,https://www.w3.org/TR/2019/REC-css-writing-modes-3-20191210/#propdef-writing-mode,REC,CSS Writing Modes Level 3
+z-index,http://www.w3.org/TR/2011/REC-CSS2-20110607/visuren.html#propdef-z-index,REC,CSS 2.1
+z-index,http://www.w3.org/TR/2016/WD-css-position-3-20160517/#propdef-z-index,WD,CSS Positioned Layout Module Level 3
+z-index,https://drafts.csswg.org/css-position/#propdef-z-index,ED,CSS Positioned Layout Module Level 3

@@ -1,0 +1,19 @@
+[package]
+name = "style-proc"
+version = "0.1.0"
+authors = ["Richard Dodd <richard.o.dodd@gmail.com>"]
+edition = "2018"
+
+[lib]
+proc-macro = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+quote = "1.0.2"
+proc-macro-hack = "0.5.11"
+style-shared = { version = "0.1", path = "../shared" }
+
+[dependencies.syn]
+version = "1.0.11"
+

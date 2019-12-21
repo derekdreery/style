@@ -1,0 +1,22 @@
+[package]
+name = "style"
+version = "0.1.0"
+authors = ["Richard Dodd <richard.o.dodd@gmail.com>"]
+edition = "2018"
+description = "Will be a lib for processing css styles"
+license = "MIT/Apache-2.0"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+style-shared = { version = "0.1", path = "shared" }
+style-proc = { version = "0.1", path = "proc" }
+proc-macro-hack = "0.5.11"
+
+[workspace]
+members = [
+    ".",
+    "proc",
+    "shared",
+    "scripts"
+]
