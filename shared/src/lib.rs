@@ -12,22 +12,9 @@ use std::{
 
 pub use color::Color;
 
-/*
-#[macro_export]
-macro_rules! styles {
-    ($($key:expr => $val:expr),*) => {{
-        let mut styles = crate::style::Styles::new();
-        $(
-            styles.add($key($val));
-        )*
-        styles
-    }};
-    ($($key:expr => $val:expr ,)*) => {crate::styles!($($key => $val),*)}
-}
-*/
-
 // TODO make container generic over heap (e.g. support bumpalo)
-pub struct Styles<'a>(Vec<Style<'a>>);
+#[derive(Debug, Clone, PartialEq)]
+pub struct Styles<'a>(pub Vec<Style<'a>>);
 
 impl<'a> Styles<'a> {
     pub fn new() -> Self {
@@ -65,7 +52,7 @@ impl<'a> From<Styles<'a>> for Vec<Style<'a>> {
 
 impl fmt::Display for Styles<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        for style in self.0.iter() {
+        for style in self.0.iter().filter(|style| !style.is_dummy()) {
             write!(f, "{};", style)?;
         }
         Ok(())
@@ -76,8 +63,12 @@ impl fmt::Display for Styles<'_> {
 ///
 /// Styles borrow any heap data making them cheap to copy etc. Use `into_owned` to get something
 /// `'static`.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum Style<'a> {
+    /// For when you don't want to include any style at all (useful in expressions like `if`)
+    Dummy,
+
+    // *From w3 spec:*
     // align-content
     /// align-items
     AlignItems(AlignItems),
@@ -159,7 +150,7 @@ pub enum Style<'a> {
     // empty-cells
     // flex
     /// flex-basis
-    FlexBasis(Length),
+    FlexBasis(FlexBasis),
     /// flex-direction
     FlexDirection(FlexDirection),
     // flex-flow
@@ -206,7 +197,7 @@ pub enum Style<'a> {
     // grid-template-columns
     // grid-template-rows
     /// height
-    Height(Length),
+    Height(WidthHeight),
     // image-orientation
     // image-rendering
     // isolation
@@ -223,13 +214,13 @@ pub enum Style<'a> {
     /// margin
     Margin(Margin),
     /// margin-bottom
-    MarginBottom(Length),
+    MarginBottom(MarginWidth),
     /// margin-left
-    MarginLeft(Length),
+    MarginLeft(MarginWidth),
     /// margin-right
-    MarginRight(Length),
+    MarginRight(MarginWidth),
     /// margin-top
-    MarginTop(Length),
+    MarginTop(MarginWidth),
     // mask
     // mask-border
     // mask-border-mode
@@ -250,9 +241,9 @@ pub enum Style<'a> {
     // max-height
     // max-width
     /// min-height
-    MinHeight(Length),
+    MinHeight(LengthPercentage), // todo inherit
     /// min-width
-    MinWidth(Length),
+    MinWidth(LengthPercentage), // todo none, inherit
     // mix-blend-mode
     // object-fit
     // object-position
@@ -267,10 +258,14 @@ pub enum Style<'a> {
     // overflow
     /// padding
     Padding(Padding),
-    // padding-bottom
-    // padding-left
-    // padding-right
-    // padding-top
+    /// padding-bottom
+    PaddingBottom(PaddingWidth),
+    /// padding-left
+    PaddingLeft(PaddingWidth),
+    /// padding-right
+    PaddingRight(PaddingWidth),
+    /// padding-top
+    PaddingTop(PaddingWidth),
     // page-break-after
     // page-break-before
     // page-break-inside
@@ -349,7 +344,7 @@ pub enum Style<'a> {
     // white-space
     // widows
     /// width
-    Width(Width),
+    Width(WidthHeight),
     // will-change
     // word-spacing
     // writing-mode
@@ -357,8 +352,17 @@ pub enum Style<'a> {
 }
 
 impl<'a> Style<'a> {
+    fn is_dummy(&self) -> bool {
+        match self {
+            Style::Dummy => true,
+            _ => false,
+        }
+    }
+
     pub fn into_owned(self) -> Style<'static> {
         match self {
+            Style::Dummy => Style::Dummy,
+
             // align-content
             Style::AlignItems(value) => Style::AlignItems(value),
             // align-self
@@ -524,10 +528,10 @@ impl<'a> Style<'a> {
             // outline-width
             // overflow
             Style::Padding(value) => Style::Padding(value),
-            // padding-bottom
-            // padding-left
-            // padding-right
-            // padding-top
+            Style::PaddingBottom(value) => Style::PaddingBottom(value),
+            Style::PaddingLeft(value) => Style::PaddingLeft(value),
+            Style::PaddingRight(value) => Style::PaddingRight(value),
+            Style::PaddingTop(value) => Style::PaddingTop(value),
             // page-break-after
             // page-break-before
             // page-break-inside
@@ -616,6 +620,8 @@ impl<'a> Style<'a> {
 impl fmt::Display for Style<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
+            Style::Dummy => Ok(()),
+
             // align-content
             Style::AlignItems(v) => write!(f, "align-items:{}", v),
             // align-self
@@ -781,6 +787,10 @@ impl fmt::Display for Style<'_> {
             // outline-width
             // overflow
             Style::Padding(v) => write!(f, "padding:{}", v),
+            Style::PaddingBottom(v) => write!(f, "padding-bottom:{}", v),
+            Style::PaddingLeft(v) => write!(f, "padding-left:{}", v),
+            Style::PaddingRight(v) => write!(f, "padding-right:{}", v),
+            Style::PaddingTop(v) => write!(f, "padding-top:{}", v),
             // padding-bottom
             // padding-left
             // padding-right
@@ -870,7 +880,7 @@ impl fmt::Display for Style<'_> {
     }
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Display {
     Block,
     Flex,
@@ -888,7 +898,22 @@ impl fmt::Display for Display {
     }
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum FlexBasis {
+    Width(Width21),
+    Content,
+}
+
+impl fmt::Display for FlexBasis {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            FlexBasis::Width(v) => fmt::Display::fmt(v, f),
+            FlexBasis::Content => f.write_str("content"),
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum FlexDirection {
     Row,
     Column,
@@ -903,7 +928,7 @@ impl fmt::Display for FlexDirection {
     }
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum FlexWrap {
     Wrap,
     Nowrap,
@@ -919,7 +944,7 @@ impl fmt::Display for FlexWrap {
 }
 
 /// https://developer.mozilla.org/en-US/docs/Web/CSS/align-items
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum AlignItems {
     Normal,
     Stretch,
@@ -941,84 +966,88 @@ impl fmt::Display for AlignItems {
     }
 }
 
-/// https://developer.mozilla.org/en-US/docs/Web/CSS/justify-content
-#[derive(Debug, Clone, Copy)]
+/// https://www.w3.org/TR/css-flexbox-1/#propdef-justify-content
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum JustifyContent {
-    Start,
+    FlexStart,
     Center,
-    End,
+    FlexEnd,
     SpaceBetween,
     SpaceAround,
-    SpaceEvenly,
-    //todo-
 }
 
 impl fmt::Display for JustifyContent {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            JustifyContent::Start => write!(f, "start"),
+            JustifyContent::FlexStart => write!(f, "flex-start"),
             JustifyContent::Center => write!(f, "center"),
-            JustifyContent::End => write!(f, "end"),
+            JustifyContent::FlexEnd => write!(f, "flex-end"),
             JustifyContent::SpaceAround => write!(f, "space-around"),
             JustifyContent::SpaceBetween => write!(f, "space-between"),
-            JustifyContent::SpaceEvenly => write!(f, "space-evenly"),
         }
     }
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum FontWeight {
-    _900,
     Normal,
     Bold,
-    // todo
+    Lighter,
+    Bolder,
+    /// Between 1 and 1000
+    Number(f64),
 }
 
 impl fmt::Display for FontWeight {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            FontWeight::_900 => f.write_str("900"),
             FontWeight::Normal => f.write_str("normal"),
             FontWeight::Bold => f.write_str("bold"),
+            FontWeight::Lighter => f.write_str("lighter"),
+            FontWeight::Bolder => f.write_str("bolder"),
+            FontWeight::Number(v) => fmt::Display::fmt(v, f),
         }
     }
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum FontStyle {
     Normal,
-    //todo
+    Italic,
+    Oblique,
 }
 
 impl fmt::Display for FontStyle {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             FontStyle::Normal => f.write_str("normal"),
+            FontStyle::Italic => f.write_str("italic"),
+            FontStyle::Oblique => f.write_str("oblique"),
         }
     }
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum BoxSizing {
     BorderBox,
-    //todo
+    ContentBox,
 }
 
 impl fmt::Display for BoxSizing {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             BoxSizing::BorderBox => f.write_str("border-box"),
+            BoxSizing::ContentBox => f.write_str("content-box"),
         }
     }
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Padding {
-    All(Length),
-    VerticalHorizontal(Length, Length),
-    TopHorizontalBottom(Length, Length, Length),
-    LeftTopRightBottom(Length, Length, Length, Length),
-    Inherit,
+    All(PaddingWidth),
+    VerticalHorizontal(PaddingWidth, PaddingWidth),
+    TopHorizontalBottom(PaddingWidth, PaddingWidth, PaddingWidth),
+    LeftTopRightBottom(PaddingWidth, PaddingWidth, PaddingWidth, PaddingWidth),
 }
 
 impl fmt::Display for Padding {
@@ -1028,18 +1057,19 @@ impl fmt::Display for Padding {
             Padding::VerticalHorizontal(v, h) => write!(f, "{} {}", v, h),
             Padding::TopHorizontalBottom(t, h, b) => write!(f, "{} {} {}", t, h, b),
             Padding::LeftTopRightBottom(l, t, r, b) => write!(f, "{} {} {} {}", l, t, r, b),
-            Padding::Inherit => write!(f, "inherit"),
         }
     }
 }
 
-#[derive(Debug, Clone, Copy)]
+/// for e.g. `padding-top`
+pub type PaddingWidth = LengthPercentage;
+
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Margin {
-    All(Length),
-    VerticalHorizontal(Length, Length),
-    TopHorizontalBottom(Length, Length, Length),
-    LeftTopRightBottom(Length, Length, Length, Length),
-    Inherit,
+    All(MarginWidth),
+    VerticalHorizontal(MarginWidth, MarginWidth),
+    TopHorizontalBottom(MarginWidth, MarginWidth, MarginWidth),
+    LeftTopRightBottom(MarginWidth, MarginWidth, MarginWidth, MarginWidth),
 }
 
 impl fmt::Display for Margin {
@@ -1049,35 +1079,74 @@ impl fmt::Display for Margin {
             Margin::VerticalHorizontal(v, h) => write!(f, "{} {}", v, h),
             Margin::TopHorizontalBottom(t, h, b) => write!(f, "{} {} {}", t, h, b),
             Margin::LeftTopRightBottom(l, t, r, b) => write!(f, "{} {} {} {}", l, t, r, b),
-            Margin::Inherit => write!(f, "inherit"),
         }
     }
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum MarginWidth {
+    LengthPercentage(LengthPercentage),
+    Auto,
+}
+
+impl fmt::Display for MarginWidth {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            MarginWidth::LengthPercentage(v) => fmt::Display::fmt(v, f),
+            MarginWidth::Auto => write!(f, "auto"),
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum ListStyleType {
+    Disc,
     Circle,
+    Square,
+    Decimal,
+    DecimalLeadingZero,
+    LowerRoman,
+    UpperRoman,
+    LowerGreek,
+    UpperGreek,
+    LowerLatin,
+    UpperLatin,
+    Armenian,
+    Georgian,
+    LowerAlpha,
+    UpperAlpha,
     None,
-    // todo
 }
 
 impl fmt::Display for ListStyleType {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
+            ListStyleType::Disc => write!(f, "disc"),
             ListStyleType::Circle => write!(f, "circle"),
+            ListStyleType::Square => write!(f, "square"),
+            ListStyleType::Decimal => write!(f, "decimal"),
+            ListStyleType::DecimalLeadingZero => write!(f, "decimal-leading-zero"),
+            ListStyleType::LowerRoman => write!(f, "lower-roman"),
+            ListStyleType::UpperRoman => write!(f, "upper-roman"),
+            ListStyleType::LowerGreek => write!(f, "lower-greek"),
+            ListStyleType::UpperGreek => write!(f, "upper-greek"),
+            ListStyleType::LowerLatin => write!(f, "lower-latin"),
+            ListStyleType::UpperLatin => write!(f, "upper-latin"),
+            ListStyleType::Armenian => write!(f, "armenian"),
+            ListStyleType::Georgian => write!(f, "georgian"),
+            ListStyleType::LowerAlpha => write!(f, "lower-alpha"),
+            ListStyleType::UpperAlpha => write!(f, "upper-alpha"),
             ListStyleType::None => write!(f, "none"),
         }
     }
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Resize {
     None,
     Both,
     Horizontal,
     Vertical,
-    Initial,
-    Inherit,
 }
 
 impl fmt::Display for Resize {
@@ -1087,38 +1156,71 @@ impl fmt::Display for Resize {
             Resize::Both => write!(f, "both"),
             Resize::Horizontal => write!(f, "horizontal"),
             Resize::Vertical => write!(f, "vertical"),
-            Resize::Initial => write!(f, "initial"),
-            Resize::Inherit => write!(f, "inherit"),
         }
     }
 }
 
-#[derive(Debug, Clone, Copy)]
-pub enum Width {
-    Length(Length),
-    Percentage(Percentage),
-    Auto,
-    Inherit,
+/// for max-width and max-height
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum MaxWidthHeight {
+    None,
+    LengthPercentage(LengthPercentage),
+    MinContent,
+    MaxContent,
+    FitContent(LengthPercentage),
 }
 
-impl Default for Width {
-    fn default() -> Self {
-        Width::Auto
-    }
-}
-
-impl fmt::Display for Width {
+impl fmt::Display for MaxWidthHeight {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            Width::Length(v) => write!(f, "{}", v),
-            Width::Percentage(v) => write!(f, "{}", v),
-            Width::Auto => write!(f, "auto"),
-            Width::Inherit => write!(f, "inherit"),
+            MaxWidthHeight::None => write!(f, "none"),
+            MaxWidthHeight::LengthPercentage(v) => write!(f, "{}", v),
+            MaxWidthHeight::MinContent => write!(f, "min-content"),
+            MaxWidthHeight::MaxContent => write!(f, "max-content"),
+            MaxWidthHeight::FitContent(v) => write!(f, "fit-content({})", v),
         }
     }
 }
 
-#[derive(Debug, Clone, Copy)]
+/// values of `width` and `height`, `min-width`, `min-height`.
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum WidthHeight {
+    Auto,
+    LengthPercentage(LengthPercentage),
+    MinContent,
+    MaxContent,
+    FitContent(LengthPercentage),
+}
+
+impl fmt::Display for WidthHeight {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            WidthHeight::Auto => write!(f, "auto"),
+            WidthHeight::LengthPercentage(v) => write!(f, "{}", v),
+            WidthHeight::MinContent => write!(f, "min-content"),
+            WidthHeight::MaxContent => write!(f, "max-content"),
+            WidthHeight::FitContent(v) => write!(f, "fit-content({})", v),
+        }
+    }
+}
+
+/// CSS2.1 width, for use with flexbox.
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum Width21 {
+    Auto,
+    LengthPercentage(LengthPercentage),
+}
+
+impl fmt::Display for Width21 {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Width21::Auto => write!(f, "auto"),
+            Width21::LengthPercentage(v) => fmt::Display::fmt(v, f),
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Length {
     Em(f64),
     Ex(f64),
@@ -1142,16 +1244,31 @@ impl fmt::Display for Length {
             Length::Pt(val) => write!(f, "{}pt", val),
             Length::Pc(val) => write!(f, "{}pc", val),
             Length::Px(val) => write!(f, "{}px", val),
-            Length::Zero => write!(f, "zero"),
+            Length::Zero => write!(f, "0"),
         }
     }
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Percentage(pub f64);
 
 impl fmt::Display for Percentage {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{}%", self.0)
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum LengthPercentage {
+    Length(Length),
+    Percentage(Percentage),
+}
+
+impl fmt::Display for LengthPercentage {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            LengthPercentage::Length(v) => fmt::Display::fmt(v, f),
+            LengthPercentage::Percentage(v) => fmt::Display::fmt(v, f),
+        }
     }
 }

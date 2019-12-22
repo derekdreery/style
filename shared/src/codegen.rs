@@ -2,9 +2,28 @@ use crate::*;
 use proc_macro2::TokenStream;
 use quote::{quote, ToTokens};
 
+impl ToTokens for Styles<'_> {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        let parts = self
+            .0
+            .iter()
+            .filter(|style| !style.is_dummy())
+            .map(|style| style.to_token_stream());
+        tokens.extend(quote! {
+            {
+                let mut styles = style::Styles::new();
+                #(styles.push(#parts);)*
+                styles
+            }
+        })
+    }
+}
+
 impl ToTokens for Style<'_> {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         tokens.extend(match self {
+            Style::Dummy => quote!(style::Style::Dummy),
+
             // align-content
             Style::AlignItems(v) => quote!(style::Style::AlignItems(#v)),
             // align-self
@@ -170,10 +189,10 @@ impl ToTokens for Style<'_> {
             // outline-width
             // overflow
             Style::Padding(v) => quote!(style::Style::Padding(#v)),
-            // padding-bottom
-            // padding-left
-            // padding-right
-            // padding-top
+            Style::PaddingBottom(v) => quote!(style::Style::PaddingBottom(#v)),
+            Style::PaddingLeft(v) => quote!(style::Style::PaddingLeft(#v)),
+            Style::PaddingRight(v) => quote!(style::Style::PaddingRight(#v)),
+            Style::PaddingTop(v) => quote!(style::Style::PaddingTop(#v)),
             // page-break-after
             // page-break-before
             // page-break-inside
@@ -269,6 +288,15 @@ impl ToTokens for Display {
     }
 }
 
+impl ToTokens for FlexBasis {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        tokens.extend(match self {
+            FlexBasis::Width(v) => quote!(style::FlexBasis::Width(#v)),
+            FlexBasis::Content => quote!(style::FlexBasis::Content),
+        });
+    }
+}
+
 impl ToTokens for FlexDirection {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         tokens.extend(match self {
@@ -302,12 +330,11 @@ impl ToTokens for AlignItems {
 impl ToTokens for JustifyContent {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         tokens.extend(match self {
+            JustifyContent::FlexStart => quote!(style::JustifyContent::FlexStart),
             JustifyContent::Center => quote!(style::JustifyContent::Center),
-            JustifyContent::End => quote!(style::JustifyContent::End),
+            JustifyContent::FlexEnd => quote!(style::JustifyContent::FlexEnd),
             JustifyContent::SpaceAround => quote!(style::JustifyContent::SpaceAround),
             JustifyContent::SpaceBetween => quote!(style::JustifyContent::SpaceBetween),
-            JustifyContent::SpaceEvenly => quote!(style::JustifyContent::SpaceEvenly),
-            JustifyContent::Start => quote!(style::JustifyContent::Start),
         });
     }
 }
@@ -315,9 +342,11 @@ impl ToTokens for JustifyContent {
 impl ToTokens for FontWeight {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         tokens.extend(match self {
-            FontWeight::_900 => quote!(style::FontWeight::_900),
             FontWeight::Normal => quote!(style::FontWeight::Normal),
             FontWeight::Bold => quote!(style::FontWeight::Bold),
+            FontWeight::Lighter => quote!(style::FontWeight::Lighter),
+            FontWeight::Bolder => quote!(style::FontWeight::Bolder),
+            FontWeight::Number(v) => quote!(style::FontWeight::Number(#v)),
         });
     }
 }
@@ -326,6 +355,8 @@ impl ToTokens for FontStyle {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         tokens.extend(match self {
             FontStyle::Normal => quote!(style::FontStyle::Normal),
+            FontStyle::Italic => quote!(style::FontStyle::Italic),
+            FontStyle::Oblique => quote!(style::FontStyle::Oblique),
         });
     }
 }
@@ -334,8 +365,158 @@ impl ToTokens for BoxSizing {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         tokens.extend(match self {
             BoxSizing::BorderBox => quote!(style::BoxSizing::BorderBox),
+            BoxSizing::ContentBox => quote!(style::BoxSizing::ContentBox),
         });
     }
 }
-pub enum BoxSizing {
-    BorderBox,
+
+impl ToTokens for Padding {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        tokens.extend(match self {
+            Padding::All(v) => quote!(style::Padding::All(#v)),
+            Padding::VerticalHorizontal(v, h) => quote!(style::Padding::VerticalHorizontal(#v, #h)),
+            Padding::TopHorizontalBottom(t, h, b) => {
+                quote!(style::Padding::TopHorizontalBottom(#t, #h, #b))
+            }
+            Padding::LeftTopRightBottom(l, t, r, b) => {
+                quote!(style::Padding::LeftTopRightBottom(#l, #t, #r, #b))
+            }
+        });
+    }
+}
+
+impl ToTokens for PaddingWidth {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        tokens.extend(match self {
+            PaddingWidth::Length(v) => quote!(style::PaddingWidth::Length(#v)),
+            PaddingWidth::Percentage(v) => quote!(style::PaddingWidth::Percentage(#v)),
+        });
+    }
+}
+
+impl ToTokens for Margin {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        tokens.extend(match self {
+            Margin::All(v) => quote!(style::Margin::All(#v)),
+            Margin::VerticalHorizontal(v, h) => quote!(style::Margin::VerticalHorizontal(#v, #h)),
+            Margin::TopHorizontalBottom(t, h, b) => {
+                quote!(style::Margin::TopHorizontalBottom(#t, #h, #b))
+            }
+            Margin::LeftTopRightBottom(l, t, r, b) => {
+                quote!(style::Margin::LeftTopRightBottom(#l, #t, #r, #b))
+            }
+        });
+    }
+}
+
+impl ToTokens for MarginWidth {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        tokens.extend(match self {
+            MarginWidth::LengthPercentage(v) => quote!(style::MarginWidth::LengthPercentage(#v)),
+            MarginWidth::Auto => quote!(style::MarginWidth::Auto),
+        });
+    }
+}
+
+impl ToTokens for ListStyleType {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        tokens.extend(match self {
+            ListStyleType::Disc => quote!(style::ListStyleType::Disc),
+            ListStyleType::Circle => quote!(style::ListStyleType::Circle),
+            ListStyleType::Square => quote!(style::ListStyleType::Square),
+            ListStyleType::Decimal => quote!(style::ListStyleType::Decimal),
+            ListStyleType::DecimalLeadingZero => quote!(style::ListStyleType::DecimalLeadingZero),
+            ListStyleType::LowerRoman => quote!(style::ListStyleType::LowerRoman),
+            ListStyleType::UpperRoman => quote!(style::ListStyleType::UpperRoman),
+            ListStyleType::LowerGreek => quote!(style::ListStyleType::LowerGreek),
+            ListStyleType::UpperGreek => quote!(style::ListStyleType::UpperGreek),
+            ListStyleType::LowerLatin => quote!(style::ListStyleType::LowerLatin),
+            ListStyleType::UpperLatin => quote!(style::ListStyleType::UpperLatin),
+            ListStyleType::Armenian => quote!(style::ListStyleType::Armenian),
+            ListStyleType::Georgian => quote!(style::ListStyleType::Georgian),
+            ListStyleType::LowerAlpha => quote!(style::ListStyleType::LowerAlpha),
+            ListStyleType::UpperAlpha => quote!(style::ListStyleType::UpperAlpha),
+            ListStyleType::None => quote!(style::ListStyleType::None),
+        })
+    }
+}
+
+impl ToTokens for Resize {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        tokens.extend(match self {
+            Resize::None => quote!(style::Resize::None),
+            Resize::Both => quote!(style::Resize::Both),
+            Resize::Horizontal => quote!(style::Resize::Horizontal),
+            Resize::Vertical => quote!(style::Resize::Vertical),
+        })
+    }
+}
+
+impl ToTokens for WidthHeight {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        tokens.extend(match self {
+            WidthHeight::Auto => quote!(style::WidthHeight::Auto),
+            WidthHeight::LengthPercentage(v) => quote!(style::WidthHeight::LengthPercentage(#v)),
+            WidthHeight::MinContent => quote!(style::WidthHeight::MinContent),
+            WidthHeight::MaxContent => quote!(style::WidthHeight::MaxContent),
+            WidthHeight::FitContent(v) => quote!(style::WidthHeight::FitContent(#v)),
+        })
+    }
+}
+
+impl ToTokens for MaxWidthHeight {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        tokens.extend(match self {
+            MaxWidthHeight::None => quote!(style::MaxWidthHeight::None),
+            MaxWidthHeight::LengthPercentage(v) => {
+                quote!(style::MaxWidthHeight::LengthPercentage(#v))
+            }
+            MaxWidthHeight::MinContent => quote!(style::MaxWidthHeight::MinContent),
+            MaxWidthHeight::MaxContent => quote!(style::MaxWidthHeight::MaxContent),
+            MaxWidthHeight::FitContent(v) => quote!(style::MaxWidthHeight::FitContent(#v)),
+        })
+    }
+}
+
+impl ToTokens for Width21 {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        tokens.extend(match self {
+            Width21::Auto => quote!(style::Width21::Auto),
+            Width21::LengthPercentage(v) => quote!(style::Width21::LengthPercentage(#v)),
+        })
+    }
+}
+
+impl ToTokens for Length {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        tokens.extend(match self {
+            Length::Em(v) => quote!(style::Length::Em(#v)),
+            Length::Ex(v) => quote!(style::Length::Ex(#v)),
+            Length::In(v) => quote!(style::Length::In(#v)),
+            Length::Cm(v) => quote!(style::Length::Cm(#v)),
+            Length::Mm(v) => quote!(style::Length::Mm(#v)),
+            Length::Pt(v) => quote!(style::Length::Pt(#v)),
+            Length::Pc(v) => quote!(style::Length::Pc(#v)),
+            Length::Px(v) => quote!(style::Length::Px(#v)),
+            Length::Zero => quote!(style::Length::Zero),
+        })
+    }
+}
+
+impl ToTokens for Percentage {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        let val = self.0;
+        tokens.extend(quote!(style::Percentage(#val)));
+    }
+}
+
+impl ToTokens for Color {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        tokens.extend(match self {
+            Color::HexRGB(r, g, b) => quote!(style::Color::HexRGB(#r, #g, #b)),
+            Color::HexRGBA(r, g, b, a) => quote!(style::Color::HexRGB(#r, #g, #b, #a)),
+            Color::HSL(h, s, l) => quote!(style::Color::HSL(#h, #s, #l)),
+            Color::HSLA(h, s, l, a) => quote!(style::Color::HSL(#h, #s, #l, #a)),
+        })
+    }
+}

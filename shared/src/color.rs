@@ -29,6 +29,17 @@ impl Color {
     }
 }
 
+impl fmt::Display for Color {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Color::HexRGB(r, g, b) => write!(f, "#{:02x}{:02x}{:02x}", r, g, b),
+            Color::HexRGBA(r, g, b, a) => write!(f, "#{:02x}{:02x}{:02x}{:02x}", r, g, b, a),
+            Color::HSL(h, s, l) => write!(f, "hsl({}, {}%, {}%)", h, s, l),
+            Color::HSLA(h, s, l, a) => write!(f, "hsla({}, {}%, {}%, {})", h, s, l, a),
+        }
+    }
+}
+
 fn hsl_to_rgb(h: f64, s: f64, l: f64) -> (f64, f64, f64) {
     debug_assert!(h >= 0.0 && h < 360.0);
     debug_assert!(s >= 0.0 && s <= 1.0);
@@ -52,14 +63,29 @@ fn hsl_to_rgb(h: f64, s: f64, l: f64) -> (f64, f64, f64) {
     (rp + m, gp + m, bp + m)
 }
 
-impl fmt::Display for Color {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            Color::HexRGB(r, g, b) => write!(f, "#{:x}{:x}{:x}", r, g, b),
-            Color::HexRGBA(r, g, b, a) => write!(f, "#{:x}{:x}{:x}{:x}", r, g, b, a),
-            Color::HSL(h, s, l) => write!(f, "hsl({}, {}%, {}%)", h, s, l),
-            Color::HSLA(h, s, l, a) => write!(f, "hsla({}, {}%, {}%, {})", h, s, l, a),
+pub fn parse_hex(hex: &str) -> Option<Color> {
+    match hex.len() {
+        3 => {
+            let r = u8::from_str_radix(hex.get(0..1)?, 16).ok()?;
+            let g = u8::from_str_radix(hex.get(1..2)?, 16).ok()?;
+            let b = u8::from_str_radix(hex.get(2..3)?, 16).ok()?;
+            // #fff is equivalent to #ffffff
+            Some(Color::HexRGB(r << 4 | r, g << 4 | g, b << 4 | b))
         }
+        6 => {
+            let r = u8::from_str_radix(hex.get(0..2)?, 16).ok()?;
+            let g = u8::from_str_radix(hex.get(2..4)?, 16).ok()?;
+            let b = u8::from_str_radix(hex.get(4..6)?, 16).ok()?;
+            Some(Color::HexRGB(r, g, b))
+        }
+        8 => {
+            let r = u8::from_str_radix(hex.get(0..2)?, 16).ok()?;
+            let g = u8::from_str_radix(hex.get(2..4)?, 16).ok()?;
+            let b = u8::from_str_radix(hex.get(4..6)?, 16).ok()?;
+            let a = u8::from_str_radix(hex.get(6..8)?, 16).ok()?;
+            Some(Color::HexRGBA(r, g, b, a))
+        }
+        _ => None,
     }
 }
 
@@ -75,4 +101,6 @@ fn test_color() {
 fn test_color_convert() {
     let color = Color::HSL(60.0, 0.0, 100.0);
     assert_eq!(color.to_rgb(), Color::HexRGB(255, 255, 255));
+    let color = Color::HSL(0.0, 100.0, 50.0);
+    assert_eq!(color.to_rgb(), Color::HexRGB(255, 0, 0));
 }
