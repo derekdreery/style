@@ -64,7 +64,12 @@ impl fmt::Display for Styles<'_> {
 /// Styles borrow any heap data making them cheap to copy etc. Use `into_owned` to get something
 /// `'static`.
 #[derive(Debug, Clone, PartialEq)]
+#[non_exhaustive]
 pub enum Style<'a> {
+    /// Tokens to pass through directly to codegen.
+    #[doc(hidden)]
+    Tokens(TokenWrapper),
+
     /// For when you don't want to include any style at all (useful in expressions like `if`)
     Dummy,
 
@@ -361,6 +366,7 @@ impl<'a> Style<'a> {
 
     pub fn into_owned(self) -> Style<'static> {
         match self {
+            Style::Tokens(tok) => Style::Tokens(tok),
             Style::Dummy => Style::Dummy,
 
             // align-content
@@ -620,6 +626,7 @@ impl<'a> Style<'a> {
 impl fmt::Display for Style<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
+            Style::Tokens(_) => Ok(()),
             Style::Dummy => Ok(()),
 
             // align-content
@@ -1270,5 +1277,19 @@ impl fmt::Display for LengthPercentage {
             LengthPercentage::Length(v) => fmt::Display::fmt(v, f),
             LengthPercentage::Percentage(v) => fmt::Display::fmt(v, f),
         }
+    }
+}
+
+// util
+// ====
+
+/// wrapper for TokenStream so I can impl PartialEq
+#[derive(Debug, Clone)]
+#[doc(hidden)]
+pub struct TokenWrapper(proc_macro2::TokenStream);
+
+impl PartialEq for TokenWrapper {
+    fn eq(&self, _other: &Self) -> bool {
+        false
     }
 }

@@ -22,6 +22,7 @@ impl ToTokens for Styles<'_> {
 impl ToTokens for Style<'_> {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         tokens.extend(match self {
+            Style::Tokens(TokenWrapper(stream)) => quote!(#stream),
             Style::Dummy => quote!(style::Style::Dummy),
 
             // align-content
@@ -102,12 +103,14 @@ impl ToTokens for Style<'_> {
             Style::FlexBasis(v) => quote!(style::Style::FlexBasis(#v)),
             Style::FlexDirection(v) => quote!(style::Style::FlexDirection(#v)),
             // flex-flow
-            Style::FlexGrow(v) => quote!(style::Style::FlexDirection(#v)),
+            Style::FlexGrow(v) => quote!(style::Style::FlexGrow(#v)),
             Style::FlexShrink(v) => quote!(style::Style::FlexShrink(#v)),
             Style::FlexWrap(v) => quote!(style::Style::FlexWrap(#v)),
             // float
             // font
-            Style::FontFamily(v) => quote!(style::Style::FontFamily(#v)),
+            Style::FontFamily(v) => {
+                quote!(style::Style::FontFamily(std::borrow::Cow::Borrowed(#v)))
+            }
             // font-feature-settings
             // font-kerning
             // font-size
@@ -516,7 +519,7 @@ impl ToTokens for Color {
             Color::HexRGB(r, g, b) => quote!(style::Color::HexRGB(#r, #g, #b)),
             Color::HexRGBA(r, g, b, a) => quote!(style::Color::HexRGB(#r, #g, #b, #a)),
             Color::HSL(h, s, l) => quote!(style::Color::HSL(#h, #s, #l)),
-            Color::HSLA(h, s, l, a) => quote!(style::Color::HSL(#h, #s, #l, #a)),
+            Color::HSLA(h, s, l, a) => quote!(style::Color::HSLA(#h, #s, #l, #a)),
         })
     }
 }

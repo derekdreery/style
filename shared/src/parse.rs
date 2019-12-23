@@ -2,6 +2,8 @@
 // TODO make all parsers use HyphenWord where appropriate
 // TODO make all error messages nice
 // TODO 100% test coverage
+// TODO see if I can get https://github.com/rust-lang/rust/issues/67544 accepted. then change m to
+// em and x to ex.
 use crate::*;
 use proc_macro2::Span;
 use std::{cell::RefCell, collections::BTreeSet, fmt::Write};
@@ -20,6 +22,15 @@ impl Parse for Styles<'static> {
 
 impl Parse for Style<'static> {
     fn parse(s: ParseStream) -> syn::Result<Self> {
+        // Pass through brackets
+        if s.peek(syn::token::Brace) {
+            let literal;
+            syn::braced!(literal in s);
+            let wrapper = TokenWrapper(literal.cursor().token_stream());
+            //panic!("{:#?}", wrapper);
+            return Ok(Style::Tokens(wrapper));
+        }
+
         let name: HyphenWord = s.parse()?;
         if name.try_match("dummy") {
             return Ok(Style::Dummy);
@@ -628,6 +639,14 @@ impl Parse for Padding {
     }
 }
 
+#[test]
+fn test_padding() {
+    assert_eq!(
+        syn::parse_str::<Style>("padding:1m").unwrap(),
+        Style::Padding(Padding::All(LengthPercentage::Length(Length::Em(1.0))))
+    );
+}
+
 impl Parse for Width21 {
     fn parse(s: ParseStream) -> syn::Result<Self> {
         syn::custom_keyword!(auto);
@@ -683,7 +702,8 @@ impl Parse for WidthHeight {
 impl Parse for LengthPercentage {
     fn parse(s: ParseStream) -> syn::Result<Self> {
         let (val, span, suffix) = parse_number(s)?;
-        if suffix.as_str() == "%" {
+        if s.peek(Token![%]) {
+            s.parse::<Token![%]>()?;
             Ok(LengthPercentage::Percentage(Percentage(val)))
         } else {
             Ok(LengthPercentage::Length(parse_length(
@@ -714,16 +734,18 @@ impl Parse for Resize {
 // color
 // =====
 
-syn::custom_keyword!(hsl);
-
 impl Parse for Color {
     fn parse(s: ParseStream) -> syn::Result<Self> {
         if s.peek(Token![#]) {
-            parse_hex_color(s)
-        } else if s.peek(hsl) {
-            parse_hsl_color(s)
+            return parse_hex_color(s);
+        }
+        let fn_name: HyphenWord = s.parse()?;
+        if fn_name.try_match("hsl") {
+            parse_hsl_color(s, false)
+        } else if fn_name.try_match("hsla") {
+            parse_hsl_color(s, true)
         } else {
-            Err(s.error("cannot parse color value"))
+            Err(fn_name.error())
         }
     }
 }
@@ -735,8 +757,7 @@ fn parse_hex_color(s: ParseStream) -> syn::Result<Color> {
         .ok_or(syn::Error::new(hex_str.span(), "hex color is invalid"))
 }
 
-fn parse_hsl_color(s: ParseStream) -> syn::Result<Color> {
-    s.parse::<hsl>()?;
+fn parse_hsl_color(s: ParseStream, with_alpha: bool) -> syn::Result<Color> {
     let content;
     syn::parenthesized!(content in s);
     let (hue, span, suffix) = parse_number(&content)?;
@@ -767,10 +788,14 @@ fn parse_hsl_color(s: ParseStream) -> syn::Result<Color> {
         ));
     }
     content.parse::<Token![%]>()?;
-    if content.is_empty() {
-        // no alpha
-        return Ok(Color::HSL(hue, sat, light));
+    if !with_alpha {
+        return if content.is_empty() {
+            Ok(Color::HSL(hue, sat, light))
+        } else {
+            Err(content.error("trailing characters"))
+        };
     }
+    content.parse::<Token![,]>()?;
     let (alpha, span, suffix) = parse_number(&content)?;
     empty_suffix(&suffix, span)?;
     if alpha < 0.0 || alpha > 1.0 {
@@ -784,6 +809,30 @@ fn parse_hsl_color(s: ParseStream) -> syn::Result<Color> {
     } else {
         Err(content.error("unexpected trailing characters"))
     }
+}
+
+#[test]
+fn test_color() {
+    assert_eq!(
+        syn::parse_str::<Color>("#ffffff").unwrap(),
+        Color::HexRGB(255, 255, 255)
+    );
+    assert_eq!(
+        syn::parse_str::<Color>("#fff").unwrap(),
+        Color::HexRGB(255, 255, 255)
+    );
+    assert_eq!(
+        syn::parse_str::<Color>("#ffffffff").unwrap(),
+        Color::HexRGBA(255, 255, 255, 255)
+    );
+    assert_eq!(
+        syn::parse_str::<Color>("hsl(60, 0%, 0%)").unwrap(),
+        Color::HSL(60.0, 0.0, 0.0)
+    );
+    assert_eq!(
+        syn::parse_str::<Color>("hsla(60, 0%, 0%, 0.2)").unwrap(),
+        Color::HSLA(60.0, 0.0, 0.0, 0.2)
+    );
 }
 
 // Util
@@ -810,9 +859,9 @@ fn parse_number(s: ParseStream) -> syn::Result<(f64, Span, String)> {
 ///
 /// Optionally include `%` in the list of expected suffixes if the caller will accept a percentage.
 fn parse_length(val: f64, span: Span, suffix: &str, inc_percent: bool) -> syn::Result<Length> {
-    if suffix == "em" {
+    if suffix == "m" {
         Ok(Length::Em(val))
-    } else if suffix == "ex" {
+    } else if suffix == "x" {
         Ok(Length::Ex(val))
     } else if suffix == "in" {
         Ok(Length::In(val))
@@ -833,7 +882,7 @@ fn parse_length(val: f64, span: Span, suffix: &str, inc_percent: bool) -> syn::R
         Err(syn::Error::new(
             span,
             format!(
-                "expected one of `em`, `in`, `cm`, `mm`, `pt`, `pc`, `px`{} after number",
+                "expected one of `m`, `x`, `in`, `cm`, `mm`, `pt`, `pc`, `px`{} after number",
                 percent_str
             ),
         ))
@@ -939,3 +988,27 @@ impl TryList {
         syn::Error::new(span, error_msg)
     }
 }
+
+#[test]
+fn downstream_bug1() {
+    let s: Styles = syn::parse_str(
+        "display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        flex-shrink: 0;",
+    )
+    .unwrap();
+    assert_eq!(
+        s.0,
+        vec![
+            Style::Display(Display::Flex),
+            Style::FlexDirection(FlexDirection::Column),
+            Style::FlexGrow(1.0),
+            Style::FlexShrink(0.0)
+        ]
+    )
+}
+
+#[test]
+#[ignore]
+fn inline_logic() {}
