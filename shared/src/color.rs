@@ -1,7 +1,34 @@
 use std::fmt;
 
+/// A color that possibly is possibly code, rather than a literal
+#[derive(Debug, Clone, PartialEq)]
+pub enum DynamicColor {
+    Literal(Color),
+    /// The type of the block is not checked here (it is checked by typeck).
+    Dynamic(syn::Block),
+}
+
+impl DynamicColor {
+    pub fn is_dynamic(&self) -> bool {
+        match self {
+            DynamicColor::Dynamic(_) => true,
+            DynamicColor::Literal(_) => false,
+        }
+    }
+}
+
+impl fmt::Display for DynamicColor {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            DynamicColor::Dynamic(_) => Ok(()),
+            DynamicColor::Literal(color) => color.fmt(f),
+        }
+    }
+}
+
 // TODO other color variants.
 #[derive(Debug, Clone, Copy, PartialEq)]
+#[non_exhaustive]
 pub enum Color {
     HexRGB(u8, u8, u8),
     HexRGBA(u8, u8, u8, u8),

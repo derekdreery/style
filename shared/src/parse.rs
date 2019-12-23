@@ -2,8 +2,10 @@
 // TODO make all parsers use HyphenWord where appropriate
 // TODO make all error messages nice
 // TODO 100% test coverage
-// TODO see if I can get https://github.com/rust-lang/rust/issues/67544 accepted. then change m to
-// em and x to ex.
+// TODO see if I can get https://github.com/rust-lang/rust/issues/67544 accepted. then change "em" to
+// em and "ex" to ex.
+// Split out extra "Dynamic" layer for each type for use in proc macro (so we can have `{ <arbitary
+// rust code> }`)
 use crate::*;
 use proc_macro2::Span;
 use std::{cell::RefCell, collections::BTreeSet, fmt::Write};
@@ -13,24 +15,32 @@ use syn::{
     Ident, Token,
 };
 
-impl Parse for Styles<'static> {
+impl Parse for DynamicStyles<'static> {
     fn parse(s: ParseStream) -> syn::Result<Self> {
-        let punc = s.parse_terminated::<_, Token![;]>(<Style as Parse>::parse)?;
-        Ok(Styles::from(punc.into_iter().collect::<Vec<_>>()))
+        // parse `in arena =>` syntax, but don't do anything with it for now
+        if s.peek(Token![in]) {
+            s.parse::<Token![in]>()?;
+            s.parse::<syn::Expr>()?;
+            s.parse::<Token![=>]>()?;
+        }
+        let punc = s.parse_terminated::<_, Token![;]>(<DynamicStyle as Parse>::parse)?;
+        Ok(DynamicStyles::from(punc.into_iter().collect::<Vec<_>>()))
+    }
+}
+
+impl Parse for DynamicStyle<'static> {
+    fn parse(s: ParseStream) -> syn::Result<Self> {
+        // Pass through brackets
+        if s.peek(syn::token::Brace) {
+            Ok(DynamicStyle::Dynamic(s.parse()?))
+        } else {
+            Ok(DynamicStyle::Literal(s.parse()?))
+        }
     }
 }
 
 impl Parse for Style<'static> {
     fn parse(s: ParseStream) -> syn::Result<Self> {
-        // Pass through brackets
-        if s.peek(syn::token::Brace) {
-            let literal;
-            syn::braced!(literal in s);
-            let wrapper = TokenWrapper(literal.cursor().token_stream());
-            //panic!("{:#?}", wrapper);
-            return Ok(Style::Tokens(wrapper));
-        }
-
         let name: HyphenWord = s.parse()?;
         if name.try_match("dummy") {
             return Ok(Style::Dummy);
@@ -124,17 +134,17 @@ impl Parse for Style<'static> {
             Ok(Style::FlexDirection(s.parse()?))
         // flex-flow
         } else if name.try_match("flex-grow") {
-            let (val, span, suffix) = parse_number(s)?;
-            if !suffix.is_empty() {
-                return Err(syn::Error::new(span, "expected number"));
+            let number: Number = s.parse()?;
+            if !number.suffix.is_empty() {
+                return Err(syn::Error::new(number.span, "expected number"));
             }
-            Ok(Style::FlexGrow(val))
+            Ok(Style::FlexGrow(number.value))
         } else if name.try_match("flex-shrink") {
-            let (val, span, suffix) = parse_number(s)?;
-            if !suffix.is_empty() {
-                return Err(syn::Error::new(span, "expected number"));
+            let number: Number = s.parse()?;
+            if !number.suffix.is_empty() {
+                return Err(syn::Error::new(number.span, "expected number"));
             }
-            Ok(Style::FlexShrink(val))
+            Ok(Style::FlexShrink(number.value))
         } else if name.try_match("flex-wrap") {
             Ok(Style::FlexWrap(s.parse()?))
         // float
@@ -501,12 +511,11 @@ impl Parse for FontWeight {
             s.parse::<bolder>()?;
             Ok(FontWeight::Bolder)
         } else {
-            let (val, span, suffix) =
-                parse_number(s).map_err(|e| syn::Error::new(e.span(), ERR_MSG))?;
-            if !suffix.is_empty() || val < 1.0 || val > 1000.0 {
-                Err(syn::Error::new(span, ERR_MSG))
+            let n: Number = s.parse().map_err(|e| syn::Error::new(e.span(), ERR_MSG))?;
+            if !n.suffix.is_empty() || n.value < 1.0 || n.value > 1000.0 {
+                Err(syn::Error::new(n.span, ERR_MSG))
             } else {
-                Ok(FontWeight::Number(val))
+                Ok(FontWeight::Number(n.value))
             }
         }
     }
@@ -540,8 +549,38 @@ impl Parse for JustifyContent {
 
 impl Parse for Length {
     fn parse(s: ParseStream) -> syn::Result<Self> {
-        let (val, span, suffix) = parse_number(s)?;
-        parse_length(val, span, &suffix, false)
+        let n: Number = s.parse()?;
+        Length::parse_from_number(n)
+    }
+}
+
+impl Length {
+    fn parse_from_number(n: Number) -> syn::Result<Self> {
+        if n.suffix == "em" {
+            Ok(Length::Em(n.value))
+        } else if n.suffix == "ex" {
+            Ok(Length::Ex(n.value))
+        } else if n.suffix == "in" {
+            Ok(Length::In(n.value))
+        } else if n.suffix == "cm" {
+            Ok(Length::Cm(n.value))
+        } else if n.suffix == "mm" {
+            Ok(Length::Mm(n.value))
+        } else if n.suffix == "pt" {
+            Ok(Length::Pt(n.value))
+        } else if n.suffix == "pc" {
+            Ok(Length::Pc(n.value))
+        } else if n.suffix == "px" {
+            Ok(Length::Px(n.value))
+        } else if n.suffix == "" && n.value == 0.0 {
+            Ok(Length::Zero)
+        } else {
+            // No matches so return error
+            Err(syn::Error::new(
+                n.span,
+                "expected one of `\"em\"`, `\"ex\"`, `in`, `cm`, `mm`, `pt`, `pc`, `px` after number",
+            ))
+        }
     }
 }
 
@@ -647,6 +686,17 @@ fn test_padding() {
     );
 }
 
+impl Parse for Percentage {
+    fn parse(s: ParseStream) -> syn::Result<Self> {
+        let n: Number = s.parse()?;
+        if n.suffix == "%" {
+            Ok(Percentage(n.value))
+        } else {
+            Err(syn::Error::new(n.span, "expected percentage"))
+        }
+    }
+}
+
 impl Parse for Width21 {
     fn parse(s: ParseStream) -> syn::Result<Self> {
         syn::custom_keyword!(auto);
@@ -701,14 +751,10 @@ impl Parse for WidthHeight {
 
 impl Parse for LengthPercentage {
     fn parse(s: ParseStream) -> syn::Result<Self> {
-        let (val, span, suffix) = parse_number(s)?;
-        if s.peek(Token![%]) {
-            s.parse::<Token![%]>()?;
-            Ok(LengthPercentage::Percentage(Percentage(val)))
+        if s.peek2(Token![%]) {
+            Ok(LengthPercentage::Percentage(s.parse()?))
         } else {
-            Ok(LengthPercentage::Length(parse_length(
-                val, span, &suffix, true,
-            )?))
+            Ok(LengthPercentage::Length(s.parse()?))
         }
     }
 }
@@ -734,6 +780,16 @@ impl Parse for Resize {
 // color
 // =====
 
+impl Parse for DynamicColor {
+    fn parse(s: ParseStream) -> syn::Result<Self> {
+        Ok(if s.peek(syn::token::Brace) {
+            DynamicColor::Dynamic(s.parse()?)
+        } else {
+            DynamicColor::Literal(s.parse()?)
+        })
+    }
+}
+
 impl Parse for Color {
     fn parse(s: ParseStream) -> syn::Result<Self> {
         if s.peek(Token![#]) {
@@ -752,42 +808,64 @@ impl Parse for Color {
 
 fn parse_hex_color(s: ParseStream) -> syn::Result<Color> {
     s.parse::<Token![#]>()?;
-    let hex_str: Ident = s.parse()?;
-    color::parse_hex(&hex_str.to_string())
-        .ok_or(syn::Error::new(hex_str.span(), "hex color is invalid"))
+    if s.peek(syn::LitInt) {
+        return Err(s.error(
+            "to avoid confusing rust, please enclose hex colors starting with a number in quotes",
+        ));
+    }
+    if s.peek(syn::LitStr) {
+        let hex_str: syn::LitStr = s.parse()?;
+        color::parse_hex(&hex_str.value())
+            .ok_or(syn::Error::new(hex_str.span(), "hex color is invalid"))
+    } else {
+        let hex_str: Ident = s.parse()?;
+        color::parse_hex(&hex_str.to_string())
+            .ok_or(syn::Error::new(hex_str.span(), "hex color is invalid"))
+    }
 }
 
 fn parse_hsl_color(s: ParseStream, with_alpha: bool) -> syn::Result<Color> {
     let content;
     syn::parenthesized!(content in s);
-    let (hue, span, suffix) = parse_number(&content)?;
-    empty_suffix(&suffix, span)?;
+    let n: Number = content.parse()?;
+    empty_suffix(&n.suffix, n.span)?;
+    let hue = n.value;
     if hue < 0.0 || hue >= 360.0 {
         return Err(syn::Error::new(
-            span,
+            n.span,
             "hue should be in the range `0 <= hue < 360`",
         ));
     }
     content.parse::<Token![,]>()?;
-    let (sat, span, suffix) = parse_number(&content)?;
-    empty_suffix(&suffix, span)?;
+    let n: Number = content.parse()?;
+    if n.suffix != "%" {
+        return Err(syn::Error::new(
+            n.span,
+            "saturation should be a percentage (followed by `%`)",
+        ));
+    }
+    let sat = n.value;
     if sat < 0.0 || sat > 100.0 {
         return Err(syn::Error::new(
-            span,
+            n.span,
             "saturation should be in the range `0 <= sat < 100`",
         ));
     }
-    content.parse::<Token![%]>()?;
     content.parse::<Token![,]>()?;
-    let (light, span, suffix) = parse_number(&content)?;
-    empty_suffix(&suffix, span)?;
+    let n: Number = content.parse()?;
+    if n.suffix != "%" {
+        return Err(syn::Error::new(
+            n.span,
+            "saturation should be a percentage (followed by `%`)",
+        ));
+    }
+    let light = n.value;
     if light < 0.0 || light > 100.0 {
         return Err(syn::Error::new(
-            span,
+            n.span,
             "lightness should be in the range `0 <= light < 100`",
         ));
     }
-    content.parse::<Token![%]>()?;
     if !with_alpha {
         return if content.is_empty() {
             Ok(Color::HSL(hue, sat, light))
@@ -795,12 +873,14 @@ fn parse_hsl_color(s: ParseStream, with_alpha: bool) -> syn::Result<Color> {
             Err(content.error("trailing characters"))
         };
     }
+    // we are a hsla
     content.parse::<Token![,]>()?;
-    let (alpha, span, suffix) = parse_number(&content)?;
-    empty_suffix(&suffix, span)?;
+    let n: Number = content.parse()?;
+    empty_suffix(&n.suffix, n.span)?;
+    let alpha = n.value;
     if alpha < 0.0 || alpha > 1.0 {
         return Err(syn::Error::new(
-            span,
+            n.span,
             "alpha should be in the range `0 <= alpha < 1`",
         ));
     }
@@ -838,54 +918,52 @@ fn test_color() {
 // Util
 // ====
 
-// A float parser that accepts integers
-fn parse_number(s: ParseStream) -> syn::Result<(f64, Span, String)> {
-    let lookahead = s.lookahead1();
-    if lookahead.peek(syn::LitFloat) {
-        let tok = s.parse::<syn::LitFloat>()?;
-        let num = tok.base10_parse()?;
-        Ok((num, tok.span(), tok.suffix().to_string()))
-    } else if lookahead.peek(syn::LitInt) {
-        let tok = s.parse::<syn::LitInt>()?;
-        // we only need up to 360 and u32 can be safely converted into f64
-        let num = tok.base10_parse::<u32>()?;
-        Ok((num.into(), tok.span(), tok.suffix().to_string()))
-    } else {
-        Err(lookahead.error())
-    }
+/// Either a float or an int, converted in either case to f64.
+#[derive(Debug)]
+struct Number {
+    value: f64,
+    suffix: String,
+    span: Span,
 }
 
-/// A helper so we can parse a length without needing to call `ParseStream::parse`.
-///
-/// Optionally include `%` in the list of expected suffixes if the caller will accept a percentage.
-fn parse_length(val: f64, span: Span, suffix: &str, inc_percent: bool) -> syn::Result<Length> {
-    if suffix == "m" {
-        Ok(Length::Em(val))
-    } else if suffix == "x" {
-        Ok(Length::Ex(val))
-    } else if suffix == "in" {
-        Ok(Length::In(val))
-    } else if suffix == "cm" {
-        Ok(Length::Cm(val))
-    } else if suffix == "mm" {
-        Ok(Length::Mm(val))
-    } else if suffix == "pt" {
-        Ok(Length::Pt(val))
-    } else if suffix == "pc" {
-        Ok(Length::Pc(val))
-    } else if suffix == "px" {
-        Ok(Length::Px(val))
-    } else if suffix == "" && val == 0.0 {
-        Ok(Length::Zero)
-    } else {
-        let percent_str = if inc_percent { ", `%`" } else { "" };
-        Err(syn::Error::new(
+impl Parse for Number {
+    fn parse(s: ParseStream) -> syn::Result<Number> {
+        let lookahead = s.lookahead1();
+        let (value, mut span, mut suffix) = if lookahead.peek(syn::LitFloat) {
+            let tok = s.parse::<syn::LitFloat>()?;
+            let num = tok.base10_parse()?;
+            (num, tok.span(), tok.suffix().to_string())
+        } else if lookahead.peek(syn::LitInt) {
+            let tok = s.parse::<syn::LitInt>()?;
+            // we only need up to 360 and u32 can be safely converted into f64
+            let num = tok.base10_parse::<u32>()?;
+            (num.into(), tok.span(), tok.suffix().to_string())
+        } else {
+            return Err(lookahead.error());
+        };
+        if suffix.is_empty() {
+            // look for a `%` for the suffix
+            if s.peek(Token![%]) {
+                let tok = s.parse::<Token![%]>()?;
+                if let Some(extra_span) = span.join(tok.span) {
+                    span = extra_span;
+                }
+                suffix.push('%');
+            // work-around using literal strings because the lexer can't support suffixes beginning
+            // with `e` for floats: https://github.com/rust-lang/rust/issues/67544
+            } else if s.peek(syn::LitStr) {
+                let tok = s.parse::<syn::LitStr>()?;
+                if let Some(extra_span) = span.join(tok.span()) {
+                    span = extra_span;
+                }
+                suffix.push_str(&tok.value());
+            }
+        }
+        Ok(Number {
+            value,
+            suffix,
             span,
-            format!(
-                "expected one of `m`, `x`, `in`, `cm`, `mm`, `pt`, `pc`, `px`{} after number",
-                percent_str
-            ),
-        ))
+        })
     }
 }
 

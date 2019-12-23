@@ -2,7 +2,7 @@ use crate::*;
 use proc_macro2::TokenStream;
 use quote::{quote, ToTokens};
 
-impl ToTokens for Styles<'_> {
+impl ToTokens for DynamicStyles<'_> {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         let parts = self
             .0
@@ -19,10 +19,18 @@ impl ToTokens for Styles<'_> {
     }
 }
 
+impl ToTokens for DynamicStyle<'_> {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        tokens.extend(match self {
+            DynamicStyle::Dynamic(block) => quote!(#block),
+            DynamicStyle::Literal(lit) => quote!(#lit),
+        })
+    }
+}
+
 impl ToTokens for Style<'_> {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         tokens.extend(match self {
-            Style::Tokens(TokenWrapper(stream)) => quote!(#stream),
             Style::Dummy => quote!(style::Style::Dummy),
 
             // align-content
@@ -510,6 +518,15 @@ impl ToTokens for Percentage {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         let val = self.0;
         tokens.extend(quote!(style::Percentage(#val)));
+    }
+}
+
+impl ToTokens for DynamicColor {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        tokens.extend(match self {
+            DynamicColor::Dynamic(block) => quote!(style::DynamicColor::Literal(#block)),
+            DynamicColor::Literal(color) => quote!(style::DynamicColor::Literal(#color)),
+        })
     }
 }
 

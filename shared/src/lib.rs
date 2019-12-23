@@ -10,7 +10,29 @@ use std::{
     ops::{Deref, DerefMut},
 };
 
-pub use color::Color;
+pub use color::{Color, DynamicColor};
+
+// todo possibly support dynamically generated lists of styles in proc macro
+pub struct DynamicStyles<'a>(pub Vec<DynamicStyle<'a>>);
+
+impl<'a> From<Vec<DynamicStyle<'a>>> for DynamicStyles<'a> {
+    fn from(v: Vec<DynamicStyle<'a>>) -> Self {
+        Self(v)
+    }
+}
+
+impl fmt::Display for DynamicStyles<'_> {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        for style in self
+            .0
+            .iter()
+            .filter(|style| !(style.is_dynamic() || style.is_dummy()))
+        {
+            write!(f, "{};", style)?;
+        }
+        Ok(())
+    }
+}
 
 // TODO make container generic over heap (e.g. support bumpalo)
 #[derive(Debug, Clone, PartialEq)]
@@ -19,6 +41,10 @@ pub struct Styles<'a>(pub Vec<Style<'a>>);
 impl<'a> Styles<'a> {
     pub fn new() -> Self {
         Styles(Vec::new())
+    }
+
+    pub fn add(&mut self, style: Style<'a>) {
+        self.0.push(style);
     }
 
     pub fn merge(&mut self, other: Styles<'a>) {
@@ -59,6 +85,44 @@ impl fmt::Display for Styles<'_> {
     }
 }
 
+#[derive(Debug, Clone, PartialEq)]
+pub enum DynamicStyle<'a> {
+    /// A literal style.
+    Literal(Style<'a>),
+    /// Tokens to pass through directly to codegen.
+    Dynamic(syn::Block),
+}
+
+impl DynamicStyle<'_> {
+    pub fn is_dynamic(&self) -> bool {
+        match self {
+            DynamicStyle::Literal(style) => style.is_dynamic(),
+            DynamicStyle::Dynamic(_) => true,
+        }
+    }
+    pub fn is_dummy(&self) -> bool {
+        match self {
+            DynamicStyle::Literal(style) => style.is_dummy(),
+            DynamicStyle::Dynamic(_) => false,
+        }
+    }
+}
+
+impl<'a> From<Style<'a>> for DynamicStyle<'a> {
+    fn from(style: Style<'a>) -> Self {
+        DynamicStyle::Literal(style)
+    }
+}
+
+impl fmt::Display for DynamicStyle<'_> {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            DynamicStyle::Literal(style) => style.fmt(f),
+            DynamicStyle::Dynamic(_) => Ok(()),
+        }
+    }
+}
+
 /// a `Style` is one of the css key/value pairs.
 ///
 /// Styles borrow any heap data making them cheap to copy etc. Use `into_owned` to get something
@@ -66,10 +130,6 @@ impl fmt::Display for Styles<'_> {
 #[derive(Debug, Clone, PartialEq)]
 #[non_exhaustive]
 pub enum Style<'a> {
-    /// Tokens to pass through directly to codegen.
-    #[doc(hidden)]
-    Tokens(TokenWrapper),
-
     /// For when you don't want to include any style at all (useful in expressions like `if`)
     Dummy,
 
@@ -85,7 +145,7 @@ pub enum Style<'a> {
     // background-blend-mode
     // background-clip
     /// background-color
-    BackgroundColor(Color),
+    BackgroundColor(DynamicColor),
     // background-image
     // background-origin
     // background-position
@@ -139,7 +199,7 @@ pub enum Style<'a> {
     // clip-path
     // clip-rule
     /// color
-    Color(Color),
+    Color(DynamicColor),
     // contain
     // content
     // counter-increment
@@ -364,9 +424,16 @@ impl<'a> Style<'a> {
         }
     }
 
+    fn is_dynamic(&self) -> bool {
+        match self {
+            Style::BackgroundColor(value) => value.is_dynamic(),
+            Style::Color(value) => value.is_dynamic(),
+            _ => false,
+        }
+    }
+
     pub fn into_owned(self) -> Style<'static> {
         match self {
-            Style::Tokens(tok) => Style::Tokens(tok),
             Style::Dummy => Style::Dummy,
 
             // align-content
@@ -626,7 +693,6 @@ impl<'a> Style<'a> {
 impl fmt::Display for Style<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            Style::Tokens(_) => Ok(()),
             Style::Dummy => Ok(()),
 
             // align-content
@@ -1277,19 +1343,5 @@ impl fmt::Display for LengthPercentage {
             LengthPercentage::Length(v) => fmt::Display::fmt(v, f),
             LengthPercentage::Percentage(v) => fmt::Display::fmt(v, f),
         }
-    }
-}
-
-// util
-// ====
-
-/// wrapper for TokenStream so I can impl PartialEq
-#[derive(Debug, Clone)]
-#[doc(hidden)]
-pub struct TokenWrapper(proc_macro2::TokenStream);
-
-impl PartialEq for TokenWrapper {
-    fn eq(&self, _other: &Self) -> bool {
-        false
     }
 }
