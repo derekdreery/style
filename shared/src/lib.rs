@@ -52,6 +52,19 @@ impl<'a> Styles<'a> {
     }
 }
 
+impl<'a> From<DynamicStyles<'a>> for Styles<'a> {
+    fn from(dy: DynamicStyles<'a>) -> Self {
+        Styles(
+            dy.0.into_iter()
+                .filter_map(|dy_sty| match dy_sty {
+                    DynamicStyle::Dynamic(_) => None,
+                    DynamicStyle::Literal(l) => Some(l),
+                })
+                .collect(),
+        )
+    }
+}
+
 impl<'a> Deref for Styles<'a> {
     type Target = Vec<Style<'a>>;
     fn deref(&self) -> &Self::Target {
@@ -151,15 +164,20 @@ pub enum Style<'a> {
     // background-position
     // background-repeat
     // background-size
-    // border
+    /// border
+    Border(Border),
     // border-bottom
-    // border-bottom-color
+    /// border-bottom-color
+    BorderBottomColor(Color),
     // border-bottom-left-radius
     // border-bottom-right-radius
-    // border-bottom-style
-    // border-bottom-width
+    /// border-bottom-style
+    BorderBottomStyle(LineStyle),
+    /// border-bottom-width
+    BorderBottomWidth(LineWidth),
     // border-collapse
-    // border-color
+    /// border-color
+    BorderColor(BorderColor),
     // border-image
     // border-image-outset
     // border-image-repeat
@@ -167,23 +185,34 @@ pub enum Style<'a> {
     // border-image-source
     // border-image-width
     // border-left
-    // border-left-color
-    // border-left-style
-    // border-left-width
+    /// border-left-color
+    BorderLeftColor(Color),
+    /// border-left-style
+    BorderLeftStyle(LineStyle),
+    /// border-left-width
+    BorderLeftWidth(LineWidth),
     // border-radius
     // border-right
-    // border-right-color
-    // border-right-style
-    // border-right-width
+    /// border-right-color
+    BorderRightColor(Color),
+    /// border-right-style
+    BorderRightStyle(LineStyle),
+    /// border-right-width
+    BorderRightWidth(LineWidth),
     // border-spacing
-    // border-style
+    /// border-style
+    BorderStyle(BorderStyle),
     // border-top
-    // border-top-color
+    /// border-top-color
+    BorderTopColor(Color),
     // border-top-left-radius
     // border-top-right-radius
-    // border-top-style
-    // border-top-width
-    // border-width
+    /// border-top-style
+    BorderTopStyle(LineStyle),
+    /// border-top-width
+    BorderTopWidth(LineWidth),
+    /// border-width
+    BorderWidth(BorderWidth),
     // bottom
     // box-decoration-break
     // box-shadow
@@ -207,7 +236,8 @@ pub enum Style<'a> {
     // cue
     // cue-after
     // cue-before
-    // cursor
+    /// cursor
+    Cursor(Cursor),
     // direction
     /// display https://www.w3.org/TR/css-display-3/#typedef-display-outside
     Display(Display),
@@ -451,15 +481,16 @@ impl<'a> Style<'a> {
             // background-position
             // background-repeat
             // background-size
-            // border
+            Style::Border(value) => Style::Border(value),
             // border-bottom
-            // border-bottom-color
+            Style::BorderBottomColor(value) => Style::BorderBottomColor(value),
             // border-bottom-left-radius
             // border-bottom-right-radius
-            // border-bottom-style
-            // border-bottom-width
+            Style::BorderBottomStyle(value) => Style::BorderBottomStyle(value),
+            Style::BorderBottomWidth(value) => Style::BorderBottomWidth(value),
             // border-collapse
             // border-color
+            Style::BorderColor(value) => Style::BorderColor(value),
             // border-image
             // border-image-outset
             // border-image-repeat
@@ -467,23 +498,23 @@ impl<'a> Style<'a> {
             // border-image-source
             // border-image-width
             // border-left
-            // border-left-color
-            // border-left-style
-            // border-left-width
+            Style::BorderLeftColor(value) => Style::BorderLeftColor(value),
+            Style::BorderLeftStyle(value) => Style::BorderLeftStyle(value),
+            Style::BorderLeftWidth(value) => Style::BorderLeftWidth(value),
             // border-radius
             // border-right
-            // border-right-color
-            // border-right-style
-            // border-right-width
+            Style::BorderRightColor(value) => Style::BorderRightColor(value),
+            Style::BorderRightStyle(value) => Style::BorderRightStyle(value),
+            Style::BorderRightWidth(value) => Style::BorderRightWidth(value),
             // border-spacing
-            // border-style
+            Style::BorderStyle(value) => Style::BorderStyle(value),
             // border-top
-            // border-top-color
+            Style::BorderTopColor(value) => Style::BorderTopColor(value),
             // border-top-left-radius
             // border-top-right-radius
-            // border-top-style
-            // border-top-width
-            // border-width
+            Style::BorderTopStyle(value) => Style::BorderTopStyle(value),
+            Style::BorderTopWidth(value) => Style::BorderTopWidth(value),
+            Style::BorderWidth(value) => Style::BorderWidth(value),
             // bottom
             // box-decoration-break
             // box-shadow
@@ -505,7 +536,7 @@ impl<'a> Style<'a> {
             // cue
             // cue-after
             // cue-before
-            // cursor
+            Style::Cursor(value) => Style::Cursor(value),
             // direction
             Style::Display(value) => Style::Display(value),
             // elevation
@@ -710,15 +741,15 @@ impl fmt::Display for Style<'_> {
             // background-position
             // background-repeat
             // background-size
-            // border
+            Style::Border(v) => write!(f, "border:{}", v),
             // border-bottom
-            // border-bottom-color
+            Style::BorderBottomColor(v) => write!(f, "border-bottom-color:{}", v),
             // border-bottom-left-radius
             // border-bottom-right-radius
-            // border-bottom-style
-            // border-bottom-width
+            Style::BorderBottomStyle(v) => write!(f, "border-bottom-style:{}", v),
+            Style::BorderBottomWidth(v) => write!(f, "border-bottom-width:{}", v),
             // border-collapse
-            // border-color
+            Style::BorderColor(v) => write!(f, "border-color:{}", v),
             // border-image
             // border-image-outset
             // border-image-repeat
@@ -726,23 +757,23 @@ impl fmt::Display for Style<'_> {
             // border-image-source
             // border-image-width
             // border-left
-            // border-left-color
-            // border-left-style
-            // border-left-width
+            Style::BorderLeftColor(v) => write!(f, "border-left-color:{}", v),
+            Style::BorderLeftStyle(v) => write!(f, "border-left-style:{}", v),
+            Style::BorderLeftWidth(v) => write!(f, "border-left-width:{}", v),
             // border-radius
             // border-right
-            // border-right-color
-            // border-right-style
-            // border-right-width
+            Style::BorderRightColor(v) => write!(f, "border-right-color:{}", v),
+            Style::BorderRightStyle(v) => write!(f, "border-right-style:{}", v),
+            Style::BorderRightWidth(v) => write!(f, "border-right-width:{}", v),
             // border-spacing
-            // border-style
+            Style::BorderStyle(v) => write!(f, "border-style:{}", v),
             // border-top
-            // border-top-color
+            Style::BorderTopColor(v) => write!(f, "border-top-color:{}", v),
             // border-top-left-radius
             // border-top-right-radius
-            // border-top-style
-            // border-top-width
-            // border-width
+            Style::BorderTopStyle(v) => write!(f, "border-top-style:{}", v),
+            Style::BorderTopWidth(v) => write!(f, "border-top-width:{}", v),
+            Style::BorderWidth(v) => write!(f, "border-width:{}", v),
             // bottom
             // box-decoration-break
             // box-shadow
@@ -764,7 +795,7 @@ impl fmt::Display for Style<'_> {
             // cue
             // cue-after
             // cue-before
-            // cursor
+            Style::Cursor(v) => write!(f, "cursor:{}", v),
             // direction
             Style::Display(v) => write!(f, "display:{}", v),
             // elevation
@@ -953,6 +984,244 @@ impl fmt::Display for Style<'_> {
     }
 }
 
+/// https://developer.mozilla.org/en-US/docs/Web/CSS/align-items
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum AlignItems {
+    Normal,
+    Stretch,
+    Center,
+    Start,
+    End,
+    //todo
+}
+
+impl fmt::Display for AlignItems {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            AlignItems::Normal => write!(f, "normal"),
+            AlignItems::Stretch => write!(f, "stretch"),
+            AlignItems::Center => write!(f, "center"),
+            AlignItems::Start => write!(f, "start"),
+            AlignItems::End => write!(f, "end"),
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct Border {
+    pub line_width: Option<LineWidth>,
+    pub line_style: Option<LineStyle>,
+    pub color: Option<Color>,
+}
+
+impl Border {
+    fn new() -> Self {
+        Border {
+            line_width: None,
+            line_style: None,
+            color: None,
+        }
+    }
+
+    fn is_full(&self) -> bool {
+        match (&self.line_width, &self.line_style, &self.color) {
+            (Some(_), Some(_), Some(_)) => true,
+            _ => false,
+        }
+    }
+
+    fn has_line_width(&self) -> bool {
+        self.line_width.is_some()
+    }
+    fn has_line_style(&self) -> bool {
+        self.line_style.is_some()
+    }
+    fn has_color(&self) -> bool {
+        self.color.is_some()
+    }
+}
+
+impl fmt::Display for Border {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        fn space(yes: bool) -> &'static str {
+            if yes {
+                " "
+            } else {
+                ""
+            }
+        }
+        let mut cont = false;
+        if let Some(line_width) = self.line_width {
+            write!(f, "{}", line_width)?;
+            cont = true;
+        }
+        if let Some(line_style) = self.line_style {
+            write!(f, "{}{}", space(cont), line_style)?;
+            cont = true;
+        }
+        if let Some(color) = self.color {
+            write!(f, "{}{}", space(cont), color)?;
+        }
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum BorderColor {
+    All(Color),
+    VerticalHorizontal(Color, Color),
+    TopHorizontalBottom(Color, Color, Color),
+    TopRightBottomLeft(Color, Color, Color, Color),
+}
+
+impl fmt::Display for BorderColor {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            BorderColor::All(a) => write!(f, "{}", a),
+            BorderColor::VerticalHorizontal(v, h) => write!(f, "{} {}", v, h),
+            BorderColor::TopHorizontalBottom(t, h, b) => write!(f, "{} {} {}", t, h, b),
+            BorderColor::TopRightBottomLeft(t, r, b, l) => write!(f, "{} {} {} {}", t, r, b, l),
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum BorderStyle {
+    All(LineStyle),
+    VerticalHorizontal(LineStyle, LineStyle),
+    TopHorizontalBottom(LineStyle, LineStyle, LineStyle),
+    TopRightBottomLeft(LineStyle, LineStyle, LineStyle, LineStyle),
+}
+
+impl fmt::Display for BorderStyle {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            BorderStyle::All(a) => write!(f, "{}", a),
+            BorderStyle::VerticalHorizontal(v, h) => write!(f, "{} {}", v, h),
+            BorderStyle::TopHorizontalBottom(t, h, b) => write!(f, "{} {} {}", t, h, b),
+            BorderStyle::TopRightBottomLeft(t, r, b, l) => write!(f, "{} {} {} {}", t, r, b, l),
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum BorderWidth {
+    All(LineWidth),
+    VerticalHorizontal(LineWidth, LineWidth),
+    TopHorizontalBottom(LineWidth, LineWidth, LineWidth),
+    TopRightBottomLeft(LineWidth, LineWidth, LineWidth, LineWidth),
+}
+
+impl fmt::Display for BorderWidth {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            BorderWidth::All(a) => write!(f, "{}", a),
+            BorderWidth::VerticalHorizontal(v, h) => write!(f, "{} {}", v, h),
+            BorderWidth::TopHorizontalBottom(t, h, b) => write!(f, "{} {} {}", t, h, b),
+            BorderWidth::TopRightBottomLeft(t, r, b, l) => write!(f, "{} {} {} {}", t, r, b, l),
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum BoxSizing {
+    BorderBox,
+    ContentBox,
+}
+
+impl fmt::Display for BoxSizing {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            BoxSizing::BorderBox => f.write_str("border-box"),
+            BoxSizing::ContentBox => f.write_str("content-box"),
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum Cursor {
+    // todo url
+    Auto,
+    Default,
+    None,
+    ContextMenu,
+    Help,
+    Pointer,
+    Progress,
+    Wait,
+    Cell,
+    Crosshair,
+    Text,
+    VerticalText,
+    Alias,
+    Copy,
+    Move,
+    NoDrop,
+    NotAllowed,
+    Grab,
+    Grabbing,
+    EResize,
+    NResize,
+    NEResize,
+    NWResize,
+    SResize,
+    SEResize,
+    SWResize,
+    WResize,
+    EWResize,
+    NSResize,
+    NESWResize,
+    NWSEResize,
+    ColResize,
+    RowResize,
+    AllScroll,
+    ZoomIn,
+    ZoomOut,
+}
+
+impl fmt::Display for Cursor {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Cursor::Auto => f.write_str("auto"),
+            Cursor::Default => f.write_str("default"),
+            Cursor::None => f.write_str("none"),
+            Cursor::ContextMenu => f.write_str("context-menu"),
+            Cursor::Help => f.write_str("help"),
+            Cursor::Pointer => f.write_str("pointer"),
+            Cursor::Progress => f.write_str("progress"),
+            Cursor::Wait => f.write_str("wait"),
+            Cursor::Cell => f.write_str("cell"),
+            Cursor::Crosshair => f.write_str("crosshair"),
+            Cursor::Text => f.write_str("text"),
+            Cursor::VerticalText => f.write_str("vertical-text"),
+            Cursor::Alias => f.write_str("alias"),
+            Cursor::Copy => f.write_str("copy"),
+            Cursor::Move => f.write_str("move"),
+            Cursor::NoDrop => f.write_str("no-drop"),
+            Cursor::NotAllowed => f.write_str("not-allowed"),
+            Cursor::Grab => f.write_str("grab"),
+            Cursor::Grabbing => f.write_str("grabbing"),
+            Cursor::EResize => f.write_str("e-resize"),
+            Cursor::NResize => f.write_str("n-resize"),
+            Cursor::NEResize => f.write_str("ne-resize"),
+            Cursor::NWResize => f.write_str("nw-resize"),
+            Cursor::SResize => f.write_str("s-resize"),
+            Cursor::SEResize => f.write_str("se-resize"),
+            Cursor::SWResize => f.write_str("sw-resize"),
+            Cursor::WResize => f.write_str("w-resize"),
+            Cursor::EWResize => f.write_str("ew-resize"),
+            Cursor::NSResize => f.write_str("ns-resize"),
+            Cursor::NESWResize => f.write_str("nesw-resize"),
+            Cursor::NWSEResize => f.write_str("nwse-resize"),
+            Cursor::ColResize => f.write_str("col-resize"),
+            Cursor::RowResize => f.write_str("row-resize"),
+            Cursor::AllScroll => f.write_str("all-scroll"),
+            Cursor::ZoomIn => f.write_str("zoom-in"),
+            Cursor::ZoomOut => f.write_str("zoom-out"),
+        }
+    }
+}
+
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Display {
     Block,
@@ -1016,51 +1285,6 @@ impl fmt::Display for FlexWrap {
     }
 }
 
-/// https://developer.mozilla.org/en-US/docs/Web/CSS/align-items
-#[derive(Debug, Clone, Copy, PartialEq)]
-pub enum AlignItems {
-    Normal,
-    Stretch,
-    Center,
-    Start,
-    End,
-    //todo
-}
-
-impl fmt::Display for AlignItems {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            AlignItems::Normal => write!(f, "normal"),
-            AlignItems::Stretch => write!(f, "stretch"),
-            AlignItems::Center => write!(f, "center"),
-            AlignItems::Start => write!(f, "start"),
-            AlignItems::End => write!(f, "end"),
-        }
-    }
-}
-
-/// https://www.w3.org/TR/css-flexbox-1/#propdef-justify-content
-#[derive(Debug, Clone, Copy, PartialEq)]
-pub enum JustifyContent {
-    FlexStart,
-    Center,
-    FlexEnd,
-    SpaceBetween,
-    SpaceAround,
-}
-
-impl fmt::Display for JustifyContent {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            JustifyContent::FlexStart => write!(f, "flex-start"),
-            JustifyContent::Center => write!(f, "center"),
-            JustifyContent::FlexEnd => write!(f, "flex-end"),
-            JustifyContent::SpaceAround => write!(f, "space-around"),
-            JustifyContent::SpaceBetween => write!(f, "space-between"),
-        }
-    }
-}
-
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum FontWeight {
     Normal,
@@ -1100,73 +1324,117 @@ impl fmt::Display for FontStyle {
     }
 }
 
+/// https://www.w3.org/TR/css-flexbox-1/#propdef-justify-content
 #[derive(Debug, Clone, Copy, PartialEq)]
-pub enum BoxSizing {
-    BorderBox,
-    ContentBox,
+pub enum JustifyContent {
+    FlexStart,
+    Center,
+    FlexEnd,
+    SpaceBetween,
+    SpaceAround,
 }
 
-impl fmt::Display for BoxSizing {
+impl fmt::Display for JustifyContent {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            BoxSizing::BorderBox => f.write_str("border-box"),
-            BoxSizing::ContentBox => f.write_str("content-box"),
+            JustifyContent::FlexStart => write!(f, "flex-start"),
+            JustifyContent::Center => write!(f, "center"),
+            JustifyContent::FlexEnd => write!(f, "flex-end"),
+            JustifyContent::SpaceAround => write!(f, "space-around"),
+            JustifyContent::SpaceBetween => write!(f, "space-between"),
         }
     }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-pub enum Padding {
-    All(PaddingWidth),
-    VerticalHorizontal(PaddingWidth, PaddingWidth),
-    TopHorizontalBottom(PaddingWidth, PaddingWidth, PaddingWidth),
-    LeftTopRightBottom(PaddingWidth, PaddingWidth, PaddingWidth, PaddingWidth),
+pub enum Length {
+    Em(f64),
+    Ex(f64),
+    In(f64),
+    Cm(f64),
+    Mm(f64),
+    Pt(f64),
+    Pc(f64),
+    Px(f64),
+    Zero,
 }
 
-impl fmt::Display for Padding {
+impl fmt::Display for Length {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            Padding::All(len) => write!(f, "{}", len),
-            Padding::VerticalHorizontal(v, h) => write!(f, "{} {}", v, h),
-            Padding::TopHorizontalBottom(t, h, b) => write!(f, "{} {} {}", t, h, b),
-            Padding::LeftTopRightBottom(l, t, r, b) => write!(f, "{} {} {} {}", l, t, r, b),
-        }
-    }
-}
-
-/// for e.g. `padding-top`
-pub type PaddingWidth = LengthPercentage;
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-pub enum Margin {
-    All(MarginWidth),
-    VerticalHorizontal(MarginWidth, MarginWidth),
-    TopHorizontalBottom(MarginWidth, MarginWidth, MarginWidth),
-    LeftTopRightBottom(MarginWidth, MarginWidth, MarginWidth, MarginWidth),
-}
-
-impl fmt::Display for Margin {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            Margin::All(len) => write!(f, "{}", len),
-            Margin::VerticalHorizontal(v, h) => write!(f, "{} {}", v, h),
-            Margin::TopHorizontalBottom(t, h, b) => write!(f, "{} {} {}", t, h, b),
-            Margin::LeftTopRightBottom(l, t, r, b) => write!(f, "{} {} {} {}", l, t, r, b),
+            Length::Em(val) => write!(f, "{}em", val),
+            Length::Ex(val) => write!(f, "{}ex", val),
+            Length::In(val) => write!(f, "{}in", val),
+            Length::Cm(val) => write!(f, "{}cm", val),
+            Length::Mm(val) => write!(f, "{}mm", val),
+            Length::Pt(val) => write!(f, "{}pt", val),
+            Length::Pc(val) => write!(f, "{}pc", val),
+            Length::Px(val) => write!(f, "{}px", val),
+            Length::Zero => write!(f, "0"),
         }
     }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-pub enum MarginWidth {
-    LengthPercentage(LengthPercentage),
-    Auto,
+pub enum LengthPercentage {
+    Length(Length),
+    Percentage(Percentage),
 }
 
-impl fmt::Display for MarginWidth {
+impl fmt::Display for LengthPercentage {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            MarginWidth::LengthPercentage(v) => fmt::Display::fmt(v, f),
-            MarginWidth::Auto => write!(f, "auto"),
+            LengthPercentage::Length(v) => fmt::Display::fmt(v, f),
+            LengthPercentage::Percentage(v) => fmt::Display::fmt(v, f),
+        }
+    }
+}
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum LineStyle {
+    None,
+    Hidden,
+    Dotted,
+    Dashed,
+    Solid,
+    Double,
+    Groove,
+    Ridge,
+    Inset,
+    Outset,
+}
+
+impl fmt::Display for LineStyle {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            LineStyle::None => write!(f, "none"),
+            LineStyle::Hidden => write!(f, "hidden"),
+            LineStyle::Dotted => write!(f, "dotted"),
+            LineStyle::Dashed => write!(f, "dashed"),
+            LineStyle::Solid => write!(f, "solid"),
+            LineStyle::Double => write!(f, "double"),
+            LineStyle::Groove => write!(f, "groove"),
+            LineStyle::Ridge => write!(f, "ridge"),
+            LineStyle::Inset => write!(f, "inset"),
+            LineStyle::Outset => write!(f, "outset"),
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum LineWidth {
+    Length(Length),
+    Thin,
+    Medium,
+    Thick,
+}
+
+impl fmt::Display for LineWidth {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            LineWidth::Length(v) => fmt::Display::fmt(v, f),
+            LineWidth::Thin => write!(f, "thin"),
+            LineWidth::Medium => write!(f, "medium"),
+            LineWidth::Thick => write!(f, "thick"),
         }
     }
 }
@@ -1215,20 +1483,36 @@ impl fmt::Display for ListStyleType {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-pub enum Resize {
-    None,
-    Both,
-    Horizontal,
-    Vertical,
+pub enum Margin {
+    All(MarginWidth),
+    VerticalHorizontal(MarginWidth, MarginWidth),
+    TopHorizontalBottom(MarginWidth, MarginWidth, MarginWidth),
+    // todo order might be wrong (doesn't affect output becacuse its only the name that it changes).
+    LeftTopRightBottom(MarginWidth, MarginWidth, MarginWidth, MarginWidth),
 }
 
-impl fmt::Display for Resize {
+impl fmt::Display for Margin {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            Resize::None => write!(f, "none"),
-            Resize::Both => write!(f, "both"),
-            Resize::Horizontal => write!(f, "horizontal"),
-            Resize::Vertical => write!(f, "vertical"),
+            Margin::All(len) => write!(f, "{}", len),
+            Margin::VerticalHorizontal(v, h) => write!(f, "{} {}", v, h),
+            Margin::TopHorizontalBottom(t, h, b) => write!(f, "{} {} {}", t, h, b),
+            Margin::LeftTopRightBottom(l, t, r, b) => write!(f, "{} {} {} {}", l, t, r, b),
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum MarginWidth {
+    LengthPercentage(LengthPercentage),
+    Auto,
+}
+
+impl fmt::Display for MarginWidth {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            MarginWidth::LengthPercentage(v) => fmt::Display::fmt(v, f),
+            MarginWidth::Auto => write!(f, "auto"),
         }
     }
 }
@@ -1252,6 +1536,68 @@ impl fmt::Display for MaxWidthHeight {
             MaxWidthHeight::MaxContent => write!(f, "max-content"),
             MaxWidthHeight::FitContent(v) => write!(f, "fit-content({})", v),
         }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum Padding {
+    All(PaddingWidth),
+    VerticalHorizontal(PaddingWidth, PaddingWidth),
+    TopHorizontalBottom(PaddingWidth, PaddingWidth, PaddingWidth),
+    LeftTopRightBottom(PaddingWidth, PaddingWidth, PaddingWidth, PaddingWidth),
+}
+
+impl fmt::Display for Padding {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Padding::All(len) => write!(f, "{}", len),
+            Padding::VerticalHorizontal(v, h) => write!(f, "{} {}", v, h),
+            Padding::TopHorizontalBottom(t, h, b) => write!(f, "{} {} {}", t, h, b),
+            Padding::LeftTopRightBottom(l, t, r, b) => write!(f, "{} {} {} {}", l, t, r, b),
+        }
+    }
+}
+
+/// for e.g. `padding-top`
+pub type PaddingWidth = LengthPercentage;
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct Percentage(pub f64);
+
+impl fmt::Display for Percentage {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}%", self.0)
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum Resize {
+    None,
+    Both,
+    Horizontal,
+    Vertical,
+}
+
+impl fmt::Display for Resize {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Resize::None => write!(f, "none"),
+            Resize::Both => write!(f, "both"),
+            Resize::Horizontal => write!(f, "horizontal"),
+            Resize::Vertical => write!(f, "vertical"),
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct Url<'a> {
+    // todo modifiers
+    url: Cow<'a, str>,
+}
+
+impl fmt::Display for Url<'_> {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "url(\"{}\")", self.url)
     }
 }
 
@@ -1289,59 +1635,6 @@ impl fmt::Display for Width21 {
         match self {
             Width21::Auto => write!(f, "auto"),
             Width21::LengthPercentage(v) => fmt::Display::fmt(v, f),
-        }
-    }
-}
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-pub enum Length {
-    Em(f64),
-    Ex(f64),
-    In(f64),
-    Cm(f64),
-    Mm(f64),
-    Pt(f64),
-    Pc(f64),
-    Px(f64),
-    Zero,
-}
-
-impl fmt::Display for Length {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            Length::Em(val) => write!(f, "{}em", val),
-            Length::Ex(val) => write!(f, "{}ex", val),
-            Length::In(val) => write!(f, "{}in", val),
-            Length::Cm(val) => write!(f, "{}cm", val),
-            Length::Mm(val) => write!(f, "{}mm", val),
-            Length::Pt(val) => write!(f, "{}pt", val),
-            Length::Pc(val) => write!(f, "{}pc", val),
-            Length::Px(val) => write!(f, "{}px", val),
-            Length::Zero => write!(f, "0"),
-        }
-    }
-}
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-pub struct Percentage(pub f64);
-
-impl fmt::Display for Percentage {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}%", self.0)
-    }
-}
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-pub enum LengthPercentage {
-    Length(Length),
-    Percentage(Percentage),
-}
-
-impl fmt::Display for LengthPercentage {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            LengthPercentage::Length(v) => fmt::Display::fmt(v, f),
-            LengthPercentage::Percentage(v) => fmt::Display::fmt(v, f),
         }
     }
 }

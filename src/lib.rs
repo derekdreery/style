@@ -1,10 +1,10 @@
 use proc_macro_hack::proc_macro_hack;
 
 pub use style_shared::{
-    AlignItems, BoxSizing, Color, Display, DynamicColor, FlexBasis, FlexDirection, FlexWrap,
-    FontStyle, FontWeight, JustifyContent, Length, LengthPercentage, ListStyleType, Margin,
-    MarginWidth, MaxWidthHeight, Padding, PaddingWidth, Percentage, Resize, Style, Styles, Width21,
-    WidthHeight,
+    AlignItems, Border, BorderColor, BoxSizing, Color, Display, DynamicColor, FlexBasis,
+    FlexDirection, FlexWrap, FontStyle, FontWeight, JustifyContent, Length, LengthPercentage,
+    LineStyle, LineWidth, ListStyleType, Margin, MarginWidth, MaxWidthHeight, Padding,
+    PaddingWidth, Percentage, Resize, Style, Styles, Width21, WidthHeight,
 };
 
 /// Parse a list of css properties.

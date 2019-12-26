@@ -1,17 +1,18 @@
 //! Implementation of `syn::parse::Parse` for styles, and associated helper data/functions.
-// TODO make all parsers use HyphenWord where appropriate
+// TODO make all parsers use HyphenWord where appropriate.
 // TODO make all error messages nice
 // TODO 100% test coverage
 // TODO see if I can get https://github.com/rust-lang/rust/issues/67544 accepted. then change "em" to
 // em and "ex" to ex.
-// Split out extra "Dynamic" layer for each type for use in proc macro (so we can have `{ <arbitary
+// TODO Split out extra "Dynamic" layer for each type for use in proc macro (so we can have `{ <arbitary
 // rust code> }`)
 use crate::*;
 use proc_macro2::Span;
 use std::{cell::RefCell, collections::BTreeSet, fmt::Write};
 use syn::{
     ext::IdentExt,
-    parse::{Parse, ParseStream},
+    parse::{discouraged::Speculative, Parse, ParseStream},
+    spanned::Spanned,
     Ident, Token,
 };
 
@@ -25,6 +26,32 @@ impl Parse for DynamicStyles<'static> {
         }
         let punc = s.parse_terminated::<_, Token![;]>(<DynamicStyle as Parse>::parse)?;
         Ok(DynamicStyles::from(punc.into_iter().collect::<Vec<_>>()))
+    }
+}
+
+impl Parse for Styles<'static> {
+    fn parse(s: ParseStream) -> syn::Result<Self> {
+        // parse `in arena =>` syntax, but don't do anything with it for now
+        if s.peek(Token![in]) {
+            s.parse::<Token![in]>()?;
+            s.parse::<syn::Expr>()?;
+            s.parse::<Token![=>]>()?;
+        }
+        let punc = s.parse_terminated::<_, Token![;]>(<DynamicStyle as Parse>::parse)?;
+        let mut styles = Vec::new();
+        let punc_span = punc.span();
+        for dy_style in punc {
+            match dy_style {
+                DynamicStyle::Dynamic(_) => {
+                    return Err(syn::Error::new(
+                        punc_span,
+                        "found dynamic style in Styles literal",
+                    ))
+                }
+                DynamicStyle::Literal(sty) => styles.push(sty),
+            }
+        }
+        Ok(Styles::from(styles))
     }
 }
 
@@ -65,15 +92,20 @@ impl Parse for Style<'static> {
         // background-position
         // background-repeat
         // background-size
-        // border
+        } else if name.try_match("border") {
+            Ok(Style::Border(s.parse()?))
         // border-bottom
-        // border-bottom-color
+        } else if name.try_match("border-bottom-color") {
+            Ok(Style::BorderBottomColor(s.parse()?))
         // border-bottom-left-radius
         // border-bottom-right-radius
-        // border-bottom-style
-        // border-bottom-width
+        } else if name.try_match("border-bottom-style") {
+            Ok(Style::BorderBottomStyle(s.parse()?))
+        } else if name.try_match("border-bottom-width") {
+            Ok(Style::BorderBottomWidth(s.parse()?))
         // border-collapse
-        // border-color
+        } else if name.try_match("border-color") {
+            Ok(Style::BorderColor(s.parse()?))
         // border-image
         // border-image-outset
         // border-image-repeat
@@ -81,23 +113,34 @@ impl Parse for Style<'static> {
         // border-image-source
         // border-image-width
         // border-left
-        // border-left-color
-        // border-left-style
-        // border-left-width
+        } else if name.try_match("border-left-color") {
+            Ok(Style::BorderLeftColor(s.parse()?))
+        } else if name.try_match("border-left-style") {
+            Ok(Style::BorderLeftStyle(s.parse()?))
+        } else if name.try_match("border-left-width") {
+            Ok(Style::BorderLeftWidth(s.parse()?))
         // border-radius
         // border-right
-        // border-right-color
-        // border-right-style
-        // border-right-width
+        } else if name.try_match("border-right-color") {
+            Ok(Style::BorderRightColor(s.parse()?))
+        } else if name.try_match("border-right-style") {
+            Ok(Style::BorderRightStyle(s.parse()?))
+        } else if name.try_match("border-right-width") {
+            Ok(Style::BorderRightWidth(s.parse()?))
         // border-spacing
-        // border-style
+        } else if name.try_match("border-style") {
+            Ok(Style::BorderStyle(s.parse()?))
         // border-top
-        // border-top-color
+        } else if name.try_match("border-top-color") {
+            Ok(Style::BorderTopColor(s.parse()?))
         // border-top-left-radius
         // border-top-right-radius
-        // border-top-style
-        // border-top-width
-        // border-width
+        } else if name.try_match("border-top-style") {
+            Ok(Style::BorderTopStyle(s.parse()?))
+        } else if name.try_match("border-top-width") {
+            Ok(Style::BorderTopWidth(s.parse()?))
+        } else if name.try_match("border-width") {
+            Ok(Style::BorderWidth(s.parse()?))
         // bottom
         // box-decoration-break
         // box-shadow
@@ -121,7 +164,8 @@ impl Parse for Style<'static> {
         // cue
         // cue-after
         // cue-before
-        // cursor
+        } else if name.try_match("cursor") {
+            Ok(Style::Cursor(s.parse()?))
         // direction
         } else if name.try_match("display") {
             Ok(Style::Display(s.parse()?))
@@ -345,74 +389,324 @@ impl Parse for Style<'static> {
 
 impl Parse for AlignItems {
     fn parse(s: ParseStream) -> syn::Result<Self> {
-        syn::custom_keyword!(normal);
-        syn::custom_keyword!(stretch);
-        syn::custom_keyword!(center);
-        syn::custom_keyword!(start);
-        syn::custom_keyword!(end);
-
-        let lookahead = s.lookahead1();
-        if lookahead.peek(normal) {
-            s.parse::<normal>()?;
+        let word: HyphenWord = s.parse()?;
+        if word.try_match("normal") {
             Ok(AlignItems::Normal)
-        } else if lookahead.peek(stretch) {
-            s.parse::<stretch>()?;
+        } else if word.try_match("stretch") {
             Ok(AlignItems::Stretch)
-        } else if lookahead.peek(center) {
-            s.parse::<center>()?;
+        } else if word.try_match("center") {
             Ok(AlignItems::Center)
-        } else if lookahead.peek(start) {
-            s.parse::<start>()?;
+        } else if word.try_match("start") {
             Ok(AlignItems::Start)
-        } else if lookahead.peek(end) {
-            s.parse::<end>()?;
+        } else if word.try_match("end") {
             Ok(AlignItems::End)
         } else {
-            Err(lookahead.error())
+            Err(word.error())
         }
+    }
+}
+
+impl Parse for Border {
+    fn parse(s: ParseStream) -> syn::Result<Self> {
+        fn line_width_error(span: Span) -> syn::Error {
+            syn::Error::new(span, "the border width was specified more than once")
+        }
+        fn line_style_error(span: Span) -> syn::Error {
+            syn::Error::new(span, "the border style was specified more than once")
+        }
+        fn color_error(span: Span) -> syn::Error {
+            syn::Error::new(span, "the border color was specified more than once")
+        }
+        let mut border = Border::new();
+        while !(border.is_full() || finished_rule(s)) {
+            let mut matched_something = false; // prevents an infinite loop when no matches
+            let width_fork = s.fork();
+            match width_fork.parse::<LineWidth>() {
+                Ok(line_width) => {
+                    if border.has_line_width() {
+                        return Err(line_width_error(width_fork.cursor().span()));
+                    }
+                    matched_something = true;
+                    border.line_width = Some(line_width);
+                    s.advance_to(&width_fork);
+                }
+                Err(_) => (),
+            }
+            let style_fork = s.fork();
+            match style_fork.parse::<LineStyle>() {
+                Ok(line_style) => {
+                    if border.has_line_style() {
+                        return Err(line_style_error(style_fork.cursor().span()));
+                    }
+                    matched_something = true;
+                    border.line_style = Some(line_style);
+                    s.advance_to(&style_fork);
+                }
+                Err(_) => (),
+            }
+            let color_fork = s.fork();
+            match color_fork.parse::<Color>() {
+                Ok(color) => {
+                    if border.has_color() {
+                        return Err(color_error(color_fork.cursor().span()));
+                    }
+                    matched_something = true;
+                    border.color = Some(color);
+                    s.advance_to(&color_fork);
+                }
+                Err(_) => (),
+            }
+            if !(matched_something || finished_rule(s)) {
+                return Err(syn::Error::new(
+                    s.cursor().span(),
+                    "unexpected input - expected one of border-width, border-style, color",
+                ));
+            }
+        }
+        Ok(border)
+    }
+}
+
+impl Parse for BorderColor {
+    fn parse(s: ParseStream) -> syn::Result<Self> {
+        let first: Color = s.parse()?;
+        if finished_rule(s) {
+            return Ok(BorderColor::All(first));
+        }
+        let second: Color = s.parse()?;
+        if finished_rule(s) {
+            return Ok(BorderColor::VerticalHorizontal(first, second));
+        }
+        let third: Color = s.parse()?;
+        if finished_rule(s) {
+            return Ok(BorderColor::TopHorizontalBottom(first, second, third));
+        }
+        let fourth: Color = s.parse()?;
+        Ok(BorderColor::TopRightBottomLeft(
+            first, second, third, fourth,
+        ))
+    }
+}
+
+#[test]
+fn test_border_color() {
+    for (input, output) in vec![
+        ("black", BorderColor::All(Color::Black)),
+        (
+            "#fff blue",
+            BorderColor::VerticalHorizontal(Color::HexRGB(255, 255, 255), Color::Blue),
+        ),
+        (
+            "blue hsl(20, 5%, 100%) white",
+            BorderColor::TopHorizontalBottom(
+                Color::Blue,
+                Color::HSL(20.0, 5.0, 100.0),
+                Color::White,
+            ),
+        ),
+        (
+            "hsla(20, 5%, 100%, 0.2) #fff #ccc white",
+            BorderColor::TopRightBottomLeft(
+                Color::HSLA(20.0, 5.0, 100.0, 0.2),
+                Color::HexRGB(255, 255, 255),
+                Color::HexRGB(204, 204, 204),
+                Color::White,
+            ),
+        ),
+    ] {
+        assert_eq!(syn::parse_str::<BorderColor>(input).unwrap(), output);
+    }
+}
+
+impl Parse for BorderStyle {
+    fn parse(s: ParseStream) -> syn::Result<Self> {
+        let first: LineStyle = s.parse()?;
+        if finished_rule(s) {
+            return Ok(BorderStyle::All(first));
+        }
+        let second: LineStyle = s.parse()?;
+        if finished_rule(s) {
+            return Ok(BorderStyle::VerticalHorizontal(first, second));
+        }
+        let third: LineStyle = s.parse()?;
+        if finished_rule(s) {
+            return Ok(BorderStyle::TopHorizontalBottom(first, second, third));
+        }
+        let fourth: LineStyle = s.parse()?;
+        Ok(BorderStyle::TopRightBottomLeft(
+            first, second, third, fourth,
+        ))
+    }
+}
+
+// Assumes no trailing tokens.
+impl Parse for BorderWidth {
+    fn parse(s: ParseStream) -> syn::Result<Self> {
+        let first: LineWidth = s.parse()?;
+        if finished_rule(s) {
+            return Ok(BorderWidth::All(first));
+        }
+        let second: LineWidth = s.parse()?;
+        if finished_rule(s) {
+            return Ok(BorderWidth::VerticalHorizontal(first, second));
+        }
+        let third: LineWidth = s.parse()?;
+        if finished_rule(s) {
+            return Ok(BorderWidth::TopHorizontalBottom(first, second, third));
+        }
+        let fourth: LineWidth = s.parse()?;
+        if finished_rule(s) {
+            Ok(BorderWidth::TopRightBottomLeft(
+                first, second, third, fourth,
+            ))
+        } else {
+            Err(s.error("trailing characters"))
+        }
+    }
+}
+
+#[test]
+fn test_border_width() {
+    for (input, output) in vec![
+        ("1px", BorderWidth::All(LineWidth::Length(Length::Px(1.0)))),
+        (
+            "1px 2\"em\"",
+            BorderWidth::VerticalHorizontal(
+                LineWidth::Length(Length::Px(1.0)),
+                LineWidth::Length(Length::Em(2.0)),
+            ),
+        ),
+        (
+            "2\"em\" medium thick",
+            BorderWidth::TopHorizontalBottom(
+                LineWidth::Length(Length::Em(2.0)),
+                LineWidth::Medium,
+                LineWidth::Thick,
+            ),
+        ),
+        (
+            "2\"em\" medium 1px thick",
+            BorderWidth::TopRightBottomLeft(
+                LineWidth::Length(Length::Em(2.0)),
+                LineWidth::Medium,
+                LineWidth::Length(Length::Px(1.0)),
+                LineWidth::Thick,
+            ),
+        ),
+    ] {
+        assert_eq!(syn::parse_str::<BorderWidth>(input).unwrap(), output);
+    }
+
+    for input in vec!["thi", "1px 1px 1px 1px 1px"] {
+        assert!(syn::parse_str::<FontStyle>(input).is_err());
     }
 }
 
 impl Parse for BoxSizing {
     fn parse(s: ParseStream) -> syn::Result<Self> {
-        syn::custom_keyword!(border);
-        syn::custom_keyword!(content);
-
-        let lookahead = s.lookahead1();
-        if lookahead.peek(border) {
-            s.parse::<border>()?;
-            s.parse::<Token![-]>()?; // todo error should span all 3 tokens
-            s.parse::<Token![box]>()?;
+        let word: HyphenWord = s.parse()?;
+        if word.try_match("border-box") {
             Ok(BoxSizing::BorderBox)
-        } else if lookahead.peek(content) {
-            s.parse::<content>()?;
-            s.parse::<Token![-]>()?;
-            s.parse::<Token![box]>()?;
+        } else if word.try_match("content-box") {
             Ok(BoxSizing::ContentBox)
         } else {
-            Err(lookahead.error())
+            Err(word.error())
+        }
+    }
+}
+
+impl Parse for Cursor {
+    fn parse(s: ParseStream) -> syn::Result<Self> {
+        let word: HyphenWord = s.parse()?;
+        if word.try_match("auto") {
+            Ok(Cursor::Auto)
+        } else if word.try_match("default") {
+            Ok(Cursor::Default)
+        } else if word.try_match("none") {
+            Ok(Cursor::None)
+        } else if word.try_match("context-menu") {
+            Ok(Cursor::ContextMenu)
+        } else if word.try_match("help") {
+            Ok(Cursor::Help)
+        } else if word.try_match("pointer") {
+            Ok(Cursor::Pointer)
+        } else if word.try_match("progress") {
+            Ok(Cursor::Progress)
+        } else if word.try_match("wait") {
+            Ok(Cursor::Wait)
+        } else if word.try_match("cell") {
+            Ok(Cursor::Cell)
+        } else if word.try_match("crosshair") {
+            Ok(Cursor::Crosshair)
+        } else if word.try_match("text") {
+            Ok(Cursor::Text)
+        } else if word.try_match("vertical-text") {
+            Ok(Cursor::VerticalText)
+        } else if word.try_match("alias") {
+            Ok(Cursor::Alias)
+        } else if word.try_match("copy") {
+            Ok(Cursor::Copy)
+        } else if word.try_match("move") {
+            Ok(Cursor::Move)
+        } else if word.try_match("no-drop") {
+            Ok(Cursor::NoDrop)
+        } else if word.try_match("not-allowed") {
+            Ok(Cursor::NotAllowed)
+        } else if word.try_match("grab") {
+            Ok(Cursor::Grab)
+        } else if word.try_match("grabbing") {
+            Ok(Cursor::Grabbing)
+        } else if word.try_match("e-resize") {
+            Ok(Cursor::EResize)
+        } else if word.try_match("n-resize") {
+            Ok(Cursor::NResize)
+        } else if word.try_match("ne-resize") {
+            Ok(Cursor::NEResize)
+        } else if word.try_match("nw-resize") {
+            Ok(Cursor::NWResize)
+        } else if word.try_match("s-resize") {
+            Ok(Cursor::SResize)
+        } else if word.try_match("se-resize") {
+            Ok(Cursor::SEResize)
+        } else if word.try_match("sw-resize") {
+            Ok(Cursor::SWResize)
+        } else if word.try_match("w-resize") {
+            Ok(Cursor::WResize)
+        } else if word.try_match("ew-resize") {
+            Ok(Cursor::EWResize)
+        } else if word.try_match("ns-resize") {
+            Ok(Cursor::NSResize)
+        } else if word.try_match("nesw-resize") {
+            Ok(Cursor::NESWResize)
+        } else if word.try_match("nwse-resize") {
+            Ok(Cursor::NWSEResize)
+        } else if word.try_match("col-resize") {
+            Ok(Cursor::ColResize)
+        } else if word.try_match("row-resize") {
+            Ok(Cursor::RowResize)
+        } else if word.try_match("all-scroll") {
+            Ok(Cursor::AllScroll)
+        } else if word.try_match("zoom-in") {
+            Ok(Cursor::ZoomIn)
+        } else if word.try_match("zoom-out") {
+            Ok(Cursor::ZoomOut)
+        } else {
+            Err(word.error())
         }
     }
 }
 
 impl Parse for Display {
     fn parse(s: ParseStream) -> syn::Result<Self> {
-        syn::custom_keyword!(block);
-        syn::custom_keyword!(flex);
-        syn::custom_keyword!(inline);
-
-        let lookahead = s.lookahead1();
-        if lookahead.peek(block) {
-            s.parse::<block>()?;
+        let word: HyphenWord = s.parse()?;
+        if word.try_match("block") {
             Ok(Display::Block)
-        } else if lookahead.peek(flex) {
-            s.parse::<flex>()?;
+        } else if word.try_match("flex") {
             Ok(Display::Flex)
-        } else if lookahead.peek(inline) {
-            s.parse::<inline>()?;
+        } else if word.try_match("inline") {
             Ok(Display::Inline)
         } else {
-            Err(lookahead.error())
+            Err(word.error())
         }
     }
 }
@@ -433,90 +727,101 @@ impl Parse for FlexBasis {
 
 impl Parse for FlexDirection {
     fn parse(s: ParseStream) -> syn::Result<Self> {
-        syn::custom_keyword!(column);
-        syn::custom_keyword!(row);
-
-        let lookahead = s.lookahead1();
-        if lookahead.peek(column) {
-            s.parse::<column>()?;
+        let word: HyphenWord = s.parse()?;
+        if word.try_match("column") {
             Ok(FlexDirection::Column)
-        } else if lookahead.peek(row) {
-            s.parse::<row>()?;
+        } else if word.try_match("row") {
             Ok(FlexDirection::Row)
         } else {
-            Err(lookahead.error())
+            Err(word.error())
         }
     }
 }
 
 impl Parse for FlexWrap {
     fn parse(s: ParseStream) -> syn::Result<Self> {
-        syn::custom_keyword!(wrap);
-        syn::custom_keyword!(nowrap);
-
-        let lookahead = s.lookahead1();
-        if lookahead.peek(wrap) {
-            s.parse::<wrap>()?;
+        let word: HyphenWord = s.parse()?;
+        if word.try_match("wrap") {
             Ok(FlexWrap::Wrap)
-        } else if lookahead.peek(nowrap) {
-            s.parse::<nowrap>()?;
+        } else if word.try_match("nowrap") {
             Ok(FlexWrap::Nowrap)
         } else {
-            Err(lookahead.error())
+            Err(word.error())
         }
     }
 }
 
 impl Parse for FontStyle {
     fn parse(s: ParseStream) -> syn::Result<Self> {
-        syn::custom_keyword!(normal);
-        syn::custom_keyword!(italic);
-        syn::custom_keyword!(oblique);
+        let name: HyphenWord = s.parse()?;
 
-        let lookahead = s.lookahead1();
-        if lookahead.peek(normal) {
-            s.parse::<normal>()?;
+        if name.try_match("normal") {
             Ok(FontStyle::Normal)
-        } else if lookahead.peek(italic) {
-            s.parse::<italic>()?;
+        } else if name.try_match("italic") {
             Ok(FontStyle::Italic)
-        } else if lookahead.peek(oblique) {
-            s.parse::<oblique>()?;
+        } else if name.try_match("oblique") {
             Ok(FontStyle::Oblique)
         } else {
-            Err(lookahead.error())
+            Err(name.error())
         }
+    }
+}
+
+#[test]
+fn test_font_style() {
+    for (input, output) in vec![
+        ("normal", FontStyle::Normal),
+        ("italic", FontStyle::Italic),
+        ("oblique", FontStyle::Oblique),
+    ] {
+        assert_eq!(syn::parse_str::<FontStyle>(input).unwrap(), output);
+    }
+
+    for input in vec!["norma", "normal trailing"] {
+        assert!(syn::parse_str::<FontStyle>(input).is_err());
     }
 }
 
 impl Parse for FontWeight {
     fn parse(s: ParseStream) -> syn::Result<Self> {
-        const ERR_MSG: &'static str = "expected one of `normal`, `bold`, `lighter`, `bolder`, \
-                                       number where `1 <= number <= 1000`";
-        syn::custom_keyword!(normal);
-        syn::custom_keyword!(bold);
-        syn::custom_keyword!(lighter);
-        syn::custom_keyword!(bolder);
+        let name: HyphenWord = s.parse()?;
+        name.add_expected("number where 1 <= number <= 1000");
 
-        if s.peek(normal) {
-            s.parse::<normal>()?;
+        if name.try_match("normal") {
             Ok(FontWeight::Normal)
-        } else if s.peek(bold) {
-            s.parse::<bold>()?;
+        } else if name.try_match("bold") {
             Ok(FontWeight::Bold)
-        } else if s.peek(lighter) {
-            s.parse::<lighter>()?;
+        } else if name.try_match("lighter") {
             Ok(FontWeight::Lighter)
-        } else if s.peek(bolder) {
-            s.parse::<bolder>()?;
+        } else if name.try_match("bolder") {
             Ok(FontWeight::Bolder)
         } else {
-            let n: Number = s.parse().map_err(|e| syn::Error::new(e.span(), ERR_MSG))?;
-            if !n.suffix.is_empty() || n.value < 1.0 || n.value > 1000.0 {
-                Err(syn::Error::new(n.span, ERR_MSG))
-            } else {
+            let n: Number = s.parse().map_err(|_| name.error())?;
+            if n.suffix.is_empty() && n.value >= 1.0 && n.value <= 1000.0 {
                 Ok(FontWeight::Number(n.value))
+            } else {
+                Err(name.error())
             }
+        }
+    }
+}
+
+#[test]
+fn test_font_weight() {
+    for (input, output) in vec![
+        ("normal", FontWeight::Normal),
+        ("bold", FontWeight::Bold),
+        ("lighter", FontWeight::Lighter),
+        ("bolder", FontWeight::Bolder),
+        ("1", FontWeight::Number(1.0)),
+        ("1.0", FontWeight::Number(1.0)),
+        ("1000", FontWeight::Number(1000.0)),
+        ("1000.0", FontWeight::Number(1000.0)),
+        ("246.15", FontWeight::Number(246.15)),
+    ] {
+        match syn::parse_str::<FontWeight>(input) {
+            Ok(v) => assert_eq!(v, output),
+            Err(e) => panic!("error parsing {}: {}", input, e),
         }
     }
 }
@@ -578,10 +883,68 @@ impl Length {
             // No matches so return error
             Err(syn::Error::new(
                 n.span,
-                "expected one of `\"em\"`, `\"ex\"`, `in`, `cm`, `mm`, `pt`, `pc`, `px` after number",
+                "expected one of `\"em\"`, `\"ex\"`, `in`, `cm`, `mm`, `pt`, `pc`, `px` after number, or 0",
             ))
         }
     }
+}
+
+impl Parse for LineStyle {
+    fn parse(s: ParseStream) -> syn::Result<Self> {
+        let name = s.parse::<HyphenWord>()?;
+        if name.try_match("none") {
+            Ok(LineStyle::None)
+        } else if name.try_match("hidden") {
+            Ok(LineStyle::Hidden)
+        } else if name.try_match("dotted") {
+            Ok(LineStyle::Dotted)
+        } else if name.try_match("dashed") {
+            Ok(LineStyle::Dashed)
+        } else if name.try_match("solid") {
+            Ok(LineStyle::Solid)
+        } else if name.try_match("double") {
+            Ok(LineStyle::Double)
+        } else if name.try_match("groove") {
+            Ok(LineStyle::Groove)
+        } else if name.try_match("ridge") {
+            Ok(LineStyle::Ridge)
+        } else if name.try_match("inset") {
+            Ok(LineStyle::Inset)
+        } else if name.try_match("outset") {
+            Ok(LineStyle::Outset)
+        } else {
+            Err(name.error())
+        }
+    }
+}
+
+impl Parse for LineWidth {
+    fn parse(s: ParseStream) -> syn::Result<Self> {
+        let name = s.parse::<HyphenWord>()?;
+        if name.try_match("thin") {
+            Ok(LineWidth::Thin)
+        } else if name.try_match("medium") {
+            Ok(LineWidth::Medium)
+        } else if name.try_match("thick") {
+            Ok(LineWidth::Thick)
+        } else {
+            match s.parse::<Length>() {
+                Ok(l) => Ok(LineWidth::Length(l)),
+                Err(_) => {
+                    name.add_expected("length");
+                    Err(name.error())
+                }
+            }
+        }
+    }
+}
+
+#[test]
+fn test_parse_line_width() {
+    assert_eq!(
+        syn::parse_str::<LineWidth>("thin").unwrap(),
+        LineWidth::Thin
+    );
 }
 
 impl Parse for ListStyleType {
@@ -680,10 +1043,12 @@ impl Parse for Padding {
 
 #[test]
 fn test_padding() {
-    assert_eq!(
-        syn::parse_str::<Style>("padding:1m").unwrap(),
-        Style::Padding(Padding::All(LengthPercentage::Length(Length::Em(1.0))))
-    );
+    for (input, output) in vec![(
+        "padding:1\"em\"",
+        Style::Padding(Padding::All(LengthPercentage::Length(Length::Em(1.0)))),
+    )] {
+        assert_eq!(syn::parse_str::<Style>(input).unwrap(), output);
+    }
 }
 
 impl Parse for Percentage {
@@ -712,29 +1077,15 @@ impl Parse for Width21 {
 
 impl Parse for WidthHeight {
     fn parse(s: ParseStream) -> syn::Result<Self> {
-        syn::custom_keyword!(auto);
-        syn::custom_keyword!(min);
-        syn::custom_keyword!(max);
-        syn::custom_keyword!(fit);
-        syn::custom_keyword!(content);
+        let name: HyphenWord = s.parse()?;
 
-        if s.peek(auto) {
-            s.parse::<auto>()?;
+        if name.try_match("auto") {
             Ok(WidthHeight::Auto)
-        } else if s.peek(min) {
-            s.parse::<min>()?;
-            s.parse::<Token![-]>()?;
-            s.parse::<content>()?;
+        } else if name.try_match("min-content") {
             Ok(WidthHeight::MinContent)
-        } else if s.peek(max) {
-            s.parse::<max>()?;
-            s.parse::<Token![-]>()?;
-            s.parse::<content>()?;
+        } else if name.try_match("max-content") {
             Ok(WidthHeight::MaxContent)
-        } else if s.peek(fit) {
-            s.parse::<fit>()?;
-            s.parse::<Token![-]>()?;
-            s.parse::<content>()?;
+        } else if name.try_match("fit-content") {
             let content;
             syn::parenthesized!(content in s);
             let lp = content.parse::<LengthPercentage>()?;
@@ -744,6 +1095,7 @@ impl Parse for WidthHeight {
                 Ok(WidthHeight::FitContent(lp))
             }
         } else {
+            // todo error message
             Ok(WidthHeight::LengthPercentage(s.parse()?))
         }
     }
@@ -756,6 +1108,17 @@ impl Parse for LengthPercentage {
         } else {
             Ok(LengthPercentage::Length(s.parse()?))
         }
+    }
+}
+
+#[test]
+fn test_length_percentage() {
+    for (input, output) in vec![
+        ("1\"em\"", LengthPercentage::Length(Length::Em(1.0))),
+        ("1.0px", LengthPercentage::Length(Length::Px(1.0))),
+        ("0", LengthPercentage::Length(Length::Zero)),
+    ] {
+        assert_eq!(syn::parse_str::<LengthPercentage>(input).unwrap(), output);
     }
 }
 
@@ -801,26 +1164,29 @@ impl Parse for Color {
         } else if fn_name.try_match("hsla") {
             parse_hsl_color(s, true)
         } else {
+            if let Some(name) = fn_name.word.as_ref() {
+                if let Some(color) = Color::from_named(name) {
+                    return Ok(color);
+                }
+            }
+            fn_name.add_expected("named color");
             Err(fn_name.error())
         }
     }
 }
 
 fn parse_hex_color(s: ParseStream) -> syn::Result<Color> {
+    const ERR_MSG: &'static str = "to avoid confusing rust, please enclose hex colors in `\"`";
     s.parse::<Token![#]>()?;
-    if s.peek(syn::LitInt) {
-        return Err(s.error(
-            "to avoid confusing rust, please enclose hex colors starting with a number in quotes",
-        ));
+    if !(s.peek(syn::LitStr) || s.peek(Ident)) {
+        return Err(s.error(ERR_MSG));
     }
     if s.peek(syn::LitStr) {
         let hex_str: syn::LitStr = s.parse()?;
-        color::parse_hex(&hex_str.value())
-            .ok_or(syn::Error::new(hex_str.span(), "hex color is invalid"))
+        color::parse_hex(&hex_str.value()).ok_or(syn::Error::new(hex_str.span(), ERR_MSG))
     } else {
         let hex_str: Ident = s.parse()?;
-        color::parse_hex(&hex_str.to_string())
-            .ok_or(syn::Error::new(hex_str.span(), "hex color is invalid"))
+        color::parse_hex(&hex_str.to_string()).ok_or(syn::Error::new(hex_str.span(), ERR_MSG))
     }
 }
 
@@ -828,7 +1194,7 @@ fn parse_hsl_color(s: ParseStream, with_alpha: bool) -> syn::Result<Color> {
     let content;
     syn::parenthesized!(content in s);
     let n: Number = content.parse()?;
-    empty_suffix(&n.suffix, n.span)?;
+    n.empty_suffix()?;
     let hue = n.value;
     if hue < 0.0 || hue >= 360.0 {
         return Err(syn::Error::new(
@@ -866,6 +1232,7 @@ fn parse_hsl_color(s: ParseStream, with_alpha: bool) -> syn::Result<Color> {
             "lightness should be in the range `0 <= light < 100`",
         ));
     }
+    // since we parse content in parentheses, we can assume no trailing characers
     if !with_alpha {
         return if content.is_empty() {
             Ok(Color::HSL(hue, sat, light))
@@ -876,7 +1243,7 @@ fn parse_hsl_color(s: ParseStream, with_alpha: bool) -> syn::Result<Color> {
     // we are a hsla
     content.parse::<Token![,]>()?;
     let n: Number = content.parse()?;
-    empty_suffix(&n.suffix, n.span)?;
+    n.empty_suffix()?;
     let alpha = n.value;
     if alpha < 0.0 || alpha > 1.0 {
         return Err(syn::Error::new(
@@ -893,26 +1260,21 @@ fn parse_hsl_color(s: ParseStream, with_alpha: bool) -> syn::Result<Color> {
 
 #[test]
 fn test_color() {
-    assert_eq!(
-        syn::parse_str::<Color>("#ffffff").unwrap(),
-        Color::HexRGB(255, 255, 255)
-    );
-    assert_eq!(
-        syn::parse_str::<Color>("#fff").unwrap(),
-        Color::HexRGB(255, 255, 255)
-    );
-    assert_eq!(
-        syn::parse_str::<Color>("#ffffffff").unwrap(),
-        Color::HexRGBA(255, 255, 255, 255)
-    );
-    assert_eq!(
-        syn::parse_str::<Color>("hsl(60, 0%, 0%)").unwrap(),
-        Color::HSL(60.0, 0.0, 0.0)
-    );
-    assert_eq!(
-        syn::parse_str::<Color>("hsla(60, 0%, 0%, 0.2)").unwrap(),
-        Color::HSLA(60.0, 0.0, 0.0, 0.2)
-    );
+    for (input, output) in vec![
+        ("#ffffffff", Color::HexRGBA(255, 255, 255, 255)),
+        ("#ffffff", Color::HexRGB(255, 255, 255)),
+        ("#fff", Color::HexRGB(255, 255, 255)),
+        ("#\"fff\"", Color::HexRGB(255, 255, 255)),
+        ("hsl(100, 50%, 50%)", Color::HSL(100.0, 50.0, 50.0)),
+        ("hsla(60, 0%, 0%, 0.2)", Color::HSLA(60.0, 0.0, 0.0, 0.2)),
+        ("black", Color::Black),
+        ("yellow", Color::Yellow),
+    ] {
+        match syn::parse_str::<Color>(input) {
+            Ok(c) => assert_eq!(c, output),
+            Err(e) => panic!("error parsing color {}: {}", input, e),
+        }
+    }
 }
 
 // Util
@@ -926,6 +1288,29 @@ struct Number {
     span: Span,
 }
 
+impl Number {
+    /// Work out quickly if The next token may parse as a number.
+    fn peek(s: ParseStream) -> bool {
+        s.peek(syn::LitFloat) || s.peek(syn::LitInt)
+    }
+
+    fn empty_suffix(&self) -> syn::Result<()> {
+        if self.suffix != "" {
+            Err(syn::Error::new(
+                self.span,
+                "unexpected characters after number",
+            ))
+        } else {
+            Ok(())
+        }
+    }
+
+    #[cfg(test)]
+    fn check_value(&self, value: f64, suffix: &str) -> bool {
+        self.value == value && self.suffix == suffix
+    }
+}
+
 impl Parse for Number {
     fn parse(s: ParseStream) -> syn::Result<Number> {
         let lookahead = s.lookahead1();
@@ -935,7 +1320,7 @@ impl Parse for Number {
             (num, tok.span(), tok.suffix().to_string())
         } else if lookahead.peek(syn::LitInt) {
             let tok = s.parse::<syn::LitInt>()?;
-            // we only need up to 360 and u32 can be safely converted into f64
+            // u32 can be safely converted into f64
             let num = tok.base10_parse::<u32>()?;
             (num.into(), tok.span(), tok.suffix().to_string())
         } else {
@@ -967,38 +1352,56 @@ impl Parse for Number {
     }
 }
 
-fn empty_suffix(suffix: &str, span: Span) -> syn::Result<()> {
-    if suffix != "" {
-        Err(syn::Error::new(span, "unexpected characters after number"))
-    } else {
-        Ok(())
+#[test]
+fn test_number() {
+    for (input, value, suffix) in vec![
+        ("200", 200.0, ""),
+        ("200.0", 200.0, ""),
+        ("0", 0.0, ""),
+        ("0in", 0.0, "in"),
+    ] {
+        assert!(syn::parse_str::<Number>(input)
+            .unwrap()
+            .check_value(value, suffix),)
     }
 }
 
 /// Something like `word-separated-hyphens`
 struct HyphenWord {
     pub span: Span,
-    pub word: String,
+    pub word: Option<String>,
     /// List of tried matches - for building error.
-    pub tried: TryList,
+    tried: TryList,
 }
 
 impl HyphenWord {
     pub fn new(span: Span, word: String) -> Self {
         HyphenWord {
             span,
-            word,
+            word: Some(word),
+            tried: TryList::new(),
+        }
+    }
+
+    pub fn new_no_word(span: Span) -> Self {
+        HyphenWord {
+            span,
+            word: None,
             tried: TryList::new(),
         }
     }
 
     pub fn try_match(&self, other: &str) -> bool {
-        if other == self.word {
+        if Some(other) == self.word.as_ref().map(|s| s.as_str()) {
             true
         } else {
             self.tried.add_literal(other);
             false
         }
+    }
+
+    pub fn add_expected(&self, ty: &str) {
+        self.tried.add(ty);
     }
 
     /// Panics if there were no calls to `try_match` before calling this function.
@@ -1009,9 +1412,13 @@ impl HyphenWord {
 
 impl Parse for HyphenWord {
     fn parse(s: ParseStream) -> syn::Result<Self> {
-        let first = s.call(Ident::parse_any)?;
+        let first = match s.call(Ident::parse_any) {
+            Ok(v) => v,
+            Err(_) => return Ok(HyphenWord::new_no_word(s.cursor().span())),
+        };
         let mut word = first.to_string();
         let mut span = first.span();
+        // This is potentially unbounded. Probably not be a problem but making a note anyway.
         while s.peek(Token![-]) {
             let hyphen = s.parse::<Token![-]>()?;
             if let Some(joined) = span.join(hyphen.span) {
@@ -1030,10 +1437,8 @@ impl Parse for HyphenWord {
 #[test]
 fn test_hyphen_word() {
     let word: HyphenWord = syn::parse_str("first-second-third").unwrap();
-    assert_eq!(word.word, "first-second-third");
+    assert_eq!(word.word, Some("first-second-third".to_string()));
     assert!(syn::parse_str::<HyphenWord>("first-second-").is_err());
-    assert!(syn::parse_str::<HyphenWord>("-second").is_err());
-    assert!(syn::parse_str::<HyphenWord>("").is_err());
     assert!(syn::parse_str::<HyphenWord>("a a").is_err());
 }
 
@@ -1067,6 +1472,12 @@ impl TryList {
     }
 }
 
+/// Whether we are at the end of a rule. Either the stream will be empty, or there will be a
+/// semi-colon.
+fn finished_rule(s: ParseStream) -> bool {
+    s.is_empty() || s.peek(Token![;])
+}
+
 #[test]
 fn downstream_bug1() {
     let s: Styles = syn::parse_str(
@@ -1089,4 +1500,6 @@ fn downstream_bug1() {
 
 #[test]
 #[ignore]
-fn inline_logic() {}
+fn inline_logic() {
+    todo!()
+}

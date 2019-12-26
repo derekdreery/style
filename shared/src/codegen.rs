@@ -48,15 +48,16 @@ impl ToTokens for Style<'_> {
             // background-position
             // background-repeat
             // background-size
-            // border
+            Style::Border(v) => quote!(style::Style::Border(#v)),
             // border-bottom
-            // border-bottom-color
+            Style::BorderBottomColor(v) => quote!(style::Style::BorderBottomColor(#v)),
             // border-bottom-left-radius
             // border-bottom-right-radius
-            // border-bottom-style
-            // border-bottom-width
+            Style::BorderBottomStyle(v) => quote!(style::Style::BorderBottomStyle(#v)),
+            Style::BorderBottomWidth(v) => quote!(style::Style::BorderBottomWidth(#v)),
             // border-collapse
             // border-color
+            Style::BorderColor(v) => quote!(style::Style::BorderColor(#v)),
             // border-image
             // border-image-outset
             // border-image-repeat
@@ -64,23 +65,23 @@ impl ToTokens for Style<'_> {
             // border-image-source
             // border-image-width
             // border-left
-            // border-left-color
-            // border-left-style
-            // border-left-width
+            Style::BorderLeftColor(v) => quote!(style::Style::BorderLeftColor(#v)),
+            Style::BorderLeftStyle(v) => quote!(style::Style::BorderLeftStyle(#v)),
+            Style::BorderLeftWidth(v) => quote!(style::Style::BorderLeftWidth(#v)),
             // border-radius
             // border-right
-            // border-right-color
-            // border-right-style
-            // border-right-width
+            Style::BorderRightColor(v) => quote!(style::Style::BorderRightColor(#v)),
+            Style::BorderRightStyle(v) => quote!(style::Style::BorderRightStyle(#v)),
+            Style::BorderRightWidth(v) => quote!(style::Style::BorderRightWidth(#v)),
             // border-spacing
-            // border-style
+            Style::BorderStyle(v) => quote!(style::Style::BorderStyle(#v)),
             // border-top
-            // border-top-color
+            Style::BorderTopColor(v) => quote!(style::Style::BorderTopColor(#v)),
             // border-top-left-radius
             // border-top-right-radius
-            // border-top-style
-            // border-top-width
-            // border-width
+            Style::BorderTopStyle(v) => quote!(style::Style::BorderTopStyle(#v)),
+            Style::BorderTopWidth(v) => quote!(style::Style::BorderTopWidth(#v)),
+            Style::BorderWidth(v) => quote!(style::Style::BorderWidth(#v)),
             // bottom
             // box-decoration-break
             // box-shadow
@@ -102,7 +103,7 @@ impl ToTokens for Style<'_> {
             // cue
             // cue-after
             // cue-before
-            // cursor
+            Style::Cursor(v) => quote!(style::Style::Cursor(#v)),
             // direction
             Style::Display(v) => quote!(style::Style::Display(#v)),
             // elevation
@@ -289,6 +290,49 @@ impl ToTokens for Style<'_> {
     }
 }
 
+impl ToTokens for Cursor {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        tokens.extend(match self {
+            Cursor::Auto => quote!(Cursor::Auto),
+            Cursor::Default => quote!(Cursor::Default),
+            Cursor::None => quote!(Cursor::None),
+            Cursor::ContextMenu => quote!(Cursor::ContextMenu),
+            Cursor::Help => quote!(Cursor::Help),
+            Cursor::Pointer => quote!(Cursor::Pointer),
+            Cursor::Progress => quote!(Cursor::Progress),
+            Cursor::Wait => quote!(Cursor::Wait),
+            Cursor::Cell => quote!(Cursor::Cell),
+            Cursor::Crosshair => quote!(Cursor::Crosshair),
+            Cursor::Text => quote!(Cursor::Text),
+            Cursor::VerticalText => quote!(Cursor::VerticalText),
+            Cursor::Alias => quote!(Cursor::Alias),
+            Cursor::Copy => quote!(Cursor::Copy),
+            Cursor::Move => quote!(Cursor::Move),
+            Cursor::NoDrop => quote!(Cursor::NoDrop),
+            Cursor::NotAllowed => quote!(Cursor::NotAllowed),
+            Cursor::Grab => quote!(Cursor::Grab),
+            Cursor::Grabbing => quote!(Cursor::Grabbing),
+            Cursor::EResize => quote!(Cursor::EResize),
+            Cursor::NResize => quote!(Cursor::NResize),
+            Cursor::NEResize => quote!(Cursor::NEResize),
+            Cursor::NWResize => quote!(Cursor::NWResize),
+            Cursor::SResize => quote!(Cursor::SResize),
+            Cursor::SEResize => quote!(Cursor::SEResize),
+            Cursor::SWResize => quote!(Cursor::SWResize),
+            Cursor::WResize => quote!(Cursor::WResize),
+            Cursor::EWResize => quote!(Cursor::EWResize),
+            Cursor::NSResize => quote!(Cursor::NSResize),
+            Cursor::NESWResize => quote!(Cursor::NESWResize),
+            Cursor::NWSEResize => quote!(Cursor::NWSEResize),
+            Cursor::ColResize => quote!(Cursor::ColResize),
+            Cursor::RowResize => quote!(Cursor::RowResize),
+            Cursor::AllScroll => quote!(Cursor::AllScroll),
+            Cursor::ZoomIn => quote!(Cursor::ZoomIn),
+            Cursor::ZoomOut => quote!(Cursor::ZoomOut),
+        })
+    }
+}
+
 impl ToTokens for Display {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         tokens.extend(match self {
@@ -372,6 +416,81 @@ impl ToTokens for FontStyle {
     }
 }
 
+impl ToTokens for Border {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        let line_width = match self.line_width {
+            Some(line_width) => quote!(Some(#line_width)),
+            None => quote!(None),
+        };
+        let line_style = match self.line_style {
+            Some(line_style) => quote!(Some(#line_style)),
+            None => quote!(None),
+        };
+        let color = match self.color {
+            Some(color) => quote!(Some(#color)),
+            None => quote!(None),
+        };
+        tokens.extend(quote!(
+            style::Border {
+                line_width: #line_width,
+                line_style: #line_style,
+                color: #color,
+            }
+        ))
+    }
+}
+
+impl ToTokens for BorderColor {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        tokens.extend(match self {
+            BorderColor::All(v) => quote!(style::BorderColor::All(#v)),
+            BorderColor::VerticalHorizontal(v, h) => {
+                quote!(style::BorderColor::VerticalHorizontal(#v, #h))
+            }
+            BorderColor::TopHorizontalBottom(t, h, b) => {
+                quote!(style::BorderColor::TopHorizontalBottom(#t, #h, #b))
+            }
+            BorderColor::TopRightBottomLeft(t, r, b, l) => {
+                quote!(style::BorderColor::TopRightBottomLeft(#t, #r, #b, #l))
+            }
+        })
+    }
+}
+
+impl ToTokens for BorderStyle {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        tokens.extend(match self {
+            BorderStyle::All(v) => quote!(style::BorderStyle::All(#v)),
+            BorderStyle::VerticalHorizontal(v, h) => {
+                quote!(style::BorderStyle::VerticalHorizontal(#v, #h))
+            }
+            BorderStyle::TopHorizontalBottom(t, h, b) => {
+                quote!(style::BorderStyle::TopHorizontalBottom(#t, #h, #b))
+            }
+            BorderStyle::TopRightBottomLeft(t, r, b, l) => {
+                quote!(style::BorderStyle::TopRightBottomLeft(#t, #r, #b, #l))
+            }
+        })
+    }
+}
+
+impl ToTokens for BorderWidth {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        tokens.extend(match self {
+            BorderWidth::All(v) => quote!(style::BorderWidth::All(#v)),
+            BorderWidth::VerticalHorizontal(v, h) => {
+                quote!(style::BorderWidth::VerticalHorizontal(#v, #h))
+            }
+            BorderWidth::TopHorizontalBottom(t, h, b) => {
+                quote!(style::BorderWidth::TopHorizontalBottom(#t, #h, #b))
+            }
+            BorderWidth::TopRightBottomLeft(t, r, b, l) => {
+                quote!(style::BorderWidth::TopRightBottomLeft(#t, #r, #b, #l))
+            }
+        })
+    }
+}
+
 impl ToTokens for BoxSizing {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         tokens.extend(match self {
@@ -426,6 +545,34 @@ impl ToTokens for MarginWidth {
             MarginWidth::LengthPercentage(v) => quote!(style::MarginWidth::LengthPercentage(#v)),
             MarginWidth::Auto => quote!(style::MarginWidth::Auto),
         });
+    }
+}
+
+impl ToTokens for LineStyle {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        tokens.extend(match self {
+            LineStyle::None => quote!(style::LineStyle::None),
+            LineStyle::Hidden => quote!(style::LineStyle::Hidden),
+            LineStyle::Dotted => quote!(style::LineStyle::Dotted),
+            LineStyle::Dashed => quote!(style::LineStyle::Dashed),
+            LineStyle::Solid => quote!(style::LineStyle::Solid),
+            LineStyle::Double => quote!(style::LineStyle::Double),
+            LineStyle::Groove => quote!(style::LineStyle::Groove),
+            LineStyle::Ridge => quote!(style::LineStyle::Ridge),
+            LineStyle::Inset => quote!(style::LineStyle::Inset),
+            LineStyle::Outset => quote!(style::LineStyle::Outset),
+        })
+    }
+}
+
+impl ToTokens for LineWidth {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        tokens.extend(match self {
+            LineWidth::Length(length) => quote!(style::LineWidth::Length(#length)),
+            LineWidth::Thin => quote!(style::LineWidth::Thin),
+            LineWidth::Medium => quote!(style::LineWidth::Medium),
+            LineWidth::Thick => quote!(style::LineWidth::Thick),
+        })
     }
 }
 
@@ -537,6 +684,147 @@ impl ToTokens for Color {
             Color::HexRGBA(r, g, b, a) => quote!(style::Color::HexRGB(#r, #g, #b, #a)),
             Color::HSL(h, s, l) => quote!(style::Color::HSL(#h, #s, #l)),
             Color::HSLA(h, s, l, a) => quote!(style::Color::HSLA(#h, #s, #l, #a)),
+            Color::IndianRed => quote!(style::Color::IndianRed),
+            Color::LightCoral => quote!(style::Color::LightCoral),
+            Color::Salmon => quote!(style::Color::Salmon),
+            Color::DarkSalmon => quote!(style::Color::DarkSalmon),
+            Color::LightSalmon => quote!(style::Color::LightSalmon),
+            Color::Crimson => quote!(style::Color::Crimson),
+            Color::Red => quote!(style::Color::Red),
+            Color::FireBrick => quote!(style::Color::FireBrick),
+            Color::DarkRed => quote!(style::Color::DarkRed),
+            Color::Pink => quote!(style::Color::Pink),
+            Color::LightPink => quote!(style::Color::LightPink),
+            Color::HotPink => quote!(style::Color::HotPink),
+            Color::DeepPink => quote!(style::Color::DeepPink),
+            Color::MediumVioletRed => quote!(style::Color::MediumVioletRed),
+            Color::PaleVioletRed => quote!(style::Color::PaleVioletRed),
+            Color::Coral => quote!(style::Color::Coral),
+            Color::Tomato => quote!(style::Color::Tomato),
+            Color::OrangeRed => quote!(style::Color::OrangeRed),
+            Color::DarkOrange => quote!(style::Color::DarkOrange),
+            Color::Orange => quote!(style::Color::Orange),
+            Color::Gold => quote!(style::Color::Gold),
+            Color::Yellow => quote!(style::Color::Yellow),
+            Color::LightYellow => quote!(style::Color::LightYellow),
+            Color::LemonChiffon => quote!(style::Color::LemonChiffon),
+            Color::LightGoldenrodYellow => quote!(style::Color::LightGoldenrodYellow),
+            Color::PapayaWhip => quote!(style::Color::PapayaWhip),
+            Color::Moccasin => quote!(style::Color::Moccasin),
+            Color::PeachPuff => quote!(style::Color::PeachPuff),
+            Color::PaleGoldenrod => quote!(style::Color::PaleGoldenrod),
+            Color::Khaki => quote!(style::Color::Khaki),
+            Color::DarkKhaki => quote!(style::Color::DarkKhaki),
+            Color::Lavender => quote!(style::Color::Lavender),
+            Color::Thistle => quote!(style::Color::Thistle),
+            Color::Plum => quote!(style::Color::Plum),
+            Color::Violet => quote!(style::Color::Violet),
+            Color::Orchid => quote!(style::Color::Orchid),
+            Color::Fuchsia => quote!(style::Color::Fuchsia),
+            Color::Magenta => quote!(style::Color::Magenta),
+            Color::MediumOrchid => quote!(style::Color::MediumOrchid),
+            Color::MediumPurple => quote!(style::Color::MediumPurple),
+            Color::RebeccaPurple => quote!(style::Color::RebeccaPurple),
+            Color::BlueViolet => quote!(style::Color::BlueViolet),
+            Color::DarkViolet => quote!(style::Color::DarkViolet),
+            Color::DarkOrchid => quote!(style::Color::DarkOrchid),
+            Color::DarkMagenta => quote!(style::Color::DarkMagenta),
+            Color::Purple => quote!(style::Color::Purple),
+            Color::Indigo => quote!(style::Color::Indigo),
+            Color::SlateBlue => quote!(style::Color::SlateBlue),
+            Color::DarkSlateBlue => quote!(style::Color::DarkSlateBlue),
+            Color::MediumSlateBlue => quote!(style::Color::MediumSlateBlue),
+            Color::GreenYellow => quote!(style::Color::GreenYellow),
+            Color::Chartreuse => quote!(style::Color::Chartreuse),
+            Color::LawnGreen => quote!(style::Color::LawnGreen),
+            Color::Lime => quote!(style::Color::Lime),
+            Color::LimeGreen => quote!(style::Color::LimeGreen),
+            Color::PaleGreen => quote!(style::Color::PaleGreen),
+            Color::LightGreen => quote!(style::Color::LightGreen),
+            Color::MediumSpringGreen => quote!(style::Color::MediumSpringGreen),
+            Color::SpringGreen => quote!(style::Color::SpringGreen),
+            Color::MediumSeaGreen => quote!(style::Color::MediumSeaGreen),
+            Color::SeaGreen => quote!(style::Color::SeaGreen),
+            Color::ForestGreen => quote!(style::Color::ForestGreen),
+            Color::Green => quote!(style::Color::Green),
+            Color::DarkGreen => quote!(style::Color::DarkGreen),
+            Color::YellowGreen => quote!(style::Color::YellowGreen),
+            Color::OliveDrab => quote!(style::Color::OliveDrab),
+            Color::Olive => quote!(style::Color::Olive),
+            Color::DarkOliveGreen => quote!(style::Color::DarkOliveGreen),
+            Color::MediumAquamarine => quote!(style::Color::MediumAquamarine),
+            Color::DarkSeaGreen => quote!(style::Color::DarkSeaGreen),
+            Color::LightSeaGreen => quote!(style::Color::LightSeaGreen),
+            Color::DarkCyan => quote!(style::Color::DarkCyan),
+            Color::Teal => quote!(style::Color::Teal),
+            Color::Aqua => quote!(style::Color::Aqua),
+            Color::Cyan => quote!(style::Color::Cyan),
+            Color::LightCyan => quote!(style::Color::LightCyan),
+            Color::PaleTurquoise => quote!(style::Color::PaleTurquoise),
+            Color::Aquamarine => quote!(style::Color::Aquamarine),
+            Color::Turquoise => quote!(style::Color::Turquoise),
+            Color::MediumTurquoise => quote!(style::Color::MediumTurquoise),
+            Color::DarkTurquoise => quote!(style::Color::DarkTurquoise),
+            Color::CadetBlue => quote!(style::Color::CadetBlue),
+            Color::SteelBlue => quote!(style::Color::SteelBlue),
+            Color::LightSteelBlue => quote!(style::Color::LightSteelBlue),
+            Color::PowderBlue => quote!(style::Color::PowderBlue),
+            Color::LightBlue => quote!(style::Color::LightBlue),
+            Color::SkyBlue => quote!(style::Color::SkyBlue),
+            Color::LightSkyBlue => quote!(style::Color::LightSkyBlue),
+            Color::DeepSkyBlue => quote!(style::Color::DeepSkyBlue),
+            Color::DodgerBlue => quote!(style::Color::DodgerBlue),
+            Color::CornflowerBlue => quote!(style::Color::CornflowerBlue),
+            Color::RoyalBlue => quote!(style::Color::RoyalBlue),
+            Color::Blue => quote!(style::Color::Blue),
+            Color::MediumBlue => quote!(style::Color::MediumBlue),
+            Color::DarkBlue => quote!(style::Color::DarkBlue),
+            Color::Navy => quote!(style::Color::Navy),
+            Color::MidnightBlue => quote!(style::Color::MidnightBlue),
+            Color::Cornsilk => quote!(style::Color::Cornsilk),
+            Color::BlanchedAlmond => quote!(style::Color::BlanchedAlmond),
+            Color::Bisque => quote!(style::Color::Bisque),
+            Color::NavajoWhite => quote!(style::Color::NavajoWhite),
+            Color::Wheat => quote!(style::Color::Wheat),
+            Color::BurlyWood => quote!(style::Color::BurlyWood),
+            Color::Tan => quote!(style::Color::Tan),
+            Color::RosyBrown => quote!(style::Color::RosyBrown),
+            Color::SandyBrown => quote!(style::Color::SandyBrown),
+            Color::Goldenrod => quote!(style::Color::Goldenrod),
+            Color::DarkGoldenrod => quote!(style::Color::DarkGoldenrod),
+            Color::Peru => quote!(style::Color::Peru),
+            Color::Chocolate => quote!(style::Color::Chocolate),
+            Color::SaddleBrown => quote!(style::Color::SaddleBrown),
+            Color::Sienna => quote!(style::Color::Sienna),
+            Color::Brown => quote!(style::Color::Brown),
+            Color::Maroon => quote!(style::Color::Maroon),
+            Color::White => quote!(style::Color::White),
+            Color::Snow => quote!(style::Color::Snow),
+            Color::HoneyDew => quote!(style::Color::HoneyDew),
+            Color::MintCream => quote!(style::Color::MintCream),
+            Color::Azure => quote!(style::Color::Azure),
+            Color::AliceBlue => quote!(style::Color::AliceBlue),
+            Color::GhostWhite => quote!(style::Color::GhostWhite),
+            Color::WhiteSmoke => quote!(style::Color::WhiteSmoke),
+            Color::SeaShell => quote!(style::Color::SeaShell),
+            Color::Beige => quote!(style::Color::Beige),
+            Color::OldLace => quote!(style::Color::OldLace),
+            Color::FloralWhite => quote!(style::Color::FloralWhite),
+            Color::Ivory => quote!(style::Color::Ivory),
+            Color::AntiqueWhite => quote!(style::Color::AntiqueWhite),
+            Color::Linen => quote!(style::Color::Linen),
+            Color::LavenderBlush => quote!(style::Color::LavenderBlush),
+            Color::MistyRose => quote!(style::Color::MistyRose),
+            Color::Gainsboro => quote!(style::Color::Gainsboro),
+            Color::LightGray => quote!(style::Color::LightGray),
+            Color::Silver => quote!(style::Color::Silver),
+            Color::DarkGray => quote!(style::Color::DarkGray),
+            Color::Gray => quote!(style::Color::Gray),
+            Color::DimGray => quote!(style::Color::DimGray),
+            Color::LightSlateGray => quote!(style::Color::LightSlateGray),
+            Color::SlateGray => quote!(style::Color::SlateGray),
+            Color::DarkSlateGray => quote!(style::Color::DarkSlateGray),
+            Color::Black => quote!(style::Color::Black),
         })
     }
 }
