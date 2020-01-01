@@ -122,7 +122,7 @@ impl ToTokens for Style<'_> {
             }
             // font-feature-settings
             // font-kerning
-            // font-size
+            Style::FontSize(v) => quote!(style::Style::FontSize(#v)),
             // font-size-adjust
             // font-stretch
             Style::FontStyle(v) => quote!(style::Style::FontStyle(#v)),
@@ -402,6 +402,23 @@ impl ToTokens for FontWeight {
             FontWeight::Lighter => quote!(style::FontWeight::Lighter),
             FontWeight::Bolder => quote!(style::FontWeight::Bolder),
             FontWeight::Number(v) => quote!(style::FontWeight::Number(#v)),
+        });
+    }
+}
+impl ToTokens for FontSize {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        tokens.extend(match self {
+            FontSize::XXSmall => quote!(style::FontSize::XXSmall),
+            FontSize::XSmall => quote!(style::FontSize::XSmall),
+            FontSize::Small => quote!(style::FontSize::Small),
+            FontSize::Medium => quote!(style::FontSize::Medium),
+            FontSize::Large => quote!(style::FontSize::Large),
+            FontSize::XLarge => quote!(style::FontSize::XLarge),
+            FontSize::XXLarge => quote!(style::FontSize::XXLarge),
+            FontSize::XXXLarge => quote!(style::FontSize::XXXLarge),
+            FontSize::Larger => quote!(style::FontSize::Larger),
+            FontSize::Smaller => quote!(style::FontSize::Smaller),
+            FontSize::LengthPercentage(v) => quote!(style::FontSize::LengthPercentage(#v)),
         });
     }
 }

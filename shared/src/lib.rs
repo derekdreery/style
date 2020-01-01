@@ -261,7 +261,8 @@ pub enum Style<'a> {
     FontFamily(Cow<'a, str>),
     // font-feature-settings
     // font-kerning
-    // font-size
+    /// font-size
+    FontSize(FontSize),
     // font-size-adjust
     // font-stretch
     /// font-style
@@ -553,7 +554,7 @@ impl<'a> Style<'a> {
             Style::FontFamily(value) => Style::FontFamily(Cow::Owned(value.into_owned())),
             // font-feature-settings
             // font-kerning
-            // font-size
+            Style::FontSize(value) => Style::FontSize(value),
             // font-size-adjust
             // font-stretch
             Style::FontStyle(value) => Style::FontStyle(value),
@@ -812,7 +813,7 @@ impl fmt::Display for Style<'_> {
             Style::FontFamily(v) => write!(f, "font-family:{}", v),
             // font-feature-settings
             // font-kerning
-            // font-size
+            Style::FontSize(v) => write!(f, "font-size:{}", v),
             // font-size-adjust
             // font-stretch
             Style::FontStyle(v) => write!(f, "font-style:{}", v),
@@ -1303,6 +1304,39 @@ impl fmt::Display for FontWeight {
             FontWeight::Lighter => f.write_str("lighter"),
             FontWeight::Bolder => f.write_str("bolder"),
             FontWeight::Number(v) => fmt::Display::fmt(v, f),
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum FontSize {
+    XXSmall,
+    XSmall,
+    Small,
+    Medium,
+    Large,
+    XLarge,
+    XXLarge,
+    XXXLarge,
+    Larger,
+    Smaller,
+    LengthPercentage(LengthPercentage),
+}
+
+impl fmt::Display for FontSize {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            FontSize::XXSmall => f.write_str("xx-small"),
+            FontSize::XSmall => f.write_str("x-small"),
+            FontSize::Small => f.write_str("small"),
+            FontSize::Medium => f.write_str("medium"),
+            FontSize::Large => f.write_str("large"),
+            FontSize::XLarge => f.write_str("x-large"),
+            FontSize::XXLarge => f.write_str("xx-large"),
+            FontSize::XXXLarge => f.write_str("xxx-large"),
+            FontSize::Larger => f.write_str("larger"),
+            FontSize::Smaller => f.write_str("smaller"),
+            FontSize::LengthPercentage(v) => fmt::Display::fmt(v, f),
         }
     }
 }

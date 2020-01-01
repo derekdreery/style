@@ -198,7 +198,8 @@ impl Parse for Style<'static> {
             Ok(Style::FontFamily(lit.value().into()))
         // font-feature-settings
         // font-kerning
-        // font-size
+        } else if name.try_match("font-size") {
+            Ok(Style::FontSize(s.parse()?))
         // font-size-adjust
         // font-stretch
         } else if name.try_match("font-style") {
@@ -598,7 +599,7 @@ fn test_border_width() {
     }
 
     for input in vec!["thi", "1px 1px 1px 1px 1px"] {
-        assert!(syn::parse_str::<FontStyle>(input).is_err());
+        assert!(syn::parse_str::<BorderWidth>(input).is_err());
     }
 }
 
@@ -751,6 +752,52 @@ impl Parse for FlexWrap {
     }
 }
 
+impl Parse for FontSize {
+    fn parse(s: ParseStream) -> syn::Result<Self> {
+        let word_fork = s.fork();
+        let name: HyphenWord = word_fork.parse()?;
+
+        if name.try_match("xx-small") {
+            s.advance_to(&word_fork);
+            Ok(FontSize::XXSmall)
+        } else if name.try_match("x-small") {
+            s.advance_to(&word_fork);
+            Ok(FontSize::XSmall)
+        } else if name.try_match("small") {
+            s.advance_to(&word_fork);
+            Ok(FontSize::Small)
+        } else if name.try_match("medium") {
+            s.advance_to(&word_fork);
+            Ok(FontSize::Medium)
+        } else if name.try_match("large") {
+            s.advance_to(&word_fork);
+            Ok(FontSize::Large)
+        } else if name.try_match("x-large") {
+            s.advance_to(&word_fork);
+            Ok(FontSize::XLarge)
+        } else if name.try_match("xx-large") {
+            s.advance_to(&word_fork);
+            Ok(FontSize::XXLarge)
+        } else if name.try_match("xxx-large") {
+            s.advance_to(&word_fork);
+            Ok(FontSize::XXXLarge)
+        } else if name.try_match("larger") {
+            s.advance_to(&word_fork);
+            Ok(FontSize::Larger)
+        } else if name.try_match("smaller") {
+            s.advance_to(&word_fork);
+            Ok(FontSize::Smaller)
+        } else {
+            s.parse::<LengthPercentage>()
+                .map(FontSize::LengthPercentage)
+                .map_err(|_| {
+                    name.add_expected("length");
+                    name.add_expected("percentage");
+                    name.error()
+                })
+        }
+    }
+}
 impl Parse for FontStyle {
     fn parse(s: ParseStream) -> syn::Result<Self> {
         let name: HyphenWord = s.parse()?;
@@ -1289,11 +1336,6 @@ struct Number {
 }
 
 impl Number {
-    /// Work out quickly if The next token may parse as a number.
-    fn peek(s: ParseStream) -> bool {
-        s.peek(syn::LitFloat) || s.peek(syn::LitInt)
-    }
-
     fn empty_suffix(&self) -> syn::Result<()> {
         if self.suffix != "" {
             Err(syn::Error::new(

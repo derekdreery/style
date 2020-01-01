@@ -46,6 +46,32 @@ pub use style_shared::{
 #[proc_macro_hack]
 pub use style_proc::styles;
 
+/// Parse a list of css properties, and embed the result in the output binary as a static string.
+///
+/// # Examples
+///
+/// ```
+/// # use style::*;
+/// // the dummy property will be ignored
+/// let STYLES: &'static str = static_styles! {
+///     dummy;
+///     height: 10px;
+///     display: flex;
+///     justify-content: space-around;
+///     font-weight: 200;
+///     padding: 0 1"em";
+///     color: #"0ee";
+/// };
+///
+/// assert_eq!(
+///     STYLES,
+///     "height:10px;display:flex;justify-content:space-around;\
+///         font-weight:200;padding:0 1em;color:#00eeee;"
+/// );
+/// ```
+#[proc_macro_hack]
+pub use style_proc::static_styles;
+
 /// Parse a css property.
 ///
 /// # Examples
