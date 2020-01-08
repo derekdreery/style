@@ -1,10 +1,10 @@
 use proc_macro_hack::proc_macro_hack;
 
 pub use style_shared::{
-    AlignItems, Border, BorderColor, BoxSizing, Color, Display, DynamicColor, FlexBasis,
-    FlexDirection, FlexWrap, FontStyle, FontWeight, JustifyContent, Length, LengthPercentage,
-    LineStyle, LineWidth, ListStyleType, Margin, MarginWidth, MaxWidthHeight, Padding,
-    PaddingWidth, Percentage, Resize, Style, Styles, Width21, WidthHeight,
+    AlignItems, AutoLengthPercentage, Border, BorderColor, BoxSizing, Color, Display, DynamicColor,
+    FlexBasis, FlexDirection, FlexWrap, FontStyle, FontWeight, JustifyContent, Length,
+    LengthPercentage, LineStyle, LineWidth, ListStyleType, Margin, MarginWidth, MaxWidthHeight,
+    Padding, PaddingWidth, Percentage, Rect, Resize, Style, Styles, Width21, WidthHeight,
 };
 
 /// Parse a list of css properties.
@@ -26,7 +26,7 @@ pub use style_shared::{
 ///
 /// // The types are quite verbose - it's much easier to construct them using the `styles!`
 /// // macro.
-/// assert_eq!(styles, Styles(vec![
+/// assert_eq!(styles, Styles { rules: vec![
 ///     Style::Height(WidthHeight::LengthPercentage(LengthPercentage::Length(Length::Px(10.0)))),
 ///     Style::Display(Display::Flex),
 ///     Style::JustifyContent(JustifyContent::SpaceAround),
@@ -36,7 +36,7 @@ pub use style_shared::{
 ///         LengthPercentage::Length(Length::Em(1.0)),
 ///     )),
 ///     Style::Color(DynamicColor::Literal(Color::HexRGB(0, 238, 238)))
-/// ]));
+/// ] });
 /// assert_eq!(
 ///     styles.to_string(),
 ///     "height:10px;display:flex;justify-content:space-around;\

@@ -5,7 +5,7 @@ use quote::{quote, ToTokens};
 impl ToTokens for DynamicStyles<'_> {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         let parts = self
-            .0
+            .rules
             .iter()
             .filter(|style| !style.is_dummy())
             .map(|style| style.to_token_stream());
@@ -68,7 +68,7 @@ impl ToTokens for Style<'_> {
             Style::BorderLeftColor(v) => quote!(style::Style::BorderLeftColor(#v)),
             Style::BorderLeftStyle(v) => quote!(style::Style::BorderLeftStyle(#v)),
             Style::BorderLeftWidth(v) => quote!(style::Style::BorderLeftWidth(#v)),
-            // border-radius
+            Style::BorderRadius(v) => quote!(style::Style::BorderRadius(#v)),
             // border-right
             Style::BorderRightColor(v) => quote!(style::Style::BorderRightColor(#v)),
             Style::BorderRightStyle(v) => quote!(style::Style::BorderRightStyle(#v)),
@@ -82,7 +82,7 @@ impl ToTokens for Style<'_> {
             Style::BorderTopStyle(v) => quote!(style::Style::BorderTopStyle(#v)),
             Style::BorderTopWidth(v) => quote!(style::Style::BorderTopWidth(#v)),
             Style::BorderWidth(v) => quote!(style::Style::BorderWidth(#v)),
-            // bottom
+            Style::Bottom(v) => quote!(style::Style::Bottom(#v)),
             // box-decoration-break
             // box-shadow
             Style::BoxSizing(v) => quote!(style::Style::BoxSizing(#v)),
@@ -115,7 +115,7 @@ impl ToTokens for Style<'_> {
             Style::FlexGrow(v) => quote!(style::Style::FlexGrow(#v)),
             Style::FlexShrink(v) => quote!(style::Style::FlexShrink(#v)),
             Style::FlexWrap(v) => quote!(style::Style::FlexWrap(#v)),
-            // float
+            Style::Float(v) => quote!(style::Style::Float(#v)),
             // font
             Style::FontFamily(v) => {
                 quote!(style::Style::FontFamily(std::borrow::Cow::Borrowed(#v)))
@@ -155,7 +155,7 @@ impl ToTokens for Style<'_> {
             // image-rendering
             // isolation
             Style::JustifyContent(v) => quote!(style::Style::JustifyContent(#v)),
-            // left
+            Style::Left(v) => quote!(style::Style::Left(#v)),
             // letter-spacing
             // line-height
             // list-style
@@ -184,12 +184,12 @@ impl ToTokens for Style<'_> {
             // mask-repeat
             // mask-size
             // mask-type
-            // max-height
-            // max-width
+            Style::MaxHeight(v) => quote!(style::Style::MaxHeight(#v)),
+            Style::MaxWidth(v) => quote!(style::Style::MaxWidth(#v)),
             Style::MinHeight(v) => quote!(style::Style::MinHeight(#v)),
             Style::MinWidth(v) => quote!(style::Style::MinWidth(#v)),
             // mix-blend-mode
-            // object-fit
+            Style::ObjectFit(v) => quote!(style::Style::ObjectFit(#v)),
             // object-position
             // opacity
             // order
@@ -199,7 +199,9 @@ impl ToTokens for Style<'_> {
             // outline-offset
             // outline-style
             // outline-width
-            // overflow
+            Style::Overflow(v) => quote!(style::Style::Overflow(#v)),
+            Style::OverflowX(v) => quote!(style::Style::OverflowX(#v)),
+            Style::OverflowY(v) => quote!(style::Style::OverflowY(#v)),
             Style::Padding(v) => quote!(style::Style::Padding(#v)),
             Style::PaddingBottom(v) => quote!(style::Style::PaddingBottom(#v)),
             Style::PaddingLeft(v) => quote!(style::Style::PaddingLeft(#v)),
@@ -214,11 +216,11 @@ impl ToTokens for Style<'_> {
             // pitch
             // pitch-range
             // play-during
-            // position
+            Style::Position(v) => quote!(style::Style::Position(#v)),
             // quotes
             Style::Resize(v) => quote!(style::Style::Resize(#v)),
             // richness
-            // right
+            Style::Right(v) => quote!(style::Style::Right(#v)),
             // scroll-margin
             // scroll-margin-block
             // scroll-margin-block-end
@@ -270,7 +272,7 @@ impl ToTokens for Style<'_> {
             // text-shadow
             // text-transform
             // text-underline-position
-            // top
+            Style::Top(v) => quote!(style::Style::Top(#v)),
             // transform
             // transform-box
             // transform-origin
@@ -391,6 +393,18 @@ impl ToTokens for JustifyContent {
             JustifyContent::SpaceAround => quote!(style::JustifyContent::SpaceAround),
             JustifyContent::SpaceBetween => quote!(style::JustifyContent::SpaceBetween),
         });
+    }
+}
+
+impl ToTokens for Float {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        tokens.extend(match self {
+            Float::None => quote!(style::Float::None),
+            Float::Left => quote!(style::Float::Left),
+            Float::Right => quote!(style::Float::Right),
+            Float::InlineStart => quote!(style::Float::InlineStart),
+            Float::InlineEnd => quote!(style::Float::InlineEnd),
+        })
     }
 }
 
@@ -517,50 +531,76 @@ impl ToTokens for BoxSizing {
     }
 }
 
-impl ToTokens for Padding {
+impl ToTokens for Overflow {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         tokens.extend(match self {
-            Padding::All(v) => quote!(style::Padding::All(#v)),
-            Padding::VerticalHorizontal(v, h) => quote!(style::Padding::VerticalHorizontal(#v, #h)),
-            Padding::TopHorizontalBottom(t, h, b) => {
-                quote!(style::Padding::TopHorizontalBottom(#t, #h, #b))
+            Overflow::Both(v) => quote!(style::Overflow::Both(#v)),
+            Overflow::XY(x, y) => quote!(style::Overflow::XY(#x, #y)),
+        })
+    }
+}
+
+impl ToTokens for OverflowXY {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        tokens.extend(match self {
+            OverflowXY::Visible => quote!(style::OverflowXY::Visible),
+            OverflowXY::Hidden => quote!(style::OverflowXY::Hidden),
+            OverflowXY::Clip => quote!(style::OverflowXY::Clip),
+            OverflowXY::Scroll => quote!(style::OverflowXY::Scroll),
+            OverflowXY::Auto => quote!(style::OverflowXY::Auto),
+        })
+    }
+}
+
+impl ToTokens for ObjectFit {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        tokens.extend(match self {
+            ObjectFit::Fill => quote!(style::ObjectFit::Fill),
+            ObjectFit::None => quote!(style::ObjectFit::None),
+            ObjectFit::Contain { scale_down } => {
+                quote!(style::ObjectFit::Contain { scale_down: #scale_down })
             }
-            Padding::LeftTopRightBottom(l, t, r, b) => {
-                quote!(style::Padding::LeftTopRightBottom(#l, #t, #r, #b))
+            ObjectFit::Cover { scale_down } => {
+                quote!(style::ObjectFit::Cover { scale_down: #scale_down })
+            }
+        })
+    }
+}
+
+impl<T> ToTokens for Rect<T>
+where
+    T: ToTokens,
+{
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        tokens.extend(match self {
+            Rect::All(v) => quote!(style::Rect::All(#v)),
+            Rect::VerticalHorizontal(v, h) => quote!(style::Rect::VerticalHorizontal(#v, #h)),
+            Rect::TopHorizontalBottom(t, h, b) => {
+                quote!(style::Rect::TopHorizontalBottom(#t, #h, #b))
+            }
+            Rect::LeftTopRightBottom(l, t, r, b) => {
+                quote!(style::Rect::LeftTopRightBottom(#l, #t, #r, #b))
             }
         });
     }
 }
 
-impl ToTokens for PaddingWidth {
+impl ToTokens for LengthPercentage {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         tokens.extend(match self {
-            PaddingWidth::Length(v) => quote!(style::PaddingWidth::Length(#v)),
-            PaddingWidth::Percentage(v) => quote!(style::PaddingWidth::Percentage(#v)),
+            LengthPercentage::Length(v) => quote!(style::LengthPercentage::Length(#v)),
+            LengthPercentage::Percentage(v) => quote!(style::LengthPercentage::Percentage(#v)),
         });
     }
 }
 
-impl ToTokens for Margin {
+impl ToTokens for AutoLengthPercentage {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         tokens.extend(match self {
-            Margin::All(v) => quote!(style::Margin::All(#v)),
-            Margin::VerticalHorizontal(v, h) => quote!(style::Margin::VerticalHorizontal(#v, #h)),
-            Margin::TopHorizontalBottom(t, h, b) => {
-                quote!(style::Margin::TopHorizontalBottom(#t, #h, #b))
+            AutoLengthPercentage::LengthPercentage(v) => {
+                quote!(style::AutoLengthPercentage::LengthPercentage(#v))
             }
-            Margin::LeftTopRightBottom(l, t, r, b) => {
-                quote!(style::Margin::LeftTopRightBottom(#l, #t, #r, #b))
-            }
-        });
-    }
-}
-
-impl ToTokens for MarginWidth {
-    fn to_tokens(&self, tokens: &mut TokenStream) {
-        tokens.extend(match self {
-            MarginWidth::LengthPercentage(v) => quote!(style::MarginWidth::LengthPercentage(#v)),
-            MarginWidth::Auto => quote!(style::MarginWidth::Auto),
+            AutoLengthPercentage::Auto => quote!(style::AutoLengthPercentage::Auto),
         });
     }
 }
@@ -612,6 +652,17 @@ impl ToTokens for ListStyleType {
             ListStyleType::LowerAlpha => quote!(style::ListStyleType::LowerAlpha),
             ListStyleType::UpperAlpha => quote!(style::ListStyleType::UpperAlpha),
             ListStyleType::None => quote!(style::ListStyleType::None),
+        })
+    }
+}
+
+impl ToTokens for Position {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        tokens.extend(match self {
+            Position::Static => quote!(style::Position::Static),
+            Position::Relative => quote!(style::Position::Relative),
+            Position::Absolute => quote!(style::Position::Absolute),
+            Position::Fixed => quote!(style::Position::Fixed),
         })
     }
 }

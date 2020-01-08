@@ -1,5 +1,6 @@
 //! A module to type styles.
-
+// TODO most stuff here is on the stack, but there are a few heap-allocs here and there. It would
+// be good if we could just to allocate them in the bump arena when using bumpalo.
 mod codegen;
 mod color;
 mod parse;
@@ -12,19 +13,20 @@ use std::{
 
 pub use color::{Color, DynamicColor};
 
-// todo possibly support dynamically generated lists of styles in proc macro
-pub struct DynamicStyles<'a>(pub Vec<DynamicStyle<'a>>);
+pub struct DynamicStyles<'a> {
+    pub rules: Vec<DynamicStyle<'a>>,
+}
 
 impl<'a> From<Vec<DynamicStyle<'a>>> for DynamicStyles<'a> {
     fn from(v: Vec<DynamicStyle<'a>>) -> Self {
-        Self(v)
+        Self { rules: v }
     }
 }
 
 impl fmt::Display for DynamicStyles<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         for style in self
-            .0
+            .rules
             .iter()
             .filter(|style| !(style.is_dynamic() || style.is_dummy()))
         {
@@ -36,62 +38,66 @@ impl fmt::Display for DynamicStyles<'_> {
 
 // TODO make container generic over heap (e.g. support bumpalo)
 #[derive(Debug, Clone, PartialEq)]
-pub struct Styles<'a>(pub Vec<Style<'a>>);
+pub struct Styles<'a> {
+    pub rules: Vec<Style<'a>>,
+}
 
 impl<'a> Styles<'a> {
     pub fn new() -> Self {
-        Styles(Vec::new())
+        Styles { rules: Vec::new() }
     }
 
     pub fn add(&mut self, style: Style<'a>) {
-        self.0.push(style);
+        self.rules.push(style);
     }
 
     pub fn merge(&mut self, other: Styles<'a>) {
-        self.0.extend(other.0.into_iter())
+        self.rules.extend(other.rules.into_iter())
     }
 }
 
 impl<'a> From<DynamicStyles<'a>> for Styles<'a> {
     fn from(dy: DynamicStyles<'a>) -> Self {
-        Styles(
-            dy.0.into_iter()
+        Styles {
+            rules: dy
+                .rules
+                .into_iter()
                 .filter_map(|dy_sty| match dy_sty {
                     DynamicStyle::Dynamic(_) => None,
                     DynamicStyle::Literal(l) => Some(l),
                 })
                 .collect(),
-        )
+        }
     }
 }
 
 impl<'a> Deref for Styles<'a> {
     type Target = Vec<Style<'a>>;
     fn deref(&self) -> &Self::Target {
-        &self.0
+        &self.rules
     }
 }
 impl<'a> DerefMut for Styles<'a> {
     fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
+        &mut self.rules
     }
 }
 
 impl<'a> From<Vec<Style<'a>>> for Styles<'a> {
     fn from(v: Vec<Style<'a>>) -> Self {
-        Self(v)
+        Self { rules: v }
     }
 }
 
 impl<'a> From<Styles<'a>> for Vec<Style<'a>> {
     fn from(v: Styles<'a>) -> Self {
-        v.0
+        v.rules
     }
 }
 
 impl fmt::Display for Styles<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        for style in self.0.iter().filter(|style| !style.is_dummy()) {
+        for style in self.rules.iter().filter(|style| !style.is_dummy()) {
             write!(f, "{};", style)?;
         }
         Ok(())
@@ -191,7 +197,8 @@ pub enum Style<'a> {
     BorderLeftStyle(LineStyle),
     /// border-left-width
     BorderLeftWidth(LineWidth),
-    // border-radius
+    /// border-radius
+    BorderRadius(BorderRadius),
     // border-right
     /// border-right-color
     BorderRightColor(Color),
@@ -213,7 +220,8 @@ pub enum Style<'a> {
     BorderTopWidth(LineWidth),
     /// border-width
     BorderWidth(BorderWidth),
-    // bottom
+    /// bottom
+    Bottom(AutoLengthPercentage),
     // box-decoration-break
     // box-shadow
     /// box-sizing
@@ -255,7 +263,8 @@ pub enum Style<'a> {
     FlexShrink(f64),
     /// flex-wrap
     FlexWrap(FlexWrap),
-    // float
+    /// float
+    Float(Float),
     // font
     /// font-family
     FontFamily(Cow<'a, str>),
@@ -299,7 +308,8 @@ pub enum Style<'a> {
     // isolation
     /// justify-content
     JustifyContent(JustifyContent),
-    // left
+    /// left
+    Left(AutoLengthPercentage),
     // letter-spacing
     // line-height
     // list-style
@@ -334,14 +344,17 @@ pub enum Style<'a> {
     // mask-repeat
     // mask-size
     // mask-type
-    // max-height
-    // max-width
-    /// min-height
-    MinHeight(LengthPercentage), // todo inherit
-    /// min-width
-    MinWidth(LengthPercentage), // todo none, inherit
+    /// max-height
+    MaxHeight(MaxWidthHeight),
+    /// max-width
+    MaxWidth(MaxWidthHeight),
+    /// min-height - current implementing CSS2 spec
+    MinHeight(LengthPercentage),
+    /// min-width - current implementing CSS2 spec
+    MinWidth(LengthPercentage),
     // mix-blend-mode
-    // object-fit
+    /// object-fit - https://drafts.csswg.org/css-images-4/#the-object-fit
+    ObjectFit(ObjectFit),
     // object-position
     // opacity
     // order
@@ -351,7 +364,12 @@ pub enum Style<'a> {
     // outline-offset
     // outline-style
     // outline-width
-    // overflow
+    /// overflow - https://drafts.csswg.org/css-overflow-3/#propdef-overflow
+    Overflow(Overflow),
+    /// overflow-x manually added
+    OverflowX(OverflowXY),
+    /// overflow-y manually added
+    OverflowY(OverflowXY),
     /// padding
     Padding(Padding),
     /// padding-bottom
@@ -371,12 +389,14 @@ pub enum Style<'a> {
     // pitch
     // pitch-range
     // play-during
-    // position
+    /// position
+    Position(Position),
     // quotes
     /// resize
     Resize(Resize),
     // richness
-    // right
+    /// right
+    Right(AutoLengthPercentage),
     // scroll-margin
     // scroll-margin-block
     // scroll-margin-block-end
@@ -428,7 +448,8 @@ pub enum Style<'a> {
     // text-shadow
     // text-transform
     // text-underline-position
-    // top
+    /// top
+    Top(AutoLengthPercentage),
     // transform
     // transform-box
     // transform-origin
@@ -502,7 +523,7 @@ impl<'a> Style<'a> {
             Style::BorderLeftColor(value) => Style::BorderLeftColor(value),
             Style::BorderLeftStyle(value) => Style::BorderLeftStyle(value),
             Style::BorderLeftWidth(value) => Style::BorderLeftWidth(value),
-            // border-radius
+            Style::BorderRadius(value) => Style::BorderRadius(value),
             // border-right
             Style::BorderRightColor(value) => Style::BorderRightColor(value),
             Style::BorderRightStyle(value) => Style::BorderRightStyle(value),
@@ -516,7 +537,7 @@ impl<'a> Style<'a> {
             Style::BorderTopStyle(value) => Style::BorderTopStyle(value),
             Style::BorderTopWidth(value) => Style::BorderTopWidth(value),
             Style::BorderWidth(value) => Style::BorderWidth(value),
-            // bottom
+            Style::Bottom(value) => Style::Bottom(value),
             // box-decoration-break
             // box-shadow
             Style::BoxSizing(value) => Style::BoxSizing(value),
@@ -549,7 +570,7 @@ impl<'a> Style<'a> {
             Style::FlexGrow(value) => Style::FlexGrow(value),
             Style::FlexShrink(value) => Style::FlexShrink(value),
             Style::FlexWrap(value) => Style::FlexWrap(value),
-            // float
+            Style::Float(value) => Style::Float(value),
             // font
             Style::FontFamily(value) => Style::FontFamily(Cow::Owned(value.into_owned())),
             // font-feature-settings
@@ -587,7 +608,7 @@ impl<'a> Style<'a> {
             // image-rendering
             // isolation
             Style::JustifyContent(value) => Style::JustifyContent(value),
-            // left
+            Style::Left(value) => Style::Left(value),
             // letter-spacing
             // line-height
             // list-style
@@ -616,12 +637,12 @@ impl<'a> Style<'a> {
             // mask-repeat
             // mask-size
             // mask-type
-            // max-height
-            // max-width
+            Style::MaxHeight(value) => Style::MaxHeight(value),
+            Style::MaxWidth(value) => Style::MaxWidth(value),
             Style::MinHeight(value) => Style::MinHeight(value),
             Style::MinWidth(value) => Style::MinWidth(value),
             // mix-blend-mode
-            // object-fit
+            Style::ObjectFit(value) => Style::ObjectFit(value),
             // object-position
             // opacity
             // order
@@ -631,7 +652,9 @@ impl<'a> Style<'a> {
             // outline-offset
             // outline-style
             // outline-width
-            // overflow
+            Style::Overflow(value) => Style::Overflow(value),
+            Style::OverflowX(value) => Style::OverflowX(value),
+            Style::OverflowY(value) => Style::OverflowY(value),
             Style::Padding(value) => Style::Padding(value),
             Style::PaddingBottom(value) => Style::PaddingBottom(value),
             Style::PaddingLeft(value) => Style::PaddingLeft(value),
@@ -646,11 +669,11 @@ impl<'a> Style<'a> {
             // pitch
             // pitch-range
             // play-during
-            // position
+            Style::Position(value) => Style::Position(value),
             // quotes
             Style::Resize(value) => Style::Resize(value),
             // richness
-            // right
+            Style::Right(value) => Style::Right(value),
             // scroll-margin
             // scroll-margin-block
             // scroll-margin-block-end
@@ -702,7 +725,7 @@ impl<'a> Style<'a> {
             // text-shadow
             // text-transform
             // text-underline-position
-            // top
+            Style::Top(value) => Style::Top(value),
             // transform
             // transform-box
             // transform-origin
@@ -761,7 +784,7 @@ impl fmt::Display for Style<'_> {
             Style::BorderLeftColor(v) => write!(f, "border-left-color:{}", v),
             Style::BorderLeftStyle(v) => write!(f, "border-left-style:{}", v),
             Style::BorderLeftWidth(v) => write!(f, "border-left-width:{}", v),
-            // border-radius
+            Style::BorderRadius(v) => write!(f, "border-radius:{}", v),
             // border-right
             Style::BorderRightColor(v) => write!(f, "border-right-color:{}", v),
             Style::BorderRightStyle(v) => write!(f, "border-right-style:{}", v),
@@ -775,7 +798,7 @@ impl fmt::Display for Style<'_> {
             Style::BorderTopStyle(v) => write!(f, "border-top-style:{}", v),
             Style::BorderTopWidth(v) => write!(f, "border-top-width:{}", v),
             Style::BorderWidth(v) => write!(f, "border-width:{}", v),
-            // bottom
+            Style::Bottom(v) => write!(f, "bottom:{}", v),
             // box-decoration-break
             // box-shadow
             Style::BoxSizing(v) => write!(f, "box-sizing:{}", v),
@@ -808,7 +831,7 @@ impl fmt::Display for Style<'_> {
             Style::FlexGrow(v) => write!(f, "flex-grow:{}", v),
             Style::FlexShrink(v) => write!(f, "flex-shrink:{}", v),
             Style::FlexWrap(v) => write!(f, "flex-wrap:{}", v),
-            // float
+            Style::Float(v) => write!(f, "float:{}", v),
             // font
             Style::FontFamily(v) => write!(f, "font-family:{}", v),
             // font-feature-settings
@@ -847,6 +870,7 @@ impl fmt::Display for Style<'_> {
             // isolation
             Style::JustifyContent(v) => write!(f, "justify-content:{}", v),
             // left
+            Style::Left(v) => write!(f, "left:{}", v),
             // letter-spacing
             // line-height
             // list-style
@@ -875,12 +899,12 @@ impl fmt::Display for Style<'_> {
             // mask-repeat
             // mask-size
             // mask-type
-            // max-height
-            // max-width
+            Style::MaxHeight(v) => write!(f, "max-height:{}", v),
+            Style::MaxWidth(v) => write!(f, "max-width:{}", v),
             Style::MinHeight(v) => write!(f, "min-height:{}", v),
             Style::MinWidth(v) => write!(f, "min-width:{}", v),
             // mix-blend-mode
-            // object-fit
+            Style::ObjectFit(v) => write!(f, "object-fit:{}", v),
             // object-position
             // opacity
             // order
@@ -890,7 +914,9 @@ impl fmt::Display for Style<'_> {
             // outline-offset
             // outline-style
             // outline-width
-            // overflow
+            Style::Overflow(v) => write!(f, "overflow:{}", v),
+            Style::OverflowX(v) => write!(f, "overflow-x:{}", v),
+            Style::OverflowY(v) => write!(f, "overflow-y:{}", v),
             Style::Padding(v) => write!(f, "padding:{}", v),
             Style::PaddingBottom(v) => write!(f, "padding-bottom:{}", v),
             Style::PaddingLeft(v) => write!(f, "padding-left:{}", v),
@@ -909,11 +935,11 @@ impl fmt::Display for Style<'_> {
             // pitch
             // pitch-range
             // play-during
-            // position
+            Style::Position(v) => write!(f, "position:{}", v),
             // quotes
             Style::Resize(v) => write!(f, "resize:{}", v),
             // richness
-            // right
+            Style::Right(v) => write!(f, "right:{}", v),
             // scroll-margin
             // scroll-margin-block
             // scroll-margin-block-end
@@ -966,6 +992,7 @@ impl fmt::Display for Style<'_> {
             // text-transform
             // text-underline-position
             // top
+            Style::Top(v) => write!(f, "top:{}", v),
             // transform
             // transform-box
             // transform-origin
@@ -1085,6 +1112,8 @@ impl fmt::Display for BorderColor {
         }
     }
 }
+
+pub type BorderRadius = LengthPercentage;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum BorderStyle {
@@ -1282,6 +1311,27 @@ impl fmt::Display for FlexWrap {
         match self {
             FlexWrap::Wrap => write!(f, "wrap"),
             FlexWrap::Nowrap => write!(f, "nowrap"),
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum Float {
+    None,
+    Left,
+    Right,
+    InlineStart,
+    InlineEnd,
+}
+
+impl fmt::Display for Float {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Float::None => f.write_str("inline-end"),
+            Float::Left => f.write_str("left"),
+            Float::Right => f.write_str("right"),
+            Float::InlineStart => f.write_str("inline-start"),
+            Float::InlineEnd => f.write_str("inline-end"),
         }
     }
 }
@@ -1516,40 +1566,24 @@ impl fmt::Display for ListStyleType {
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq)]
-pub enum Margin {
-    All(MarginWidth),
-    VerticalHorizontal(MarginWidth, MarginWidth),
-    TopHorizontalBottom(MarginWidth, MarginWidth, MarginWidth),
-    // todo order might be wrong (doesn't affect output becacuse its only the name that it changes).
-    LeftTopRightBottom(MarginWidth, MarginWidth, MarginWidth, MarginWidth),
-}
-
-impl fmt::Display for Margin {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            Margin::All(len) => write!(f, "{}", len),
-            Margin::VerticalHorizontal(v, h) => write!(f, "{} {}", v, h),
-            Margin::TopHorizontalBottom(t, h, b) => write!(f, "{} {} {}", t, h, b),
-            Margin::LeftTopRightBottom(l, t, r, b) => write!(f, "{} {} {} {}", l, t, r, b),
-        }
-    }
-}
+pub type Margin = Rect<MarginWidth>;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-pub enum MarginWidth {
+pub enum AutoLengthPercentage {
     LengthPercentage(LengthPercentage),
     Auto,
 }
 
-impl fmt::Display for MarginWidth {
+impl fmt::Display for AutoLengthPercentage {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            MarginWidth::LengthPercentage(v) => fmt::Display::fmt(v, f),
-            MarginWidth::Auto => write!(f, "auto"),
+            AutoLengthPercentage::LengthPercentage(v) => fmt::Display::fmt(v, f),
+            AutoLengthPercentage::Auto => write!(f, "auto"),
         }
     }
 }
+
+pub type MarginWidth = AutoLengthPercentage;
 
 /// for max-width and max-height
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -1574,20 +1608,93 @@ impl fmt::Display for MaxWidthHeight {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-pub enum Padding {
-    All(PaddingWidth),
-    VerticalHorizontal(PaddingWidth, PaddingWidth),
-    TopHorizontalBottom(PaddingWidth, PaddingWidth, PaddingWidth),
-    LeftTopRightBottom(PaddingWidth, PaddingWidth, PaddingWidth, PaddingWidth),
+pub enum ObjectFit {
+    Fill,
+    None,
+    Contain { scale_down: bool },
+    Cover { scale_down: bool },
 }
 
-impl fmt::Display for Padding {
+impl fmt::Display for ObjectFit {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            Padding::All(len) => write!(f, "{}", len),
-            Padding::VerticalHorizontal(v, h) => write!(f, "{} {}", v, h),
-            Padding::TopHorizontalBottom(t, h, b) => write!(f, "{} {} {}", t, h, b),
-            Padding::LeftTopRightBottom(l, t, r, b) => write!(f, "{} {} {} {}", l, t, r, b),
+            ObjectFit::Fill => write!(f, "fill"),
+            ObjectFit::None => write!(f, "none"),
+            ObjectFit::Contain { scale_down } => {
+                if *scale_down {
+                    write!(f, "contain scale-down")
+                } else {
+                    write!(f, "contain")
+                }
+            }
+            ObjectFit::Cover { scale_down } => {
+                if *scale_down {
+                    write!(f, "cover scale-down")
+                } else {
+                    write!(f, "cover")
+                }
+            }
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum Overflow {
+    Both(OverflowXY),
+    XY(OverflowXY, OverflowXY),
+}
+
+impl fmt::Display for Overflow {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Overflow::Both(v) => write!(f, "{}", v),
+            Overflow::XY(x, y) => write!(f, "{} {}", x, y),
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum OverflowXY {
+    Visible,
+    Hidden,
+    Clip,
+    Scroll,
+    Auto,
+}
+
+impl fmt::Display for OverflowXY {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            OverflowXY::Visible => write!(f, "visible"),
+            OverflowXY::Hidden => write!(f, "hidden"),
+            OverflowXY::Clip => write!(f, "clip"),
+            OverflowXY::Scroll => write!(f, "scroll"),
+            OverflowXY::Auto => write!(f, "auto"),
+        }
+    }
+}
+
+pub type Padding = Rect<LengthPercentage>;
+
+/// For parsing things in groups of 1, 2, 3 or 4 for specifying the sides of a rectangle.
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum Rect<T> {
+    All(T),
+    VerticalHorizontal(T, T),
+    TopHorizontalBottom(T, T, T),
+    LeftTopRightBottom(T, T, T, T),
+}
+
+impl<T> fmt::Display for Rect<T>
+where
+    T: fmt::Display,
+{
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Rect::All(len) => write!(f, "{}", len),
+            Rect::VerticalHorizontal(v, h) => write!(f, "{} {}", v, h),
+            Rect::TopHorizontalBottom(t, h, b) => write!(f, "{} {} {}", t, h, b),
+            Rect::LeftTopRightBottom(l, t, r, b) => write!(f, "{} {} {} {}", l, t, r, b),
         }
     }
 }
@@ -1601,6 +1708,25 @@ pub struct Percentage(pub f64);
 impl fmt::Display for Percentage {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{}%", self.0)
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum Position {
+    Static,
+    Relative,
+    Absolute,
+    Fixed,
+}
+
+impl fmt::Display for Position {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Position::Static => write!(f, "static"),
+            Position::Relative => write!(f, "relative"),
+            Position::Absolute => write!(f, "absolute"),
+            Position::Fixed => write!(f, "fixed"),
+        }
     }
 }
 

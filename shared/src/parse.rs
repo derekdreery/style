@@ -18,12 +18,6 @@ use syn::{
 
 impl Parse for DynamicStyles<'static> {
     fn parse(s: ParseStream) -> syn::Result<Self> {
-        // parse `in arena =>` syntax, but don't do anything with it for now
-        if s.peek(Token![in]) {
-            s.parse::<Token![in]>()?;
-            s.parse::<syn::Expr>()?;
-            s.parse::<Token![=>]>()?;
-        }
         let punc = s.parse_terminated::<_, Token![;]>(<DynamicStyle as Parse>::parse)?;
         Ok(DynamicStyles::from(punc.into_iter().collect::<Vec<_>>()))
     }
@@ -31,12 +25,6 @@ impl Parse for DynamicStyles<'static> {
 
 impl Parse for Styles<'static> {
     fn parse(s: ParseStream) -> syn::Result<Self> {
-        // parse `in arena =>` syntax, but don't do anything with it for now
-        if s.peek(Token![in]) {
-            s.parse::<Token![in]>()?;
-            s.parse::<syn::Expr>()?;
-            s.parse::<Token![=>]>()?;
-        }
         let punc = s.parse_terminated::<_, Token![;]>(<DynamicStyle as Parse>::parse)?;
         let mut styles = Vec::new();
         let punc_span = punc.span();
@@ -119,7 +107,8 @@ impl Parse for Style<'static> {
             Ok(Style::BorderLeftStyle(s.parse()?))
         } else if name.try_match("border-left-width") {
             Ok(Style::BorderLeftWidth(s.parse()?))
-        // border-radius
+        } else if name.try_match("border-radius") {
+            Ok(Style::BorderRadius(s.parse()?))
         // border-right
         } else if name.try_match("border-right-color") {
             Ok(Style::BorderRightColor(s.parse()?))
@@ -141,7 +130,8 @@ impl Parse for Style<'static> {
             Ok(Style::BorderTopWidth(s.parse()?))
         } else if name.try_match("border-width") {
             Ok(Style::BorderWidth(s.parse()?))
-        // bottom
+        } else if name.try_match("bottom") {
+            Ok(Style::Bottom(s.parse()?))
         // box-decoration-break
         // box-shadow
         } else if name.try_match("box-sizing") {
@@ -191,7 +181,8 @@ impl Parse for Style<'static> {
             Ok(Style::FlexShrink(number.value))
         } else if name.try_match("flex-wrap") {
             Ok(Style::FlexWrap(s.parse()?))
-        // float
+        } else if name.try_match("float") {
+            Ok(Style::Float(s.parse()?))
         // font
         } else if name.try_match("font-family") {
             let lit: syn::LitStr = s.parse()?;
@@ -236,7 +227,8 @@ impl Parse for Style<'static> {
         // isolation
         } else if name.try_match("justify-content") {
             Ok(Style::JustifyContent(s.parse()?))
-        // left
+        } else if name.try_match("left") {
+            Ok(Style::Left(s.parse()?))
         // letter-spacing
         // line-height
         // list-style
@@ -271,14 +263,17 @@ impl Parse for Style<'static> {
         // mask-repeat
         // mask-size
         // mask-type
-        // max-height
-        // max-width
+        } else if name.try_match("max-height") {
+            Ok(Style::MaxHeight(s.parse()?))
+        } else if name.try_match("max-width") {
+            Ok(Style::MaxWidth(s.parse()?))
         } else if name.try_match("min-height") {
             Ok(Style::MinHeight(s.parse()?))
         } else if name.try_match("min-width") {
             Ok(Style::MinWidth(s.parse()?))
         // mix-blend-mode
-        // object-fit
+        } else if name.try_match("object-fit") {
+            Ok(Style::ObjectFit(s.parse()?))
         // object-position
         // opacity
         // order
@@ -288,10 +283,15 @@ impl Parse for Style<'static> {
         // outline-offset
         // outline-style
         // outline-width
-        // overflow
+        } else if name.try_match("overflow") {
+            Ok(Style::Overflow(s.parse()?))
+        } else if name.try_match("overflow-x") {
+            Ok(Style::OverflowX(s.parse()?))
+        } else if name.try_match("overflow-y") {
+            Ok(Style::OverflowY(s.parse()?))
         } else if name.try_match("padding") {
             Ok(Style::Padding(s.parse()?))
-        } else if name.try_match("padding-bottom") {
+        } else if name.try_match("padding-left") {
             Ok(Style::PaddingBottom(s.parse()?))
         } else if name.try_match("padding-left") {
             Ok(Style::PaddingLeft(s.parse()?))
@@ -308,12 +308,14 @@ impl Parse for Style<'static> {
         // pitch
         // pitch-range
         // play-during
-        // position
+        } else if name.try_match("position") {
+            Ok(Style::Position(s.parse()?))
         // quotes
         } else if name.try_match("resize") {
             Ok(Style::Resize(s.parse()?))
         // richness
-        // right
+        } else if name.try_match("right") {
+            Ok(Style::Right(s.parse()?))
         // scroll-margin
         // scroll-margin-block
         // scroll-margin-block-end
@@ -366,6 +368,8 @@ impl Parse for Style<'static> {
         // text-transform
         // text-underline-position
         // top
+        } else if name.try_match("top") {
+            Ok(Style::Top(s.parse()?))
         // transform
         // transform-box
         // transform-origin
@@ -752,6 +756,25 @@ impl Parse for FlexWrap {
     }
 }
 
+impl Parse for Float {
+    fn parse(s: ParseStream) -> syn::Result<Self> {
+        let word: HyphenWord = s.parse()?;
+        if word.try_match("none") {
+            Ok(Float::None)
+        } else if word.try_match("left") {
+            Ok(Float::Left)
+        } else if word.try_match("right") {
+            Ok(Float::Right)
+        } else if word.try_match("inline-start") {
+            Ok(Float::InlineStart)
+        } else if word.try_match("inline-end") {
+            Ok(Float::InlineEnd)
+        } else {
+            Err(word.error())
+        }
+    }
+}
+
 impl Parse for FontSize {
     fn parse(s: ParseStream) -> syn::Result<Self> {
         let word_fork = s.fork();
@@ -1036,54 +1059,162 @@ impl Parse for ListStyleType {
     }
 }
 
-impl Parse for Margin {
+impl Parse for MaxWidthHeight {
     fn parse(s: ParseStream) -> syn::Result<Self> {
-        let first = s.parse::<MarginWidth>()?;
-        let second = match s.parse::<MarginWidth>() {
-            Ok(v) => v,
-            Err(_) => return Ok(Margin::All(first)),
-        };
-        let third = match s.parse::<MarginWidth>() {
-            Ok(v) => v,
-            Err(_) => return Ok(Margin::VerticalHorizontal(first, second)),
-        };
-        // todo could make the error message better here by looking for `;` and assuming next token
-        // is an incorrect number if not.
-        match s.parse::<MarginWidth>() {
-            Ok(v) => Ok(Margin::LeftTopRightBottom(first, second, third, v)),
-            Err(_) => Ok(Margin::TopHorizontalBottom(first, second, third)),
+        let name = s.parse::<HyphenWord>()?;
+        name.add_expected("length");
+        name.add_expected("percentage");
+        if name.try_match("none") {
+            Ok(MaxWidthHeight::None)
+        } else if name.try_match("min-content") {
+            Ok(MaxWidthHeight::MinContent)
+        } else if name.try_match("max-content") {
+            Ok(MaxWidthHeight::MaxContent)
+        } else if name.try_match("fit-content") {
+            let content;
+            syn::parenthesized!(content in s);
+            Ok(MaxWidthHeight::FitContent(content.parse()?))
+        } else {
+            s.parse()
+                .map(|lp| MaxWidthHeight::LengthPercentage(lp))
+                .map_err(|_| name.error())
         }
     }
 }
 
-impl Parse for MarginWidth {
+#[test]
+fn test_max_width_height() {
+    let style: Style = syn::parse_str("max-width: 200px").unwrap();
+    assert_eq!(&style.to_string(), "max-width:200px");
+}
+
+impl<T> Parse for Rect<T>
+where
+    T: Parse,
+{
+    fn parse(s: ParseStream) -> syn::Result<Self> {
+        let first = s.parse::<T>()?;
+        let second = match s.parse::<T>() {
+            Ok(v) => v,
+            Err(_) => return Ok(Rect::All(first)),
+        };
+        let third = match s.parse::<T>() {
+            Ok(v) => v,
+            Err(_) => return Ok(Rect::VerticalHorizontal(first, second)),
+        };
+        // todo could make the error message better here by looking for `;` and assuming next token
+        // is an incorrect number if not.
+        match s.parse::<T>() {
+            Ok(v) => Ok(Rect::LeftTopRightBottom(first, second, third, v)),
+            Err(_) => Ok(Rect::TopHorizontalBottom(first, second, third)),
+        }
+    }
+}
+
+impl Parse for AutoLengthPercentage {
     fn parse(s: ParseStream) -> syn::Result<Self> {
         syn::custom_keyword!(auto);
         if s.peek(auto) {
             s.parse::<auto>()?;
-            Ok(MarginWidth::Auto)
+            Ok(AutoLengthPercentage::Auto)
         } else {
-            Ok(MarginWidth::LengthPercentage(s.parse()?))
+            Ok(AutoLengthPercentage::LengthPercentage(s.parse()?))
         }
     }
 }
 
-impl Parse for Padding {
+impl Parse for ObjectFit {
     fn parse(s: ParseStream) -> syn::Result<Self> {
-        let first = s.parse::<PaddingWidth>()?;
-        let second = match s.parse::<PaddingWidth>() {
-            Ok(v) => v,
-            Err(_) => return Ok(Padding::All(first)),
-        };
-        let third = match s.parse::<PaddingWidth>() {
-            Ok(v) => v,
-            Err(_) => return Ok(Padding::VerticalHorizontal(first, second)),
-        };
-        // todo could make the error message better here by looking for `;` and assuming next token
-        // is an incorrect number if not.
-        match s.parse::<PaddingWidth>() {
-            Ok(v) => Ok(Padding::LeftTopRightBottom(first, second, third, v)),
-            Err(_) => Ok(Padding::TopHorizontalBottom(first, second, third)),
+        let name: HyphenWord = s.parse()?;
+        if name.try_match("fill") {
+            Ok(ObjectFit::Fill)
+        } else if name.try_match("none") {
+            Ok(ObjectFit::None)
+        } else if name.try_match("contain") {
+            if s.is_empty() {
+                Ok(ObjectFit::Contain { scale_down: false })
+            } else {
+                let scale_down_word: HyphenWord = s.parse()?;
+                if scale_down_word.try_match("scale-down") {
+                    Ok(ObjectFit::Contain { scale_down: true })
+                } else {
+                    Err(scale_down_word.error())
+                }
+            }
+        } else if name.try_match("cover") {
+            if HyphenWord::peek(s) {
+                let scale_down_word: HyphenWord = s.parse()?;
+                if scale_down_word.try_match("scale-down") {
+                    Ok(ObjectFit::Cover { scale_down: true })
+                } else {
+                    Err(scale_down_word.error())
+                }
+            } else {
+                Ok(ObjectFit::Cover { scale_down: false })
+            }
+        } else if name.try_match("scale-down") {
+            if HyphenWord::peek(s) {
+                let cover_contain: HyphenWord = s.parse()?;
+                if cover_contain.try_match("cover") {
+                    Ok(ObjectFit::Cover { scale_down: true })
+                } else if cover_contain.try_match("contain") {
+                    Ok(ObjectFit::Contain { scale_down: true })
+                } else {
+                    Err(cover_contain.error())
+                }
+            } else {
+                // defaults to contain when cover/contain not present
+                Ok(ObjectFit::Contain { scale_down: true })
+            }
+        } else {
+            Err(name.error())
+        }
+    }
+}
+
+impl Parse for Overflow {
+    fn parse(s: ParseStream) -> syn::Result<Self> {
+        let first = s.parse::<OverflowXY>()?;
+        Ok(match s.parse::<OverflowXY>() {
+            Ok(second) => Overflow::XY(first, second),
+            Err(_) => Overflow::Both(first),
+        })
+    }
+}
+
+impl Parse for OverflowXY {
+    fn parse(s: ParseStream) -> syn::Result<Self> {
+        let name: HyphenWord = s.parse()?;
+
+        if name.try_match("visible") {
+            Ok(OverflowXY::Visible)
+        } else if name.try_match("hidden") {
+            Ok(OverflowXY::Hidden)
+        } else if name.try_match("clip") {
+            Ok(OverflowXY::Clip)
+        } else if name.try_match("scroll") {
+            Ok(OverflowXY::Scroll)
+        } else if name.try_match("auto") {
+            Ok(OverflowXY::Auto)
+        } else {
+            Err(name.error())
+        }
+    }
+}
+
+impl Parse for Position {
+    fn parse(s: ParseStream) -> syn::Result<Self> {
+        let name: HyphenWord = s.parse()?;
+        if name.try_match("static") {
+            Ok(Position::Static)
+        } else if name.try_match("relative") {
+            Ok(Position::Relative)
+        } else if name.try_match("absolute") {
+            Ok(Position::Absolute)
+        } else if name.try_match("fixed") {
+            Ok(Position::Fixed)
+        } else {
+            Err(name.error())
         }
     }
 }
@@ -1409,6 +1540,7 @@ fn test_number() {
 }
 
 /// Something like `word-separated-hyphens`
+#[derive(Debug)]
 struct HyphenWord {
     pub span: Span,
     pub word: Option<String>,
@@ -1450,12 +1582,24 @@ impl HyphenWord {
     pub fn error(&self) -> syn::Error {
         self.tried.to_error(self.span)
     }
+
+    pub fn peek(s: ParseStream) -> bool {
+        s.peek(Ident)
+    }
+
+    pub fn word(&self) -> Option<&str> {
+        self.word.as_ref().map(|s| s.as_str())
+    }
 }
 
 impl Parse for HyphenWord {
     fn parse(s: ParseStream) -> syn::Result<Self> {
-        let first = match s.call(Ident::parse_any) {
-            Ok(v) => v,
+        let fork = s.fork();
+        let first = match fork.call(Ident::parse_any) {
+            Ok(v) => {
+                s.advance_to(&fork);
+                v
+            }
             Err(_) => return Ok(HyphenWord::new_no_word(s.cursor().span())),
         };
         let mut word = first.to_string();
@@ -1485,6 +1629,7 @@ fn test_hyphen_word() {
 }
 
 /// Keeps track of a list of tokens that have been tried.
+#[derive(Debug)]
 pub struct TryList(RefCell<BTreeSet<String>>);
 
 impl TryList {
@@ -1530,7 +1675,7 @@ fn downstream_bug1() {
     )
     .unwrap();
     assert_eq!(
-        s.0,
+        s.rules,
         vec![
             Style::Display(Display::Flex),
             Style::FlexDirection(FlexDirection::Column),
