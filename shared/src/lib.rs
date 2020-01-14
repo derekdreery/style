@@ -1,29 +1,32 @@
 //! A module to type styles.
 // TODO most stuff here is on the stack, but there are a few heap-allocs here and there. It would
 // be good if we could just to allocate them in the bump arena when using bumpalo.
+mod calc;
 mod codegen;
 mod color;
 mod parse;
 
 use std::{
-    borrow::Cow,
     fmt,
     ops::{Deref, DerefMut},
 };
 
-pub use color::{Color, DynamicColor};
+pub use crate::{
+    calc::*,
+    color::{Color, DynamicColor},
+};
 
-pub struct DynamicStyles<'a> {
-    pub rules: Vec<DynamicStyle<'a>>,
+pub struct DynamicStyles {
+    pub rules: Vec<DynamicStyle>,
 }
 
-impl<'a> From<Vec<DynamicStyle<'a>>> for DynamicStyles<'a> {
-    fn from(v: Vec<DynamicStyle<'a>>) -> Self {
+impl From<Vec<DynamicStyle>> for DynamicStyles {
+    fn from(v: Vec<DynamicStyle>) -> Self {
         Self { rules: v }
     }
 }
 
-impl fmt::Display for DynamicStyles<'_> {
+impl fmt::Display for DynamicStyles {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         for style in self
             .rules
@@ -38,26 +41,26 @@ impl fmt::Display for DynamicStyles<'_> {
 
 // TODO make container generic over heap (e.g. support bumpalo)
 #[derive(Debug, Clone, PartialEq)]
-pub struct Styles<'a> {
-    pub rules: Vec<Style<'a>>,
+pub struct Styles {
+    pub rules: Vec<Style>,
 }
 
-impl<'a> Styles<'a> {
+impl Styles {
     pub fn new() -> Self {
         Styles { rules: Vec::new() }
     }
 
-    pub fn add(&mut self, style: Style<'a>) {
+    pub fn add(&mut self, style: Style) {
         self.rules.push(style);
     }
 
-    pub fn merge(&mut self, other: Styles<'a>) {
+    pub fn merge(&mut self, other: Styles) {
         self.rules.extend(other.rules.into_iter())
     }
 }
 
-impl<'a> From<DynamicStyles<'a>> for Styles<'a> {
-    fn from(dy: DynamicStyles<'a>) -> Self {
+impl From<DynamicStyles> for Styles {
+    fn from(dy: DynamicStyles) -> Self {
         Styles {
             rules: dy
                 .rules
@@ -71,31 +74,31 @@ impl<'a> From<DynamicStyles<'a>> for Styles<'a> {
     }
 }
 
-impl<'a> Deref for Styles<'a> {
-    type Target = Vec<Style<'a>>;
+impl Deref for Styles {
+    type Target = Vec<Style>;
     fn deref(&self) -> &Self::Target {
         &self.rules
     }
 }
-impl<'a> DerefMut for Styles<'a> {
+impl DerefMut for Styles {
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.rules
     }
 }
 
-impl<'a> From<Vec<Style<'a>>> for Styles<'a> {
-    fn from(v: Vec<Style<'a>>) -> Self {
+impl From<Vec<Style>> for Styles {
+    fn from(v: Vec<Style>) -> Self {
         Self { rules: v }
     }
 }
 
-impl<'a> From<Styles<'a>> for Vec<Style<'a>> {
-    fn from(v: Styles<'a>) -> Self {
+impl From<Styles> for Vec<Style> {
+    fn from(v: Styles) -> Self {
         v.rules
     }
 }
 
-impl fmt::Display for Styles<'_> {
+impl fmt::Display for Styles {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         for style in self.rules.iter().filter(|style| !style.is_dummy()) {
             write!(f, "{};", style)?;
@@ -105,14 +108,14 @@ impl fmt::Display for Styles<'_> {
 }
 
 #[derive(Debug, Clone, PartialEq)]
-pub enum DynamicStyle<'a> {
+pub enum DynamicStyle {
     /// A literal style.
-    Literal(Style<'a>),
+    Literal(Style),
     /// Tokens to pass through directly to codegen.
     Dynamic(syn::Block),
 }
 
-impl DynamicStyle<'_> {
+impl DynamicStyle {
     pub fn is_dynamic(&self) -> bool {
         match self {
             DynamicStyle::Literal(style) => style.is_dynamic(),
@@ -127,13 +130,13 @@ impl DynamicStyle<'_> {
     }
 }
 
-impl<'a> From<Style<'a>> for DynamicStyle<'a> {
-    fn from(style: Style<'a>) -> Self {
+impl From<Style> for DynamicStyle {
+    fn from(style: Style) -> Self {
         DynamicStyle::Literal(style)
     }
 }
 
-impl fmt::Display for DynamicStyle<'_> {
+impl fmt::Display for DynamicStyle {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             DynamicStyle::Literal(style) => style.fmt(f),
@@ -142,18 +145,18 @@ impl fmt::Display for DynamicStyle<'_> {
     }
 }
 
-/// a `Style` is one of the css key/value pairs.
-///
-/// Styles borrow any heap data making them cheap to copy etc. Use `into_owned` to get something
-/// `'static`.
+/// a `Style` is one of the css key/value pairs, also sometimes known as rules.
 #[derive(Debug, Clone, PartialEq)]
 #[non_exhaustive]
-pub enum Style<'a> {
+pub enum Style {
     /// For when you don't want to include any style at all (useful in expressions like `if`)
     Dummy,
+    /// For when you want to use some unimplemented css. This is not type checked!
+    Unchecked(String),
 
     // *From w3 spec:*
-    // align-content
+    /// align-content
+    AlignContent(AlignContent),
     /// align-items
     AlignItems(AlignItems),
     // align-self
@@ -172,7 +175,8 @@ pub enum Style<'a> {
     // background-size
     /// border
     Border(Border),
-    // border-bottom
+    /// border-bottom
+    BorderBottom(Border),
     /// border-bottom-color
     BorderBottomColor(Color),
     // border-bottom-left-radius
@@ -190,7 +194,8 @@ pub enum Style<'a> {
     // border-image-slice
     // border-image-source
     // border-image-width
-    // border-left
+    /// border-left
+    BorderLeft(Border),
     /// border-left-color
     BorderLeftColor(Color),
     /// border-left-style
@@ -199,7 +204,8 @@ pub enum Style<'a> {
     BorderLeftWidth(LineWidth),
     /// border-radius
     BorderRadius(BorderRadius),
-    // border-right
+    /// border-right
+    BorderRight(Border),
     /// border-right-color
     BorderRightColor(Color),
     /// border-right-style
@@ -209,7 +215,8 @@ pub enum Style<'a> {
     // border-spacing
     /// border-style
     BorderStyle(BorderStyle),
-    // border-top
+    /// border-top
+    BorderTop(Border),
     /// border-top-color
     BorderTopColor(Color),
     // border-top-left-radius
@@ -223,7 +230,8 @@ pub enum Style<'a> {
     /// bottom
     Bottom(AutoLengthPercentage),
     // box-decoration-break
-    // box-shadow
+    /// box-shadow
+    BoxShadow(BoxShadow),
     /// box-sizing
     BoxSizing(BoxSizing),
     // break-after
@@ -231,12 +239,15 @@ pub enum Style<'a> {
     // break-inside
     // caption-side
     // caret-color
-    // clear
+    /// clear
+    Clear(Clear),
     // clip
     // clip-path
     // clip-rule
     /// color
     Color(DynamicColor),
+    /// column-count (manually added)
+    ColumnCount(ColumnCount),
     // contain
     // content
     // counter-increment
@@ -267,7 +278,7 @@ pub enum Style<'a> {
     Float(Float),
     // font
     /// font-family
-    FontFamily(Cow<'a, str>),
+    FontFamily(FontFamily),
     // font-feature-settings
     // font-kerning
     /// font-size
@@ -311,7 +322,8 @@ pub enum Style<'a> {
     /// left
     Left(AutoLengthPercentage),
     // letter-spacing
-    // line-height
+    /// line-height
+    LineHeight(LineHeight),
     // list-style
     // list-style-image
     // list-style-position
@@ -349,9 +361,9 @@ pub enum Style<'a> {
     /// max-width
     MaxWidth(MaxWidthHeight),
     /// min-height - current implementing CSS2 spec
-    MinHeight(LengthPercentage),
+    MinHeight(Calc),
     /// min-width - current implementing CSS2 spec
-    MinWidth(LengthPercentage),
+    MinWidth(Calc),
     // mix-blend-mode
     /// object-fit - https://drafts.csswg.org/css-images-4/#the-object-fit
     ObjectFit(ObjectFit),
@@ -432,7 +444,8 @@ pub enum Style<'a> {
     // speech-rate
     // stress
     // table-layout
-    // text-align
+    /// text-align
+    TextAlign(TextAlign),
     // text-combine-upright
     // text-decoration
     // text-decoration-color
@@ -458,7 +471,8 @@ pub enum Style<'a> {
     // visibility
     // voice-family
     // volume
-    // white-space
+    /// white-space
+    WhiteSpace(WhiteSpace),
     // widows
     /// width
     Width(WidthHeight),
@@ -468,7 +482,7 @@ pub enum Style<'a> {
     // z-index
 }
 
-impl<'a> Style<'a> {
+impl Style {
     fn is_dummy(&self) -> bool {
         match self {
             Style::Dummy => true,
@@ -483,274 +497,15 @@ impl<'a> Style<'a> {
             _ => false,
         }
     }
-
-    pub fn into_owned(self) -> Style<'static> {
-        match self {
-            Style::Dummy => Style::Dummy,
-
-            // align-content
-            Style::AlignItems(value) => Style::AlignItems(value),
-            // align-self
-            // all
-            // azimuth
-            // background
-            // background-attachment
-            // background-blend-mode
-            // background-clip
-            Style::BackgroundColor(value) => Style::BackgroundColor(value),
-            // background-image
-            // background-origin
-            // background-position
-            // background-repeat
-            // background-size
-            Style::Border(value) => Style::Border(value),
-            // border-bottom
-            Style::BorderBottomColor(value) => Style::BorderBottomColor(value),
-            // border-bottom-left-radius
-            // border-bottom-right-radius
-            Style::BorderBottomStyle(value) => Style::BorderBottomStyle(value),
-            Style::BorderBottomWidth(value) => Style::BorderBottomWidth(value),
-            // border-collapse
-            // border-color
-            Style::BorderColor(value) => Style::BorderColor(value),
-            // border-image
-            // border-image-outset
-            // border-image-repeat
-            // border-image-slice
-            // border-image-source
-            // border-image-width
-            // border-left
-            Style::BorderLeftColor(value) => Style::BorderLeftColor(value),
-            Style::BorderLeftStyle(value) => Style::BorderLeftStyle(value),
-            Style::BorderLeftWidth(value) => Style::BorderLeftWidth(value),
-            Style::BorderRadius(value) => Style::BorderRadius(value),
-            // border-right
-            Style::BorderRightColor(value) => Style::BorderRightColor(value),
-            Style::BorderRightStyle(value) => Style::BorderRightStyle(value),
-            Style::BorderRightWidth(value) => Style::BorderRightWidth(value),
-            // border-spacing
-            Style::BorderStyle(value) => Style::BorderStyle(value),
-            // border-top
-            Style::BorderTopColor(value) => Style::BorderTopColor(value),
-            // border-top-left-radius
-            // border-top-right-radius
-            Style::BorderTopStyle(value) => Style::BorderTopStyle(value),
-            Style::BorderTopWidth(value) => Style::BorderTopWidth(value),
-            Style::BorderWidth(value) => Style::BorderWidth(value),
-            Style::Bottom(value) => Style::Bottom(value),
-            // box-decoration-break
-            // box-shadow
-            Style::BoxSizing(value) => Style::BoxSizing(value),
-            // break-after
-            // break-before
-            // break-inside
-            // caption-side
-            // caret-color
-            // clear
-            // clip
-            // clip-path
-            // clip-rule
-            Style::Color(value) => Style::Color(value),
-            // contain
-            // content
-            // counter-increment
-            // counter-reset
-            // cue
-            // cue-after
-            // cue-before
-            Style::Cursor(value) => Style::Cursor(value),
-            // direction
-            Style::Display(value) => Style::Display(value),
-            // elevation
-            // empty-cells
-            // flex
-            Style::FlexBasis(value) => Style::FlexBasis(value),
-            Style::FlexDirection(value) => Style::FlexDirection(value),
-            // flex-flow
-            Style::FlexGrow(value) => Style::FlexGrow(value),
-            Style::FlexShrink(value) => Style::FlexShrink(value),
-            Style::FlexWrap(value) => Style::FlexWrap(value),
-            Style::Float(value) => Style::Float(value),
-            // font
-            Style::FontFamily(value) => Style::FontFamily(Cow::Owned(value.into_owned())),
-            // font-feature-settings
-            // font-kerning
-            Style::FontSize(value) => Style::FontSize(value),
-            // font-size-adjust
-            // font-stretch
-            Style::FontStyle(value) => Style::FontStyle(value),
-            // font-synthesis
-            // font-variant
-            // font-variant-caps
-            // font-variant-east-asian
-            // font-variant-ligatures
-            // font-variant-numeric
-            // font-variant-position
-            Style::FontWeight(value) => Style::FontWeight(value),
-            // glyph-orientation-vertical
-            // grid
-            // grid-area
-            // grid-auto-columns
-            // grid-auto-flow
-            // grid-auto-rows
-            // grid-column
-            // grid-column-end
-            // grid-column-start
-            // grid-row
-            // grid-row-end
-            // grid-row-start
-            // grid-template
-            // grid-template-areas
-            // grid-template-columns
-            // grid-template-rows
-            Style::Height(value) => Style::Height(value),
-            // image-orientation
-            // image-rendering
-            // isolation
-            Style::JustifyContent(value) => Style::JustifyContent(value),
-            Style::Left(value) => Style::Left(value),
-            // letter-spacing
-            // line-height
-            // list-style
-            // list-style-image
-            // list-style-position
-            Style::ListStyleType(value) => Style::ListStyleType(value),
-            Style::Margin(value) => Style::Margin(value),
-            Style::MarginBottom(value) => Style::MarginBottom(value),
-            Style::MarginLeft(value) => Style::MarginLeft(value),
-            Style::MarginRight(value) => Style::MarginRight(value),
-            Style::MarginTop(value) => Style::MarginTop(value),
-            // mask
-            // mask-border
-            // mask-border-mode
-            // mask-border-outset
-            // mask-border-repeat
-            // mask-border-slice
-            // mask-border-source
-            // mask-border-width
-            // mask-clip
-            // mask-composite
-            // mask-image
-            // mask-mode
-            // mask-origin
-            // mask-position
-            // mask-repeat
-            // mask-size
-            // mask-type
-            Style::MaxHeight(value) => Style::MaxHeight(value),
-            Style::MaxWidth(value) => Style::MaxWidth(value),
-            Style::MinHeight(value) => Style::MinHeight(value),
-            Style::MinWidth(value) => Style::MinWidth(value),
-            // mix-blend-mode
-            Style::ObjectFit(value) => Style::ObjectFit(value),
-            // object-position
-            // opacity
-            // order
-            // orphans
-            // outline
-            // outline-color
-            // outline-offset
-            // outline-style
-            // outline-width
-            Style::Overflow(value) => Style::Overflow(value),
-            Style::OverflowX(value) => Style::OverflowX(value),
-            Style::OverflowY(value) => Style::OverflowY(value),
-            Style::Padding(value) => Style::Padding(value),
-            Style::PaddingBottom(value) => Style::PaddingBottom(value),
-            Style::PaddingLeft(value) => Style::PaddingLeft(value),
-            Style::PaddingRight(value) => Style::PaddingRight(value),
-            Style::PaddingTop(value) => Style::PaddingTop(value),
-            // page-break-after
-            // page-break-before
-            // page-break-inside
-            // pause
-            // pause-after
-            // pause-before
-            // pitch
-            // pitch-range
-            // play-during
-            Style::Position(value) => Style::Position(value),
-            // quotes
-            Style::Resize(value) => Style::Resize(value),
-            // richness
-            Style::Right(value) => Style::Right(value),
-            // scroll-margin
-            // scroll-margin-block
-            // scroll-margin-block-end
-            // scroll-margin-block-start
-            // scroll-margin-bottom
-            // scroll-margin-inline
-            // scroll-margin-inline-end
-            // scroll-margin-inline-start
-            // scroll-margin-left
-            // scroll-margin-right
-            // scroll-margin-top
-            // scroll-padding
-            // scroll-padding-block
-            // scroll-padding-block-end
-            // scroll-padding-block-start
-            // scroll-padding-bottom
-            // scroll-padding-inline
-            // scroll-padding-inline-end
-            // scroll-padding-inline-start
-            // scroll-padding-left
-            // scroll-padding-right
-            // scroll-padding-top
-            // scroll-snap-align
-            // scroll-snap-stop
-            // scroll-snap-type
-            // shape-image-threshold
-            // shape-margin
-            // shape-outside
-            // speak
-            // speak-header
-            // speak-numeral
-            // speak-punctuation
-            // speech-rate
-            // stress
-            // table-layout
-            // text-align
-            // text-combine-upright
-            // text-decoration
-            // text-decoration-color
-            // text-decoration-line
-            // text-decoration-style
-            // text-emphasis
-            // text-emphasis-color
-            // text-emphasis-position
-            // text-emphasis-style
-            // text-indent
-            // text-orientation
-            // text-overflow
-            // text-shadow
-            // text-transform
-            // text-underline-position
-            Style::Top(value) => Style::Top(value),
-            // transform
-            // transform-box
-            // transform-origin
-            // unicode-bidi
-            // vertical-align
-            // visibility
-            // voice-family
-            // volume
-            // white-space
-            // widows
-            Style::Width(value) => Style::Width(value),
-            // will-change
-            // word-spacing
-            // writing-mode
-            // z-index
-        }
-    }
 }
 
-impl fmt::Display for Style<'_> {
+impl fmt::Display for Style {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             Style::Dummy => Ok(()),
+            Style::Unchecked(v) => write!(f, "{}", v),
 
-            // align-content
+            Style::AlignContent(v) => write!(f, "align-content:{}", v),
             Style::AlignItems(v) => write!(f, "align-items:{}", v),
             // align-self
             // all
@@ -766,7 +521,7 @@ impl fmt::Display for Style<'_> {
             // background-repeat
             // background-size
             Style::Border(v) => write!(f, "border:{}", v),
-            // border-bottom
+            Style::BorderBottom(v) => write!(f, "border-bottom:{}", v),
             Style::BorderBottomColor(v) => write!(f, "border-bottom-color:{}", v),
             // border-bottom-left-radius
             // border-bottom-right-radius
@@ -780,18 +535,18 @@ impl fmt::Display for Style<'_> {
             // border-image-slice
             // border-image-source
             // border-image-width
-            // border-left
+            Style::BorderLeft(v) => write!(f, "border-left:{}", v),
             Style::BorderLeftColor(v) => write!(f, "border-left-color:{}", v),
             Style::BorderLeftStyle(v) => write!(f, "border-left-style:{}", v),
             Style::BorderLeftWidth(v) => write!(f, "border-left-width:{}", v),
             Style::BorderRadius(v) => write!(f, "border-radius:{}", v),
-            // border-right
+            Style::BorderRight(v) => write!(f, "border-right:{}", v),
             Style::BorderRightColor(v) => write!(f, "border-right-color:{}", v),
             Style::BorderRightStyle(v) => write!(f, "border-right-style:{}", v),
             Style::BorderRightWidth(v) => write!(f, "border-right-width:{}", v),
             // border-spacing
             Style::BorderStyle(v) => write!(f, "border-style:{}", v),
-            // border-top
+            Style::BorderTop(v) => write!(f, "border-top:{}", v),
             Style::BorderTopColor(v) => write!(f, "border-top-color:{}", v),
             // border-top-left-radius
             // border-top-right-radius
@@ -800,18 +555,19 @@ impl fmt::Display for Style<'_> {
             Style::BorderWidth(v) => write!(f, "border-width:{}", v),
             Style::Bottom(v) => write!(f, "bottom:{}", v),
             // box-decoration-break
-            // box-shadow
+            Style::BoxShadow(v) => write!(f, "box-shadow:{}", v),
             Style::BoxSizing(v) => write!(f, "box-sizing:{}", v),
             // break-after
             // break-before
             // break-inside
             // caption-side
             // caret-color
-            // clear
+            Style::Clear(v) => write!(f, "clear:{}", v),
             // clip
             // clip-path
             // clip-rule
             Style::Color(v) => write!(f, "color:{}", v),
+            Style::ColumnCount(v) => write!(f, "column-count:{}", v),
             // contain
             // content
             // counter-increment
@@ -873,6 +629,7 @@ impl fmt::Display for Style<'_> {
             Style::Left(v) => write!(f, "left:{}", v),
             // letter-spacing
             // line-height
+            Style::LineHeight(v) => write!(f, "line-height:{}", v),
             // list-style
             // list-style-image
             // list-style-position
@@ -975,7 +732,7 @@ impl fmt::Display for Style<'_> {
             // speech-rate
             // stress
             // table-layout
-            // text-align
+            Style::TextAlign(v) => write!(f, "text-align:{}", v),
             // text-combine-upright
             // text-decoration
             // text-decoration-color
@@ -1001,13 +758,43 @@ impl fmt::Display for Style<'_> {
             // visibility
             // voice-family
             // volume
-            // white-space
+            Style::WhiteSpace(v) => write!(f, "white-space:{}", v),
             // widows
             Style::Width(v) => write!(f, "width:{}", v),
             // will-change
             // word-spacing
             // writing-mode
             // z-index
+        }
+    }
+}
+
+/// https://www.w3.org/TR/css-flexbox-1/#propdef-justify-content
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum AlignContent {
+    FlexStart,
+    Center,
+    FlexEnd,
+    SpaceBetween,
+    SpaceAround,
+    Stretch,
+}
+
+impl Default for AlignContent {
+    fn default() -> Self {
+        AlignContent::Stretch
+    }
+}
+
+impl fmt::Display for AlignContent {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            AlignContent::FlexStart => write!(f, "flex-start"),
+            AlignContent::Center => write!(f, "center"),
+            AlignContent::FlexEnd => write!(f, "flex-end"),
+            AlignContent::SpaceAround => write!(f, "space-around"),
+            AlignContent::SpaceBetween => write!(f, "space-between"),
+            AlignContent::Stretch => write!(f, "stretch"),
         }
     }
 }
@@ -1113,7 +900,7 @@ impl fmt::Display for BorderColor {
     }
 }
 
-pub type BorderRadius = LengthPercentage;
+pub type BorderRadius = Calc;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum BorderStyle {
@@ -1153,6 +940,27 @@ impl fmt::Display for BorderWidth {
     }
 }
 
+#[derive(Debug, Clone, PartialEq)]
+pub enum BoxShadow {
+    None,
+    Shadows { first: Shadow, rest: Vec<Shadow> },
+}
+
+impl fmt::Display for BoxShadow {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            BoxShadow::None => f.write_str("none"),
+            BoxShadow::Shadows { first, rest } => {
+                write!(f, "{}", first)?;
+                for shadow in rest.iter() {
+                    write!(f, ",{}", shadow)?;
+                }
+                Ok(())
+            }
+        }
+    }
+}
+
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum BoxSizing {
     BorderBox,
@@ -1164,6 +972,44 @@ impl fmt::Display for BoxSizing {
         match self {
             BoxSizing::BorderBox => f.write_str("border-box"),
             BoxSizing::ContentBox => f.write_str("content-box"),
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum Clear {
+    None,
+    Left,
+    Right,
+    Both,
+    InlineStart,
+    InlineEnd,
+}
+
+impl fmt::Display for Clear {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Clear::None => f.write_str("none"),
+            Clear::Left => f.write_str("left"),
+            Clear::Right => f.write_str("right"),
+            Clear::Both => f.write_str("both"),
+            Clear::InlineStart => f.write_str("inline-start"),
+            Clear::InlineEnd => f.write_str("inline-end"),
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum ColumnCount {
+    Auto,
+    Fixed(u32),
+}
+
+impl fmt::Display for ColumnCount {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            ColumnCount::Auto => f.write_str("auto"),
+            ColumnCount::Fixed(inner) => write!(f, "{}", inner),
         }
     }
 }
@@ -1270,7 +1116,7 @@ impl fmt::Display for Display {
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum FlexBasis {
     Width(Width21),
     Content,
@@ -1336,29 +1182,47 @@ impl fmt::Display for Float {
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq)]
-pub enum FontWeight {
-    Normal,
-    Bold,
-    Lighter,
-    Bolder,
-    /// Between 1 and 1000
-    Number(f64),
+#[derive(Debug, Clone, PartialEq)]
+pub enum Font {
+    // todo escape when `Display`ing
+    Named(String),
+    Serif,
+    SansSerif,
+    Cursive,
+    Fantasy,
+    Monospace,
 }
 
-impl fmt::Display for FontWeight {
+impl fmt::Display for Font {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            FontWeight::Normal => f.write_str("normal"),
-            FontWeight::Bold => f.write_str("bold"),
-            FontWeight::Lighter => f.write_str("lighter"),
-            FontWeight::Bolder => f.write_str("bolder"),
-            FontWeight::Number(v) => fmt::Display::fmt(v, f),
+            Font::Named(inner) => write!(f, "\"{}\"", inner),
+            Font::Serif => write!(f, "serif"),
+            Font::SansSerif => write!(f, "sans-serif"),
+            Font::Cursive => write!(f, "cursive"),
+            Font::Fantasy => write!(f, "fantasy"),
+            Font::Monospace => write!(f, "monospace"),
         }
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
+pub struct FontFamily {
+    pub first: Font,
+    pub rest: Vec<Font>,
+}
+
+impl fmt::Display for FontFamily {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}", self.first)?;
+        for font in self.rest.iter() {
+            write!(f, ",{}", font)?;
+        }
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
 pub enum FontSize {
     XXSmall,
     XSmall,
@@ -1370,7 +1234,7 @@ pub enum FontSize {
     XXXLarge,
     Larger,
     Smaller,
-    LengthPercentage(LengthPercentage),
+    LengthPercentage(Calc),
 }
 
 impl fmt::Display for FontSize {
@@ -1404,6 +1268,28 @@ impl fmt::Display for FontStyle {
             FontStyle::Normal => f.write_str("normal"),
             FontStyle::Italic => f.write_str("italic"),
             FontStyle::Oblique => f.write_str("oblique"),
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum FontWeight {
+    Normal,
+    Bold,
+    Lighter,
+    Bolder,
+    /// Between 1 and 1000
+    Number(f64),
+}
+
+impl fmt::Display for FontWeight {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            FontWeight::Normal => f.write_str("normal"),
+            FontWeight::Bold => f.write_str("bold"),
+            FontWeight::Lighter => f.write_str("lighter"),
+            FontWeight::Bolder => f.write_str("bolder"),
+            FontWeight::Number(v) => fmt::Display::fmt(v, f),
         }
     }
 }
@@ -1523,6 +1409,17 @@ impl fmt::Display for LineWidth {
     }
 }
 
+// TODO this isn't the full spec for lineheight
+// (https://www.w3.org/TR/CSS2/visudet.html#propdef-line-height)
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct LineHeight(f64);
+
+impl fmt::Display for LineHeight {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
+
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum ListStyleType {
     Disc,
@@ -1568,9 +1465,9 @@ impl fmt::Display for ListStyleType {
 
 pub type Margin = Rect<MarginWidth>;
 
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum AutoLengthPercentage {
-    LengthPercentage(LengthPercentage),
+    LengthPercentage(Calc),
     Auto,
 }
 
@@ -1586,13 +1483,13 @@ impl fmt::Display for AutoLengthPercentage {
 pub type MarginWidth = AutoLengthPercentage;
 
 /// for max-width and max-height
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum MaxWidthHeight {
     None,
-    LengthPercentage(LengthPercentage),
+    LengthPercentage(Calc),
     MinContent,
     MaxContent,
-    FitContent(LengthPercentage),
+    FitContent(Calc),
 }
 
 impl fmt::Display for MaxWidthHeight {
@@ -1674,33 +1571,10 @@ impl fmt::Display for OverflowXY {
     }
 }
 
-pub type Padding = Rect<LengthPercentage>;
-
-/// For parsing things in groups of 1, 2, 3 or 4 for specifying the sides of a rectangle.
-#[derive(Debug, Clone, Copy, PartialEq)]
-pub enum Rect<T> {
-    All(T),
-    VerticalHorizontal(T, T),
-    TopHorizontalBottom(T, T, T),
-    LeftTopRightBottom(T, T, T, T),
-}
-
-impl<T> fmt::Display for Rect<T>
-where
-    T: fmt::Display,
-{
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            Rect::All(len) => write!(f, "{}", len),
-            Rect::VerticalHorizontal(v, h) => write!(f, "{} {}", v, h),
-            Rect::TopHorizontalBottom(t, h, b) => write!(f, "{} {} {}", t, h, b),
-            Rect::LeftTopRightBottom(l, t, r, b) => write!(f, "{} {} {} {}", l, t, r, b),
-        }
-    }
-}
+pub type Padding = Rect<Calc>;
 
 /// for e.g. `padding-top`
-pub type PaddingWidth = LengthPercentage;
+pub type PaddingWidth = Calc;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Percentage(pub f64);
@@ -1730,6 +1604,29 @@ impl fmt::Display for Position {
     }
 }
 
+/// For parsing things in groups of 1, 2, 3 or 4 for specifying the sides of a rectangle.
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum Rect<T> {
+    All(T),
+    VerticalHorizontal(T, T),
+    TopHorizontalBottom(T, T, T),
+    LeftTopRightBottom(T, T, T, T),
+}
+
+impl<T> fmt::Display for Rect<T>
+where
+    T: fmt::Display,
+{
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Rect::All(len) => write!(f, "{}", len),
+            Rect::VerticalHorizontal(v, h) => write!(f, "{} {}", v, h),
+            Rect::TopHorizontalBottom(t, h, b) => write!(f, "{} {} {}", t, h, b),
+            Rect::LeftTopRightBottom(l, t, r, b) => write!(f, "{} {} {} {}", l, t, r, b),
+        }
+    }
+}
+
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Resize {
     None,
@@ -1750,25 +1647,150 @@ impl fmt::Display for Resize {
 }
 
 #[derive(Debug, Clone, PartialEq)]
-pub struct Url<'a> {
-    // todo modifiers
-    url: Cow<'a, str>,
+pub struct Shadow {
+    pub color: Option<Color>,
+    pub length: ShadowLength,
+    pub inset: bool,
 }
 
-impl fmt::Display for Url<'_> {
+impl fmt::Display for Shadow {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        // we do it in this order because it makes spacing easier.
+        write!(f, "{}", self.length)?;
+        if let Some(color) = self.color {
+            write!(f, " {}", color)?;
+        }
+        if self.inset {
+            write!(f, " inset")?;
+        }
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub enum ShadowLength {
+    Offsets {
+        horizontal: Length,
+        vertical: Length,
+    },
+    OffsetsBlur {
+        horizontal: Length,
+        vertical: Length,
+        blur: Length,
+    },
+    OffsetsBlurSpread {
+        horizontal: Length,
+        vertical: Length,
+        blur: Length,
+        spread: Length,
+    },
+}
+
+impl fmt::Display for ShadowLength {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            ShadowLength::Offsets {
+                horizontal,
+                vertical,
+            } => write!(f, "{} {}", horizontal, vertical),
+            ShadowLength::OffsetsBlur {
+                horizontal,
+                vertical,
+                blur,
+            } => write!(f, "{} {} {}", horizontal, vertical, blur),
+            ShadowLength::OffsetsBlurSpread {
+                horizontal,
+                vertical,
+                blur,
+                spread,
+            } => write!(f, "{} {} {} {}", horizontal, vertical, blur, spread),
+        }
+    }
+}
+
+#[test]
+fn test_shadow_length() {
+    for (input, output) in vec![
+        (
+            "0 10px",
+            ShadowLength::Offsets {
+                horizontal: Length::Zero,
+                vertical: Length::Px(10.0),
+            },
+        ),
+        (
+            "0 10px -10px",
+            ShadowLength::OffsetsBlur {
+                horizontal: Length::Zero,
+                vertical: Length::Px(10.0),
+                blur: Length::Px(-10.0),
+            },
+        ),
+    ] {
+        assert_eq!(syn::parse_str::<ShadowLength>(input).unwrap(), output)
+    }
+}
+
+#[derive(Debug, Copy, Clone, PartialEq)]
+pub enum TextAlign {
+    Left,
+    Right,
+    Center,
+    Justify,
+}
+
+impl fmt::Display for TextAlign {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            TextAlign::Left => write!(f, "left"),
+            TextAlign::Right => write!(f, "right"),
+            TextAlign::Center => write!(f, "center"),
+            TextAlign::Justify => write!(f, "justify"),
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct Url {
+    // todo modifiers
+    url: String,
+}
+
+impl fmt::Display for Url {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "url(\"{}\")", self.url)
     }
 }
 
+#[derive(Debug, Clone, PartialEq)]
+pub enum WhiteSpace {
+    Normal,
+    Pre,
+    Nowrap,
+    PreWrap,
+    PreLine,
+}
+
+impl fmt::Display for WhiteSpace {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            WhiteSpace::Normal => write!(f, "normal"),
+            WhiteSpace::Pre => write!(f, "pre"),
+            WhiteSpace::Nowrap => write!(f, "nowrap"),
+            WhiteSpace::PreWrap => write!(f, "pre-wrap"),
+            WhiteSpace::PreLine => write!(f, "pre-line"),
+        }
+    }
+}
+
 /// values of `width` and `height`, `min-width`, `min-height`.
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum WidthHeight {
     Auto,
-    LengthPercentage(LengthPercentage),
+    LengthPercentage(Calc),
     MinContent,
     MaxContent,
-    FitContent(LengthPercentage),
+    FitContent(Calc),
 }
 
 impl fmt::Display for WidthHeight {
@@ -1784,10 +1806,10 @@ impl fmt::Display for WidthHeight {
 }
 
 /// CSS2.1 width, for use with flexbox.
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum Width21 {
     Auto,
-    LengthPercentage(LengthPercentage),
+    LengthPercentage(Calc),
 }
 
 impl fmt::Display for Width21 {

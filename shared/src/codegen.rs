@@ -2,7 +2,7 @@ use crate::*;
 use proc_macro2::TokenStream;
 use quote::{quote, ToTokens};
 
-impl ToTokens for DynamicStyles<'_> {
+impl ToTokens for DynamicStyles {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         let parts = self
             .rules
@@ -19,7 +19,7 @@ impl ToTokens for DynamicStyles<'_> {
     }
 }
 
-impl ToTokens for DynamicStyle<'_> {
+impl ToTokens for DynamicStyle {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         tokens.extend(match self {
             DynamicStyle::Dynamic(block) => quote!(#block),
@@ -28,12 +28,13 @@ impl ToTokens for DynamicStyle<'_> {
     }
 }
 
-impl ToTokens for Style<'_> {
+impl ToTokens for Style {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         tokens.extend(match self {
             Style::Dummy => quote!(style::Style::Dummy),
+            Style::Unchecked(v) => quote!(style::Style::Unchecked(String::from(#v))),
 
-            // align-content
+            Style::AlignContent(v) => quote!(style::Style::AlignContent(#v)),
             Style::AlignItems(v) => quote!(style::Style::AlignItems(#v)),
             // align-self
             // all
@@ -49,7 +50,7 @@ impl ToTokens for Style<'_> {
             // background-repeat
             // background-size
             Style::Border(v) => quote!(style::Style::Border(#v)),
-            // border-bottom
+            Style::BorderBottom(v) => quote!(style::Style::BorderBottom(#v)),
             Style::BorderBottomColor(v) => quote!(style::Style::BorderBottomColor(#v)),
             // border-bottom-left-radius
             // border-bottom-right-radius
@@ -64,18 +65,18 @@ impl ToTokens for Style<'_> {
             // border-image-slice
             // border-image-source
             // border-image-width
-            // border-left
+            Style::BorderLeft(v) => quote!(style::Style::BorderLeft(#v)),
             Style::BorderLeftColor(v) => quote!(style::Style::BorderLeftColor(#v)),
             Style::BorderLeftStyle(v) => quote!(style::Style::BorderLeftStyle(#v)),
             Style::BorderLeftWidth(v) => quote!(style::Style::BorderLeftWidth(#v)),
             Style::BorderRadius(v) => quote!(style::Style::BorderRadius(#v)),
-            // border-right
+            Style::BorderRight(v) => quote!(style::Style::BorderRight(#v)),
             Style::BorderRightColor(v) => quote!(style::Style::BorderRightColor(#v)),
             Style::BorderRightStyle(v) => quote!(style::Style::BorderRightStyle(#v)),
             Style::BorderRightWidth(v) => quote!(style::Style::BorderRightWidth(#v)),
             // border-spacing
             Style::BorderStyle(v) => quote!(style::Style::BorderStyle(#v)),
-            // border-top
+            Style::BorderTop(v) => quote!(style::Style::BorderTop(#v)),
             Style::BorderTopColor(v) => quote!(style::Style::BorderTopColor(#v)),
             // border-top-left-radius
             // border-top-right-radius
@@ -84,17 +85,18 @@ impl ToTokens for Style<'_> {
             Style::BorderWidth(v) => quote!(style::Style::BorderWidth(#v)),
             Style::Bottom(v) => quote!(style::Style::Bottom(#v)),
             // box-decoration-break
-            // box-shadow
+            Style::BoxShadow(v) => quote!(style::Style::BoxShadow(#v)),
             Style::BoxSizing(v) => quote!(style::Style::BoxSizing(#v)),
             // break-after
             // break-before
             // break-inside
             // caption-side
             // caret-color
-            // clear
+            Style::Clear(v) => quote!(style::Style::Clear(#v)),
             // clip
             // clip-path
             // clip-rule
+            Style::ColumnCount(v) => quote!(style::Style::ColumnCount(#v)),
             Style::Color(v) => quote!(style::Style::Color(#v)),
             // contain
             // content
@@ -117,9 +119,7 @@ impl ToTokens for Style<'_> {
             Style::FlexWrap(v) => quote!(style::Style::FlexWrap(#v)),
             Style::Float(v) => quote!(style::Style::Float(#v)),
             // font
-            Style::FontFamily(v) => {
-                quote!(style::Style::FontFamily(std::borrow::Cow::Borrowed(#v)))
-            }
+            Style::FontFamily(v) => quote!(style::Style::FontFamily(#v)),
             // font-feature-settings
             // font-kerning
             Style::FontSize(v) => quote!(style::Style::FontSize(#v)),
@@ -157,7 +157,7 @@ impl ToTokens for Style<'_> {
             Style::JustifyContent(v) => quote!(style::Style::JustifyContent(#v)),
             Style::Left(v) => quote!(style::Style::Left(#v)),
             // letter-spacing
-            // line-height
+            Style::LineHeight(v) => quote!(style::Style::LineHeight(#v)),
             // list-style
             // list-style-image
             // list-style-position
@@ -256,7 +256,7 @@ impl ToTokens for Style<'_> {
             // speech-rate
             // stress
             // table-layout
-            // text-align
+            Style::TextAlign(v) => quote!(style::Style::TextAlign(#v)),
             // text-combine-upright
             // text-decoration
             // text-decoration-color
@@ -282,12 +282,26 @@ impl ToTokens for Style<'_> {
             // voice-family
             // volume
             // white-space
+            Style::WhiteSpace(v) => quote!(style::Style::WhiteSpace(#v)),
             // widows
             Style::Width(v) => quote!(style::Style::Width(#v)),
             // will-change
             // word-spacing
             // writing-mode
             // z-index
+        });
+    }
+}
+
+impl ToTokens for AlignContent {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        tokens.extend(match self {
+            AlignContent::FlexStart => quote!(style::AlignContent::FlexStart),
+            AlignContent::Center => quote!(style::AlignContent::Center),
+            AlignContent::FlexEnd => quote!(style::AlignContent::FlexEnd),
+            AlignContent::SpaceAround => quote!(style::AlignContent::SpaceAround),
+            AlignContent::SpaceBetween => quote!(style::AlignContent::SpaceBetween),
+            AlignContent::Stretch => quote!(style::AlignContent::Stretch),
         });
     }
 }
@@ -419,6 +433,33 @@ impl ToTokens for FontWeight {
         });
     }
 }
+
+impl ToTokens for FontFamily {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        let first = &self.first;
+        let rest = self.rest.iter();
+        tokens.extend(quote! {
+            style::FontFamily {
+                first: #first,
+                rest: vec![#(#rest),*],
+            }
+        })
+    }
+}
+
+impl ToTokens for Font {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        tokens.extend(match self {
+            Font::Named(inner) => quote!(style::Font::Named(String::from(#inner))),
+            Font::Serif => quote!(style::Font::Serif),
+            Font::SansSerif => quote!(style::Font::SansSerif),
+            Font::Cursive => quote!(style::Font::Cursive),
+            Font::Fantasy => quote!(style::Font::Fantasy),
+            Font::Monospace => quote!(style::Font::Monospace),
+        })
+    }
+}
+
 impl ToTokens for FontSize {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         tokens.extend(match self {
@@ -522,12 +563,48 @@ impl ToTokens for BorderWidth {
     }
 }
 
+impl ToTokens for BoxShadow {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        tokens.extend(match self {
+            BoxShadow::None => quote!(style::BoxShadow::None),
+            BoxShadow::Shadows { first, rest } => {
+                let rest = rest.iter();
+                quote!(style::BoxShadow::Shadows {
+                    first: #first, rest: vec![#(#rest,)*]
+                })
+            }
+        });
+    }
+}
+
 impl ToTokens for BoxSizing {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         tokens.extend(match self {
             BoxSizing::BorderBox => quote!(style::BoxSizing::BorderBox),
             BoxSizing::ContentBox => quote!(style::BoxSizing::ContentBox),
         });
+    }
+}
+
+impl ToTokens for Clear {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        tokens.extend(match self {
+            Clear::None => quote!(style::Clear::None),
+            Clear::Left => quote!(style::Clear::Left),
+            Clear::Right => quote!(style::Clear::Right),
+            Clear::Both => quote!(style::Clear::Both),
+            Clear::InlineStart => quote!(style::Clear::InlineStart),
+            Clear::InlineEnd => quote!(style::Clear::InlineEnd),
+        })
+    }
+}
+
+impl ToTokens for ColumnCount {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        tokens.extend(match self {
+            ColumnCount::Auto => quote!(style::ColumnCount::Auto),
+            ColumnCount::Fixed(v) => quote!(style::ColumnCount::Fixed(#v)),
+        })
     }
 }
 
@@ -633,6 +710,12 @@ impl ToTokens for LineWidth {
     }
 }
 
+impl ToTokens for LineHeight {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        self.0.to_tokens(tokens)
+    }
+}
+
 impl ToTokens for ListStyleType {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         tokens.extend(match self {
@@ -678,6 +761,18 @@ impl ToTokens for Resize {
     }
 }
 
+impl ToTokens for WhiteSpace {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        tokens.extend(match self {
+            WhiteSpace::Normal => quote!(style::WhiteSpace::Normal),
+            WhiteSpace::Pre => quote!(style::WhiteSpace::Pre),
+            WhiteSpace::Nowrap => quote!(style::WhiteSpace::Nowrap),
+            WhiteSpace::PreWrap => quote!(style::WhiteSpace::PreWrap),
+            WhiteSpace::PreLine => quote!(style::WhiteSpace::PreLine),
+        })
+    }
+}
+
 impl ToTokens for WidthHeight {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         tokens.extend(match self {
@@ -710,6 +805,69 @@ impl ToTokens for Width21 {
             Width21::Auto => quote!(style::Width21::Auto),
             Width21::LengthPercentage(v) => quote!(style::Width21::LengthPercentage(#v)),
         })
+    }
+}
+
+impl ToTokens for Shadow {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        let color = match self.color.as_ref() {
+            Some(color) => quote!(Some(#color)),
+            None => quote!(None),
+        };
+        let length = &self.length;
+        let inset = &self.inset;
+        tokens.extend(quote! {
+            style::Shadow {
+                color: #color,
+                length: #length,
+                inset: #inset,
+            }
+        })
+    }
+}
+
+impl ToTokens for ShadowLength {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        tokens.extend(match self {
+            ShadowLength::Offsets {
+                vertical,
+                horizontal,
+            } => quote!(style::ShadowLength::Offsets {
+                vertical: #vertical,
+                horizontal: #horizontal,
+            }),
+            ShadowLength::OffsetsBlur {
+                vertical,
+                horizontal,
+                blur,
+            } => quote!(style::ShadowLength::OffsetsBlur {
+                vertical: #vertical,
+                horizontal: #horizontal,
+                blur: #blur,
+            }),
+            ShadowLength::OffsetsBlurSpread {
+                vertical,
+                horizontal,
+                blur,
+                spread,
+            } => quote!(style::ShadowLength::Offsets {
+                vertical: #vertical,
+                horizontal: #horizontal,
+                blur: #blur,
+                spread: #spread,
+            }),
+        })
+    }
+}
+
+impl ToTokens for TextAlign {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        tokens.extend(match self {
+            TextAlign::Left => quote!(style::TextAlign::Left),
+            TextAlign::Right => quote!(style::TextAlign::Right),
+            TextAlign::Center => quote!(style::TextAlign::Center),
+            TextAlign::Justify => quote!(style::TextAlign::Justify),
+        });
     }
 }
 

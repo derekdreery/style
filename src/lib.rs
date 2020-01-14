@@ -1,10 +1,11 @@
 use proc_macro_hack::proc_macro_hack;
 
 pub use style_shared::{
-    AlignItems, AutoLengthPercentage, Border, BorderColor, BoxSizing, Color, Display, DynamicColor,
-    FlexBasis, FlexDirection, FlexWrap, FontStyle, FontWeight, JustifyContent, Length,
-    LengthPercentage, LineStyle, LineWidth, ListStyleType, Margin, MarginWidth, MaxWidthHeight,
-    Padding, PaddingWidth, Percentage, Rect, Resize, Style, Styles, Width21, WidthHeight,
+    AlignItems, AutoLengthPercentage, Border, BorderColor, BoxShadow, BoxSizing, Calc, Color,
+    ColumnCount, Display, DynamicColor, FlexBasis, FlexDirection, FlexWrap, Font, FontFamily,
+    FontStyle, FontWeight, JustifyContent, Length, LengthPercentage, LineStyle, LineWidth,
+    ListStyleType, Margin, MarginWidth, MaxWidthHeight, Padding, PaddingWidth, Percentage, Rect,
+    Resize, Shadow, ShadowLength, Style, Styles, TextAlign, Width21, WidthHeight,
 };
 
 /// Parse a list of css properties.
@@ -19,6 +20,7 @@ pub use style_shared::{
 ///     height: 10px;
 ///     display: flex;
 ///     justify-content: space-around;
+///     font-family: "Amatic SC", serif;
 ///     font-weight: 200;
 ///     padding: 0 1"em";
 ///     color: #"0ee";
@@ -27,19 +29,25 @@ pub use style_shared::{
 /// // The types are quite verbose - it's much easier to construct them using the `styles!`
 /// // macro.
 /// assert_eq!(styles, Styles { rules: vec![
-///     Style::Height(WidthHeight::LengthPercentage(LengthPercentage::Length(Length::Px(10.0)))),
+///     Style::Height(WidthHeight::LengthPercentage(Calc::Normal(
+///         LengthPercentage::Length(Length::Px(10.0))
+///     ))),
 ///     Style::Display(Display::Flex),
 ///     Style::JustifyContent(JustifyContent::SpaceAround),
+///     Style::FontFamily(FontFamily {
+///         first: Font::Named("Amatic SC".into()),
+///         rest: vec![Font::Serif]
+///     }),
 ///     Style::FontWeight(FontWeight::Number(200.0)),
 ///     Style::Padding(Padding::VerticalHorizontal(
-///         LengthPercentage::Length(Length::Zero),
-///         LengthPercentage::Length(Length::Em(1.0)),
+///         Calc::Normal(LengthPercentage::Length(Length::Zero)),
+///         Calc::Normal(LengthPercentage::Length(Length::Em(1.0))),
 ///     )),
 ///     Style::Color(DynamicColor::Literal(Color::HexRGB(0, 238, 238)))
 /// ] });
 /// assert_eq!(
 ///     styles.to_string(),
-///     "height:10px;display:flex;justify-content:space-around;\
+///     "height:10px;display:flex;justify-content:space-around;font-family:\"Amatic SC\",serif;\
 ///         font-weight:200;padding:0 1em;color:#00eeee;".to_string()
 /// );
 /// ```
