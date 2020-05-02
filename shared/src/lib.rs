@@ -4,7 +4,8 @@
 mod calc;
 mod codegen;
 mod color;
-mod parse;
+pub mod string;
+mod syn_parse;
 
 use std::{
     fmt,
@@ -159,35 +160,46 @@ pub enum Style {
     AlignContent(AlignContent),
     /// align-items
     AlignItems(AlignItems),
-    // align-self
-    // all
-    // azimuth
+    /// align-self
+    AlignSelf(AlignSelf),
+    // all - todo when doing global values
     // background
-    // background-attachment
-    // background-blend-mode
-    // background-clip
+    /// background-attachment
+    BackgroundAttachment(BackgroundAttachment),
+    /// background-blend-mode
+    BackgroundBlendMode(NonemptyCommaList<BlendMode>),
+    /// background-clip
+    BackgroundClip(BackgroundBox),
     /// background-color
     BackgroundColor(DynamicColor),
-    // background-image
-    // background-origin
-    // background-position
-    // background-repeat
-    // background-size
+    /// background-image
+    BackgroundImage(NonemptyCommaList<BackgroundImage>),
+    /// background-origin
+    BackgroundOrigin(BackgroundBox),
+    /// background-position
+    BackgroundPosition(BackgroundPosition),
+    /// background-repeat
+    BackgroundRepeat(NonemptyCommaList<BackgroundRepeat>),
+    /// background-size
+    BackgroundSize(BackgroundSize),
     /// border
     Border(Border),
     /// border-bottom
     BorderBottom(Border),
     /// border-bottom-color
     BorderBottomColor(Color),
-    // border-bottom-left-radius
-    // border-bottom-right-radius
+    /// border-bottom-left-radius
+    BorderBottomLeftRadius(SingleOrDouble<LengthPercentage>),
+    /// border-bottom-right-radius
+    BorderBottomRightRadius(SingleOrDouble<LengthPercentage>),
     /// border-bottom-style
     BorderBottomStyle(LineStyle),
     /// border-bottom-width
     BorderBottomWidth(LineWidth),
-    // border-collapse
+    /// border-collapse
+    BorderCollapse(BorderCollapse),
     /// border-color
-    BorderColor(BorderColor),
+    BorderColor(Rect<Color>),
     // border-image
     // border-image-outset
     // border-image-repeat
@@ -219,8 +231,10 @@ pub enum Style {
     BorderTop(Border),
     /// border-top-color
     BorderTopColor(Color),
-    // border-top-left-radius
-    // border-top-right-radius
+    /// border-top-left-radius
+    BorderTopLeftRadius(SingleOrDouble<LengthPercentage>),
+    /// border-top-right-radius
+    BorderTopRightRadius(SingleOrDouble<LengthPercentage>),
     /// border-top-style
     BorderTopStyle(LineStyle),
     /// border-top-width
@@ -473,7 +487,8 @@ pub enum Style {
     // volume
     /// white-space
     WhiteSpace(WhiteSpace),
-    // widows
+    /// widows
+    Widows(u32),
     /// width
     Width(WidthHeight),
     // will-change
@@ -507,27 +522,26 @@ impl fmt::Display for Style {
 
             Style::AlignContent(v) => write!(f, "align-content:{}", v),
             Style::AlignItems(v) => write!(f, "align-items:{}", v),
-            // align-self
-            // all
-            // azimuth
+            Style::AlignSelf(v) => write!(f, "align-self:{}", v),
+            // all - deferred
             // background
-            // background-attachment
-            // background-blend-mode
-            // background-clip
+            Style::BackgroundAttachment(v) => write!(f, "background-attachment:{}", v),
+            Style::BackgroundBlendMode(v) => write!(f, "background-blend-mode:{}", v),
+            Style::BackgroundClip(v) => write!(f, "background-clip:{}", v),
             Style::BackgroundColor(v) => write!(f, "background-color:{}", v),
-            // background-image
-            // background-origin
-            // background-position
-            // background-repeat
-            // background-size
+            Style::BackgroundImage(v) => write!(f, "background-image:{}", v),
+            Style::BackgroundOrigin(v) => write!(f, "background-origin:{}", v),
+            Style::BackgroundPosition(v) => write!(f, "background-position:{}", v),
+            Style::BackgroundRepeat(v) => write!(f, "background-repeat:{}", v),
+            Style::BackgroundSize(v) => write!(f, "background-size:{}", v),
             Style::Border(v) => write!(f, "border:{}", v),
             Style::BorderBottom(v) => write!(f, "border-bottom:{}", v),
             Style::BorderBottomColor(v) => write!(f, "border-bottom-color:{}", v),
-            // border-bottom-left-radius
-            // border-bottom-right-radius
+            Style::BorderBottomLeftRadius(v) => write!(f, "border-bottom-left-radius:{}", v),
+            Style::BorderBottomRightRadius(v) => write!(f, "border-bottom-right-radius:{}", v),
             Style::BorderBottomStyle(v) => write!(f, "border-bottom-style:{}", v),
             Style::BorderBottomWidth(v) => write!(f, "border-bottom-width:{}", v),
-            // border-collapse
+            Style::BorderCollapse(v) => write!(f, "border-collapse:{}", v),
             Style::BorderColor(v) => write!(f, "border-color:{}", v),
             // border-image
             // border-image-outset
@@ -548,8 +562,8 @@ impl fmt::Display for Style {
             Style::BorderStyle(v) => write!(f, "border-style:{}", v),
             Style::BorderTop(v) => write!(f, "border-top:{}", v),
             Style::BorderTopColor(v) => write!(f, "border-top-color:{}", v),
-            // border-top-left-radius
-            // border-top-right-radius
+            Style::BorderTopLeftRadius(v) => write!(f, "border-top-left-radius:{}", v),
+            Style::BorderTopRightRadius(v) => write!(f, "border-top-right-radius:{}", v),
             Style::BorderTopStyle(v) => write!(f, "border-top-style:{}", v),
             Style::BorderTopWidth(v) => write!(f, "border-top-width:{}", v),
             Style::BorderWidth(v) => write!(f, "border-width:{}", v),
@@ -693,7 +707,7 @@ impl fmt::Display for Style {
             // pitch-range
             // play-during
             Style::Position(v) => write!(f, "position:{}", v),
-            // quotes
+            // uotes
             Style::Resize(v) => write!(f, "resize:{}", v),
             // richness
             Style::Right(v) => write!(f, "right:{}", v),
@@ -759,7 +773,7 @@ impl fmt::Display for Style {
             // voice-family
             // volume
             Style::WhiteSpace(v) => write!(f, "white-space:{}", v),
-            // widows
+            Style::Widows(v) => write!(f, "widows:{}", v),
             Style::Width(v) => write!(f, "width:{}", v),
             // will-change
             // word-spacing
@@ -807,7 +821,13 @@ pub enum AlignItems {
     Center,
     Start,
     End,
-    //todo
+    FlexStart,
+    FlexEnd,
+    Baseline,
+    FirstBaseline,
+    LastBaseline,
+    SafeCenter,
+    UnsafeCenter,
 }
 
 impl fmt::Display for AlignItems {
@@ -818,6 +838,225 @@ impl fmt::Display for AlignItems {
             AlignItems::Center => write!(f, "center"),
             AlignItems::Start => write!(f, "start"),
             AlignItems::End => write!(f, "end"),
+            AlignItems::FlexStart => write!(f, "flex-start"),
+            AlignItems::FlexEnd => write!(f, "flex-end"),
+            AlignItems::Baseline => write!(f, "baseline"),
+            AlignItems::FirstBaseline => write!(f, "first baseline"),
+            AlignItems::LastBaseline => write!(f, "last baseline"),
+            AlignItems::SafeCenter => write!(f, "safe center"),
+            AlignItems::UnsafeCenter => write!(f, "unsafe center"),
+        }
+    }
+}
+
+/// https://developer.mozilla.org/en-US/docs/Web/CSS/align-self
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum AlignSelf {
+    Auto,
+    Normal,
+    Center,
+    Start,
+    End,
+    SelfStart,
+    SelfEnd,
+    FlexStart,
+    FlexEnd,
+    Baseline,
+    FirstBaseline,
+    LastBaseline,
+    Stretch,
+    SafeCenter,
+    UnsafeCenter,
+}
+
+impl fmt::Display for AlignSelf {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            AlignSelf::Auto => write!(f, "auto"),
+            AlignSelf::Normal => write!(f, "normal"),
+            AlignSelf::Center => write!(f, "center"),
+            AlignSelf::Start => write!(f, "start"),
+            AlignSelf::End => write!(f, "end"),
+            AlignSelf::SelfStart => write!(f, "self-start"),
+            AlignSelf::SelfEnd => write!(f, "self-end"),
+            AlignSelf::FlexStart => write!(f, "flex-start"),
+            AlignSelf::FlexEnd => write!(f, "flex-end"),
+            AlignSelf::Baseline => write!(f, "baseline"),
+            AlignSelf::FirstBaseline => write!(f, "first baseline"),
+            AlignSelf::LastBaseline => write!(f, "last baseline"),
+            AlignSelf::Stretch => write!(f, "stretch"),
+            AlignSelf::SafeCenter => write!(f, "safe center"),
+            AlignSelf::UnsafeCenter => write!(f, "unsafe center"),
+        }
+    }
+}
+
+/// https://developer.mozilla.org/en-US/docs/Web/CSS/background-attachment
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum BackgroundAttachment {
+    Scroll,
+    Fixed,
+    Local,
+}
+
+impl fmt::Display for BackgroundAttachment {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            BackgroundAttachment::Scroll => write!(f, "scroll"),
+            BackgroundAttachment::Fixed => write!(f, "fixed"),
+            BackgroundAttachment::Local => write!(f, "local"),
+        }
+    }
+}
+
+/// https://developer.mozilla.org/en-US/docs/Web/CSS/background-blend-mode
+#[derive(Debug, Clone, PartialEq)]
+pub enum BlendMode {
+    Normal,
+    Multiply,
+    Screen,
+    Overlay,
+    Darken,
+    Lighten,
+    ColorDodge,
+    ColorBurn,
+    HardLight,
+    SoftLight,
+    Difference,
+    Exclusion,
+    Hue,
+    Saturation,
+    Color,
+    Luminosity,
+}
+
+impl fmt::Display for BlendMode {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            BlendMode::Normal => write!(f, "normal"),
+            BlendMode::Multiply => write!(f, "multiply"),
+            BlendMode::Screen => write!(f, "screen"),
+            BlendMode::Overlay => write!(f, "overlay"),
+            BlendMode::Darken => write!(f, "darken"),
+            BlendMode::Lighten => write!(f, "lighten"),
+            BlendMode::ColorDodge => write!(f, "color-dodge"),
+            BlendMode::ColorBurn => write!(f, "color-burn"),
+            BlendMode::HardLight => write!(f, "hard-light"),
+            BlendMode::SoftLight => write!(f, "soft-light"),
+            BlendMode::Difference => write!(f, "difference"),
+            BlendMode::Exclusion => write!(f, "exclusion"),
+            BlendMode::Hue => write!(f, "hue"),
+            BlendMode::Saturation => write!(f, "saturation"),
+            BlendMode::Color => write!(f, "color"),
+            BlendMode::Luminosity => write!(f, "luminosity"),
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub enum BackgroundBox {
+    BorderBox,
+    PaddingBox,
+    ContentBox,
+}
+
+impl fmt::Display for BackgroundBox {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            BackgroundBox::BorderBox => write!(f, "border-box"),
+            BackgroundBox::PaddingBox => write!(f, "padding-box"),
+            BackgroundBox::ContentBox => write!(f, "content-box"),
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub enum BackgroundImage {
+    None,
+    Url(String),
+    // TODO other variants
+}
+
+impl fmt::Display for BackgroundImage {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            BackgroundImage::None => write!(f, "none"),
+            BackgroundImage::Url(url) => write!(f, "url({})", url),
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub enum BackgroundPosition {
+    Top,
+    Bottom,
+    Left,
+    Right,
+    Center,
+    // TODO other variants
+}
+
+impl fmt::Display for BackgroundPosition {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            BackgroundPosition::Top => write!(f, "top"),
+            BackgroundPosition::Left => write!(f, "left"),
+            BackgroundPosition::Bottom => write!(f, "bottom"),
+            BackgroundPosition::Right => write!(f, "right"),
+            BackgroundPosition::Center => write!(f, "center"),
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub enum BackgroundRepeat {
+    RepeatX,
+    RepeatY,
+    SingleOrDouble(SingleOrDouble<BgRepeatPart>),
+}
+
+impl fmt::Display for BackgroundRepeat {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            BackgroundRepeat::RepeatX => write!(f, "repeat-x"),
+            BackgroundRepeat::RepeatY => write!(f, "repeat-y"),
+            BackgroundRepeat::SingleOrDouble(v) => v.fmt(f),
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub enum BgRepeatPart {
+    Repeat,
+    Space,
+    Round,
+    NoRepeat,
+}
+
+impl fmt::Display for BgRepeatPart {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            BgRepeatPart::Repeat => write!(f, "repeat"),
+            BgRepeatPart::Space => write!(f, "space"),
+            BgRepeatPart::Round => write!(f, "round"),
+            BgRepeatPart::NoRepeat => write!(f, "no-repeat"),
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub enum BackgroundSize {
+    Cover,
+    Contain,
+    SingleOrDouble(SingleOrDouble<AutoLengthPercentage>),
+}
+
+impl fmt::Display for BackgroundSize {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            BackgroundSize::Cover => write!(f, "cover"),
+            BackgroundSize::Contain => write!(f, "contain"),
+            BackgroundSize::SingleOrDouble(v) => v.fmt(f),
         }
     }
 }
@@ -881,82 +1120,38 @@ impl fmt::Display for Border {
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq)]
-pub enum BorderColor {
-    All(Color),
-    VerticalHorizontal(Color, Color),
-    TopHorizontalBottom(Color, Color, Color),
-    TopRightBottomLeft(Color, Color, Color, Color),
+#[derive(Debug, Clone, PartialEq)]
+pub enum BorderCollapse {
+    Collapse,
+    Separate,
 }
 
-impl fmt::Display for BorderColor {
+impl fmt::Display for BorderCollapse {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            BorderColor::All(a) => write!(f, "{}", a),
-            BorderColor::VerticalHorizontal(v, h) => write!(f, "{} {}", v, h),
-            BorderColor::TopHorizontalBottom(t, h, b) => write!(f, "{} {} {}", t, h, b),
-            BorderColor::TopRightBottomLeft(t, r, b, l) => write!(f, "{} {} {} {}", t, r, b, l),
+            BorderCollapse::Collapse => write!(f, "collapse"),
+            BorderCollapse::Separate => write!(f, "separate"),
         }
     }
 }
 
 pub type BorderRadius = Calc;
 
-#[derive(Debug, Clone, Copy, PartialEq)]
-pub enum BorderStyle {
-    All(LineStyle),
-    VerticalHorizontal(LineStyle, LineStyle),
-    TopHorizontalBottom(LineStyle, LineStyle, LineStyle),
-    TopRightBottomLeft(LineStyle, LineStyle, LineStyle, LineStyle),
-}
+pub type BorderStyle = Rect<LineStyle>;
 
-impl fmt::Display for BorderStyle {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            BorderStyle::All(a) => write!(f, "{}", a),
-            BorderStyle::VerticalHorizontal(v, h) => write!(f, "{} {}", v, h),
-            BorderStyle::TopHorizontalBottom(t, h, b) => write!(f, "{} {} {}", t, h, b),
-            BorderStyle::TopRightBottomLeft(t, r, b, l) => write!(f, "{} {} {} {}", t, r, b, l),
-        }
-    }
-}
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-pub enum BorderWidth {
-    All(LineWidth),
-    VerticalHorizontal(LineWidth, LineWidth),
-    TopHorizontalBottom(LineWidth, LineWidth, LineWidth),
-    TopRightBottomLeft(LineWidth, LineWidth, LineWidth, LineWidth),
-}
-
-impl fmt::Display for BorderWidth {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            BorderWidth::All(a) => write!(f, "{}", a),
-            BorderWidth::VerticalHorizontal(v, h) => write!(f, "{} {}", v, h),
-            BorderWidth::TopHorizontalBottom(t, h, b) => write!(f, "{} {} {}", t, h, b),
-            BorderWidth::TopRightBottomLeft(t, r, b, l) => write!(f, "{} {} {} {}", t, r, b, l),
-        }
-    }
-}
+pub type BorderWidth = Rect<LineWidth>;
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum BoxShadow {
     None,
-    Shadows { first: Shadow, rest: Vec<Shadow> },
+    Shadows(NonemptyCommaList<Shadow>),
 }
 
 impl fmt::Display for BoxShadow {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             BoxShadow::None => f.write_str("none"),
-            BoxShadow::Shadows { first, rest } => {
-                write!(f, "{}", first)?;
-                for shadow in rest.iter() {
-                    write!(f, ",{}", shadow)?;
-                }
-                Ok(())
-            }
+            BoxShadow::Shadows(list) => write!(f, "{}", list),
         }
     }
 }
@@ -1206,21 +1401,7 @@ impl fmt::Display for Font {
     }
 }
 
-#[derive(Debug, Clone, PartialEq)]
-pub struct FontFamily {
-    pub first: Font,
-    pub rest: Vec<Font>,
-}
-
-impl fmt::Display for FontFamily {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}", self.first)?;
-        for font in self.rest.iter() {
-            write!(f, ",{}", font)?;
-        }
-        Ok(())
-    }
-}
+pub type FontFamily = NonemptyCommaList<Font>;
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum FontSize {
@@ -1610,7 +1791,7 @@ pub enum Rect<T> {
     All(T),
     VerticalHorizontal(T, T),
     TopHorizontalBottom(T, T, T),
-    LeftTopRightBottom(T, T, T, T),
+    TopRightBottomLeft(T, T, T, T),
 }
 
 impl<T> fmt::Display for Rect<T>
@@ -1619,10 +1800,10 @@ where
 {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            Rect::All(len) => write!(f, "{}", len),
+            Rect::All(a) => write!(f, "{}", a),
             Rect::VerticalHorizontal(v, h) => write!(f, "{} {}", v, h),
             Rect::TopHorizontalBottom(t, h, b) => write!(f, "{} {} {}", t, h, b),
-            Rect::LeftTopRightBottom(l, t, r, b) => write!(f, "{} {} {} {}", l, t, r, b),
+            Rect::TopRightBottomLeft(t, r, b, l) => write!(f, "{} {} {} {}", t, r, b, l),
         }
     }
 }
@@ -1817,6 +1998,45 @@ impl fmt::Display for Width21 {
         match self {
             Width21::Auto => write!(f, "auto"),
             Width21::LengthPercentage(v) => fmt::Display::fmt(v, f),
+        }
+    }
+}
+
+/// A generic container for a non-empty comma-separated list of values
+#[derive(Debug, Clone, PartialEq)]
+pub struct NonemptyCommaList<T> {
+    first: T,
+    rest: Vec<T>,
+}
+
+impl<T> fmt::Display for NonemptyCommaList<T>
+where
+    T: fmt::Display,
+{
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}", self.first)?;
+        for t in &self.rest {
+            write!(f, ",{}", t)?;
+        }
+        Ok(())
+    }
+}
+
+/// Matches one or two variables.
+#[derive(Debug, Clone, PartialEq)]
+pub enum SingleOrDouble<T> {
+    Single(T),
+    Double { horiz: T, vert: T },
+}
+
+impl<T> fmt::Display for SingleOrDouble<T>
+where
+    T: fmt::Display,
+{
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            SingleOrDouble::Single(t) => t.fmt(f),
+            SingleOrDouble::Double { vert, horiz } => write!(f, "{} {}", vert, horiz),
         }
     }
 }

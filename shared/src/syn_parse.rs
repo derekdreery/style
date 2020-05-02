@@ -8,7 +8,13 @@
 // rust code> }`)
 use crate::*;
 use proc_macro2::Span;
-use std::{cell::RefCell, collections::BTreeSet, fmt::Write};
+use std::{
+    cell::RefCell,
+    collections::BTreeSet,
+    fmt::{self, Write},
+    ops::RangeBounds,
+    str,
+};
 use syn::{
     ext::IdentExt,
     parse::{discouraged::Speculative, Parse, ParseStream},
@@ -26,21 +32,8 @@ impl Parse for DynamicStyles {
 
 impl Parse for Styles {
     fn parse(s: ParseStream) -> syn::Result<Self> {
-        let punc = s.parse_terminated::<_, Token![;]>(<DynamicStyle as Parse>::parse)?;
-        let mut styles = Vec::new();
-        let punc_span = punc.span();
-        for dy_style in punc {
-            match dy_style {
-                DynamicStyle::Dynamic(_) => {
-                    return Err(syn::Error::new(
-                        punc_span,
-                        "found dynamic style in Styles literal",
-                    ))
-                }
-                DynamicStyle::Literal(sty) => styles.push(sty),
-            }
-        }
-        Ok(Styles::from(styles))
+        let punc = s.parse_terminated::<_, Token![;]>(<Style as Parse>::parse)?;
+        Ok(Styles::from(punc.into_iter().collect::<Vec<_>>()))
     }
 }
 
@@ -69,39 +62,50 @@ impl Parse for Style {
 
         s.parse::<Token![:]>()?;
 
-        if name.try_match("align-content") {
-            Ok(Style::AlignContent(s.parse()?))
+        let output = if name.try_match("align-content") {
+            Style::AlignContent(s.parse()?)
         } else if name.try_match("align-items") {
-            Ok(Style::AlignItems(s.parse()?))
-        // align-self
+            Style::AlignItems(s.parse()?)
+        } else if name.try_match("align-self") {
+            Style::AlignSelf(s.parse()?)
         // all
-        // azimuth
         // background
-        // background-attachment
-        // background-blend-mode
-        // background-clip
+        } else if name.try_match("background-attachment") {
+            Style::BackgroundAttachment(s.parse()?)
+        } else if name.try_match("background-blend-mode") {
+            Style::BackgroundBlendMode(s.parse()?)
+        } else if name.try_match("background-clip") {
+            Style::BackgroundClip(s.parse()?)
         } else if name.try_match("background-color") {
-            Ok(Style::BackgroundColor(s.parse()?))
-        // background-image
-        // background-origin
-        // background-position
-        // background-repeat
-        // background-size
+            Style::BackgroundColor(s.parse()?)
+        } else if name.try_match("background-image") {
+            Style::BackgroundImage(s.parse()?)
+        } else if name.try_match("background-origin") {
+            Style::BackgroundOrigin(s.parse()?)
+        } else if name.try_match("background-position") {
+            Style::BackgroundPosition(s.parse()?)
+        } else if name.try_match("background-repeat") {
+            Style::BackgroundRepeat(s.parse()?)
+        } else if name.try_match("background-size") {
+            Style::BackgroundSize(s.parse()?)
         } else if name.try_match("border") {
-            Ok(Style::Border(s.parse()?))
+            Style::Border(s.parse()?)
         } else if name.try_match("border-bottom") {
-            Ok(Style::BorderBottom(s.parse()?))
+            Style::BorderBottom(s.parse()?)
         } else if name.try_match("border-bottom-color") {
-            Ok(Style::BorderBottomColor(s.parse()?))
-        // border-bottom-left-radius
-        // border-bottom-right-radius
+            Style::BorderBottomColor(s.parse()?)
+        } else if name.try_match("border-bottom-left-radius") {
+            Style::BorderBottomLeftRadius(s.parse()?)
+        } else if name.try_match("border-bottom-right-radius") {
+            Style::BorderBottomRightRadius(s.parse()?)
         } else if name.try_match("border-bottom-style") {
-            Ok(Style::BorderBottomStyle(s.parse()?))
+            Style::BorderBottomStyle(s.parse()?)
         } else if name.try_match("border-bottom-width") {
-            Ok(Style::BorderBottomWidth(s.parse()?))
-        // border-collapse
+            Style::BorderBottomWidth(s.parse()?)
+        } else if name.try_match("border-collapse") {
+            Style::BorderCollapse(s.parse()?)
         } else if name.try_match("border-color") {
-            Ok(Style::BorderColor(s.parse()?))
+            Style::BorderColor(s.parse()?)
         // border-image
         // border-image-outset
         // border-image-repeat
@@ -109,59 +113,61 @@ impl Parse for Style {
         // border-image-source
         // border-image-width
         } else if name.try_match("border-left") {
-            Ok(Style::BorderLeft(s.parse()?))
+            Style::BorderLeft(s.parse()?)
         } else if name.try_match("border-left-color") {
-            Ok(Style::BorderLeftColor(s.parse()?))
+            Style::BorderLeftColor(s.parse()?)
         } else if name.try_match("border-left-style") {
-            Ok(Style::BorderLeftStyle(s.parse()?))
+            Style::BorderLeftStyle(s.parse()?)
         } else if name.try_match("border-left-width") {
-            Ok(Style::BorderLeftWidth(s.parse()?))
+            Style::BorderLeftWidth(s.parse()?)
         } else if name.try_match("border-radius") {
-            Ok(Style::BorderRadius(s.parse()?))
+            Style::BorderRadius(s.parse()?)
         } else if name.try_match("border-right") {
-            Ok(Style::BorderRight(s.parse()?))
+            Style::BorderRight(s.parse()?)
         } else if name.try_match("border-right-color") {
-            Ok(Style::BorderRightColor(s.parse()?))
+            Style::BorderRightColor(s.parse()?)
         } else if name.try_match("border-right-style") {
-            Ok(Style::BorderRightStyle(s.parse()?))
+            Style::BorderRightStyle(s.parse()?)
         } else if name.try_match("border-right-width") {
-            Ok(Style::BorderRightWidth(s.parse()?))
+            Style::BorderRightWidth(s.parse()?)
         // border-spacing
         } else if name.try_match("border-style") {
-            Ok(Style::BorderStyle(s.parse()?))
+            Style::BorderStyle(s.parse()?)
         } else if name.try_match("border-top") {
-            Ok(Style::BorderTop(s.parse()?))
+            Style::BorderTop(s.parse()?)
         } else if name.try_match("border-top-color") {
-            Ok(Style::BorderTopColor(s.parse()?))
-        // border-top-left-radius
-        // border-top-right-radius
+            Style::BorderTopColor(s.parse()?)
+        } else if name.try_match("border-top-left-radius") {
+            Style::BorderTopLeftRadius(s.parse()?)
+        } else if name.try_match("border-top-right-radius") {
+            Style::BorderTopRightRadius(s.parse()?)
         } else if name.try_match("border-top-style") {
-            Ok(Style::BorderTopStyle(s.parse()?))
+            Style::BorderTopStyle(s.parse()?)
         } else if name.try_match("border-top-width") {
-            Ok(Style::BorderTopWidth(s.parse()?))
+            Style::BorderTopWidth(s.parse()?)
         } else if name.try_match("border-width") {
-            Ok(Style::BorderWidth(s.parse()?))
+            Style::BorderWidth(s.parse()?)
         } else if name.try_match("bottom") {
-            Ok(Style::Bottom(s.parse()?))
+            Style::Bottom(s.parse()?)
         // box-decoration-break
         } else if name.try_match("box-shadow") {
-            Ok(Style::BoxShadow(s.parse()?))
+            Style::BoxShadow(s.parse()?)
         } else if name.try_match("box-sizing") {
-            Ok(Style::BoxSizing(s.parse()?))
+            Style::BoxSizing(s.parse()?)
         // break-after
         // break-before
         // break-inside
         // caption-side
         // caret-color
         } else if name.try_match("clear") {
-            Ok(Style::Clear(s.parse()?))
+            Style::Clear(s.parse()?)
         // clip
         // clip-path
         // clip-rule
         } else if name.try_match("column-count") {
-            Ok(Style::ColumnCount(s.parse()?))
+            Style::ColumnCount(s.parse()?)
         } else if name.try_match("color") {
-            Ok(Style::Color(s.parse()?))
+            Style::Color(s.parse()?)
         // contain
         // content
         // counter-increment
@@ -170,45 +176,45 @@ impl Parse for Style {
         // cue-after
         // cue-before
         } else if name.try_match("cursor") {
-            Ok(Style::Cursor(s.parse()?))
+            Style::Cursor(s.parse()?)
         // direction
         } else if name.try_match("display") {
-            Ok(Style::Display(s.parse()?))
+            Style::Display(s.parse()?)
         // elevation
         // empty-cells
         // flex
         } else if name.try_match("flex-basis") {
-            Ok(Style::FlexBasis(s.parse()?))
+            Style::FlexBasis(s.parse()?)
         } else if name.try_match("flex-direction") {
-            Ok(Style::FlexDirection(s.parse()?))
+            Style::FlexDirection(s.parse()?)
         // flex-flow
         } else if name.try_match("flex-grow") {
             let number: Number = s.parse()?;
             if !number.suffix.is_empty() {
                 return Err(syn::Error::new(number.span, "expected number"));
             }
-            Ok(Style::FlexGrow(number.value))
+            Style::FlexGrow(number.value)
         } else if name.try_match("flex-shrink") {
             let number: Number = s.parse()?;
             if !number.suffix.is_empty() {
                 return Err(syn::Error::new(number.span, "expected number"));
             }
-            Ok(Style::FlexShrink(number.value))
+            Style::FlexShrink(number.value)
         } else if name.try_match("flex-wrap") {
-            Ok(Style::FlexWrap(s.parse()?))
+            Style::FlexWrap(s.parse()?)
         } else if name.try_match("float") {
-            Ok(Style::Float(s.parse()?))
+            Style::Float(s.parse()?)
         // font
         } else if name.try_match("font-family") {
-            Ok(Style::FontFamily(s.parse()?))
+            Style::FontFamily(s.parse()?)
         // font-feature-settings
         // font-kerning
         } else if name.try_match("font-size") {
-            Ok(Style::FontSize(s.parse()?))
+            Style::FontSize(s.parse()?)
         // font-size-adjust
         // font-stretch
         } else if name.try_match("font-style") {
-            Ok(Style::FontStyle(s.parse()?))
+            Style::FontStyle(s.parse()?)
         // font-synthesis
         // font-variant
         // font-variant-caps
@@ -217,7 +223,7 @@ impl Parse for Style {
         // font-variant-numeric
         // font-variant-position
         } else if name.try_match("font-weight") {
-            Ok(Style::FontWeight(s.parse()?))
+            Style::FontWeight(s.parse()?)
         // glyph-orientation-vertical
         // grid
         // grid-area
@@ -235,32 +241,32 @@ impl Parse for Style {
         // grid-template-columns
         // grid-template-rows
         } else if name.try_match("height") {
-            Ok(Style::Height(s.parse()?))
+            Style::Height(s.parse()?)
         // image-orientation
         // image-rendering
         // isolation
         } else if name.try_match("justify-content") {
-            Ok(Style::JustifyContent(s.parse()?))
+            Style::JustifyContent(s.parse()?)
         } else if name.try_match("left") {
-            Ok(Style::Left(s.parse()?))
+            Style::Left(s.parse()?)
         // letter-spacing
         } else if name.try_match("line-height") {
-            Ok(Style::LineHeight(s.parse()?))
+            Style::LineHeight(s.parse()?)
         // list-style
         // list-style-image
         // list-style-position
         } else if name.try_match("list-style-type") {
-            Ok(Style::ListStyleType(s.parse()?))
+            Style::ListStyleType(s.parse()?)
         } else if name.try_match("margin") {
-            Ok(Style::Margin(s.parse()?))
+            Style::Margin(s.parse()?)
         } else if name.try_match("margin-bottom") {
-            Ok(Style::MarginBottom(s.parse()?))
+            Style::MarginBottom(s.parse()?)
         } else if name.try_match("margin-left") {
-            Ok(Style::MarginLeft(s.parse()?))
+            Style::MarginLeft(s.parse()?)
         } else if name.try_match("margin-right") {
-            Ok(Style::MarginRight(s.parse()?))
+            Style::MarginRight(s.parse()?)
         } else if name.try_match("margin-top") {
-            Ok(Style::MarginTop(s.parse()?))
+            Style::MarginTop(s.parse()?)
         // mask
         // mask-border
         // mask-border-mode
@@ -279,16 +285,16 @@ impl Parse for Style {
         // mask-size
         // mask-type
         } else if name.try_match("max-height") {
-            Ok(Style::MaxHeight(s.parse()?))
+            Style::MaxHeight(s.parse()?)
         } else if name.try_match("max-width") {
-            Ok(Style::MaxWidth(s.parse()?))
+            Style::MaxWidth(s.parse()?)
         } else if name.try_match("min-height") {
-            Ok(Style::MinHeight(s.parse()?))
+            Style::MinHeight(s.parse()?)
         } else if name.try_match("min-width") {
-            Ok(Style::MinWidth(s.parse()?))
+            Style::MinWidth(s.parse()?)
         // mix-blend-mode
         } else if name.try_match("object-fit") {
-            Ok(Style::ObjectFit(s.parse()?))
+            Style::ObjectFit(s.parse()?)
         // object-position
         // opacity
         // order
@@ -299,21 +305,21 @@ impl Parse for Style {
         // outline-style
         // outline-width
         } else if name.try_match("overflow") {
-            Ok(Style::Overflow(s.parse()?))
+            Style::Overflow(s.parse()?)
         } else if name.try_match("overflow-x") {
-            Ok(Style::OverflowX(s.parse()?))
+            Style::OverflowX(s.parse()?)
         } else if name.try_match("overflow-y") {
-            Ok(Style::OverflowY(s.parse()?))
+            Style::OverflowY(s.parse()?)
         } else if name.try_match("padding") {
-            Ok(Style::Padding(s.parse()?))
+            Style::Padding(s.parse()?)
         } else if name.try_match("padding-bottom") {
-            Ok(Style::PaddingBottom(s.parse()?))
+            Style::PaddingBottom(s.parse()?)
         } else if name.try_match("padding-left") {
-            Ok(Style::PaddingLeft(s.parse()?))
+            Style::PaddingLeft(s.parse()?)
         } else if name.try_match("padding-right") {
-            Ok(Style::PaddingRight(s.parse()?))
+            Style::PaddingRight(s.parse()?)
         } else if name.try_match("padding-top") {
-            Ok(Style::PaddingTop(s.parse()?))
+            Style::PaddingTop(s.parse()?)
         // page-break-after
         // page-break-before
         // page-break-inside
@@ -324,13 +330,13 @@ impl Parse for Style {
         // pitch-range
         // play-during
         } else if name.try_match("position") {
-            Ok(Style::Position(s.parse()?))
+            Style::Position(s.parse()?)
         // quotes
         } else if name.try_match("resize") {
-            Ok(Style::Resize(s.parse()?))
+            Style::Resize(s.parse()?)
         // richness
         } else if name.try_match("right") {
-            Ok(Style::Right(s.parse()?))
+            Style::Right(s.parse()?)
         // scroll-margin
         // scroll-margin-block
         // scroll-margin-block-end
@@ -367,7 +373,7 @@ impl Parse for Style {
         // stress
         // table-layout
         } else if name.try_match("text-align") {
-            Ok(Style::TextAlign(s.parse()?))
+            Style::TextAlign(s.parse()?)
         // text-combine-upright
         // text-decoration
         // text-decoration-color
@@ -384,7 +390,7 @@ impl Parse for Style {
         // text-transform
         // text-underline-position
         } else if name.try_match("top") {
-            Ok(Style::Top(s.parse()?))
+            Style::Top(s.parse()?)
         // transform
         // transform-box
         // transform-origin
@@ -394,17 +400,24 @@ impl Parse for Style {
         // voice-family
         // volume
         } else if name.try_match("white-space") {
-            Ok(Style::WhiteSpace(s.parse()?))
-        // widows
+            Style::WhiteSpace(s.parse()?)
+        } else if name.try_match("widows") {
+            Style::Widows(integer(s, 1..)?)
         } else if name.try_match("width") {
-            Ok(Style::Width(s.parse()?))
+            Style::Width(s.parse()?)
         // will-change
         // word-spacing
         // writing-mode
         // z-index
         } else {
-            Err(name.error())
+            return Err(name.error());
+        };
+
+        if !finished_rule(s) {
+            return Err(s.error("unexpected trailing tokens in style rule"));
         }
+
+        Ok(output)
     }
 }
 
@@ -466,7 +479,262 @@ impl Parse for AlignItems {
             Ok(AlignItems::Start)
         } else if word.try_match("end") {
             Ok(AlignItems::End)
+        } else if word.try_match("flex-start") {
+            Ok(AlignItems::FlexStart)
+        } else if word.try_match("flex-end") {
+            Ok(AlignItems::FlexEnd)
+        } else if word.try_match("baseline") {
+            Ok(AlignItems::Baseline)
+        } else if word.try_match("first") {
+            let word: HyphenWord = s.parse()?;
+            if word.try_match("baseline") {
+                Ok(AlignItems::FirstBaseline)
+            } else {
+                Err(word.error())
+            }
+        } else if word.try_match("last") {
+            let word: HyphenWord = s.parse()?;
+            if word.try_match("baseline") {
+                Ok(AlignItems::LastBaseline)
+            } else {
+                Err(word.error())
+            }
+        } else if word.try_match("safe") {
+            let word: HyphenWord = s.parse()?;
+            if word.try_match("center") {
+                Ok(AlignItems::SafeCenter)
+            } else {
+                Err(word.error())
+            }
+        } else if word.try_match("unsafe") {
+            let word: HyphenWord = s.parse()?;
+            if word.try_match("center") {
+                Ok(AlignItems::UnsafeCenter)
+            } else {
+                Err(word.error())
+            }
         } else {
+            Err(word.error())
+        }
+    }
+}
+
+impl Parse for AlignSelf {
+    fn parse(s: ParseStream) -> syn::Result<Self> {
+        let word: HyphenWord = s.parse()?;
+        if word.try_match("auto") {
+            Ok(AlignSelf::Auto)
+        } else if word.try_match("normal") {
+            Ok(AlignSelf::Normal)
+        } else if word.try_match("center") {
+            Ok(AlignSelf::Center)
+        } else if word.try_match("start") {
+            Ok(AlignSelf::Start)
+        } else if word.try_match("self-start") {
+            Ok(AlignSelf::SelfStart)
+        } else if word.try_match("self-end") {
+            Ok(AlignSelf::SelfEnd)
+        } else if word.try_match("flex-start") {
+            Ok(AlignSelf::FlexStart)
+        } else if word.try_match("flex-end") {
+            Ok(AlignSelf::FlexEnd)
+        } else if word.try_match("baseline") {
+            Ok(AlignSelf::Baseline)
+        } else if word.try_match("first") {
+            let word: HyphenWord = s.parse()?;
+            if word.try_match("baseline") {
+                Ok(AlignSelf::FirstBaseline)
+            } else {
+                Err(word.error())
+            }
+        } else if word.try_match("last") {
+            let word: HyphenWord = s.parse()?;
+            if word.try_match("baseline") {
+                Ok(AlignSelf::LastBaseline)
+            } else {
+                Err(word.error())
+            }
+        } else if word.try_match("stretch") {
+            Ok(AlignSelf::Stretch)
+        } else if word.try_match("safe") {
+            let word: HyphenWord = s.parse()?;
+            if word.try_match("center") {
+                Ok(AlignSelf::SafeCenter)
+            } else {
+                Err(word.error())
+            }
+        } else if word.try_match("unsafe") {
+            let word: HyphenWord = s.parse()?;
+            if word.try_match("center") {
+                Ok(AlignSelf::UnsafeCenter)
+            } else {
+                Err(word.error())
+            }
+        } else {
+            Err(word.error())
+        }
+    }
+}
+
+impl Parse for BackgroundAttachment {
+    fn parse(s: ParseStream) -> syn::Result<Self> {
+        let word: HyphenWord = s.parse()?;
+        if word.try_match("scroll") {
+            Ok(BackgroundAttachment::Scroll)
+        } else if word.try_match("fixed") {
+            Ok(BackgroundAttachment::Fixed)
+        } else if word.try_match("local") {
+            Ok(BackgroundAttachment::Local)
+        } else {
+            Err(word.error())
+        }
+    }
+}
+
+impl Parse for BlendMode {
+    fn parse(s: ParseStream) -> syn::Result<Self> {
+        let word: HyphenWord = s.parse()?;
+        if word.try_match("normal") {
+            Ok(BlendMode::Normal)
+        } else if word.try_match("multiply") {
+            Ok(BlendMode::Multiply)
+        } else if word.try_match("screen") {
+            Ok(BlendMode::Screen)
+        } else if word.try_match("overlay") {
+            Ok(BlendMode::Overlay)
+        } else if word.try_match("darken") {
+            Ok(BlendMode::Darken)
+        } else if word.try_match("lighten") {
+            Ok(BlendMode::Lighten)
+        } else if word.try_match("color-dodge") {
+            Ok(BlendMode::ColorDodge)
+        } else if word.try_match("color-burn") {
+            Ok(BlendMode::ColorBurn)
+        } else if word.try_match("hard-light") {
+            Ok(BlendMode::HardLight)
+        } else if word.try_match("soft-light") {
+            Ok(BlendMode::SoftLight)
+        } else if word.try_match("difference") {
+            Ok(BlendMode::Difference)
+        } else if word.try_match("exclusion") {
+            Ok(BlendMode::Exclusion)
+        } else if word.try_match("hue") {
+            Ok(BlendMode::Hue)
+        } else if word.try_match("saturation") {
+            Ok(BlendMode::Saturation)
+        } else if word.try_match("color") {
+            Ok(BlendMode::Color)
+        } else if word.try_match("luminosity") {
+            Ok(BlendMode::Luminosity)
+        } else {
+            Err(word.error())
+        }
+    }
+}
+
+impl Parse for BackgroundImage {
+    fn parse(s: ParseStream) -> syn::Result<Self> {
+        let peek = HyphenWord::peek_specific(s);
+        if peek.as_ref().map(|s| s.as_str()) == Some("url") {
+            let url;
+            syn::parenthesized!(url in s);
+            let url = url.parse::<syn::LitStr>()?;
+            Ok(BackgroundImage::Url(url.value()))
+        } else {
+            let word: HyphenWord = s.parse()?;
+            word.add_expected("url");
+            if word.try_match("none") {
+                Ok(BackgroundImage::None)
+            } else {
+                Err(word.error())
+            }
+        }
+    }
+}
+
+impl Parse for BackgroundBox {
+    fn parse(s: ParseStream) -> syn::Result<Self> {
+        let word: HyphenWord = s.parse()?;
+        if word.try_match("border-box") {
+            Ok(BackgroundBox::BorderBox)
+        } else if word.try_match("padding-box") {
+            Ok(BackgroundBox::PaddingBox)
+        } else if word.try_match("content-box") {
+            Ok(BackgroundBox::ContentBox)
+        } else {
+            Err(word.error())
+        }
+    }
+}
+
+impl Parse for BackgroundPosition {
+    fn parse(s: ParseStream) -> syn::Result<Self> {
+        let word: HyphenWord = s.parse()?;
+        if word.try_match("top") {
+            Ok(BackgroundPosition::Top)
+        } else if word.try_match("bottom") {
+            Ok(BackgroundPosition::Bottom)
+        } else if word.try_match("left") {
+            Ok(BackgroundPosition::Left)
+        } else if word.try_match("right") {
+            Ok(BackgroundPosition::Right)
+        } else if word.try_match("center") {
+            Ok(BackgroundPosition::Center)
+        } else {
+            Err(word.error())
+        }
+    }
+}
+
+impl Parse for BackgroundRepeat {
+    fn parse(s: ParseStream) -> syn::Result<Self> {
+        let word: HyphenWord = s.parse()?;
+        if word.try_match("repeat-x") {
+            Ok(BackgroundRepeat::RepeatX)
+        } else if word.try_match("repeat-y") {
+            Ok(BackgroundRepeat::RepeatY)
+        } else if let Ok(v) = s.parse() {
+            Ok(BackgroundRepeat::SingleOrDouble(v))
+        } else {
+            word.add_expected("repeat");
+            word.add_expected("space");
+            word.add_expected("round");
+            word.add_expected("no-repeat");
+            Err(word.error())
+        }
+    }
+}
+
+impl Parse for BgRepeatPart {
+    fn parse(s: ParseStream) -> syn::Result<Self> {
+        let word: HyphenWord = s.parse()?;
+        if word.try_match("repeat") {
+            Ok(BgRepeatPart::Repeat)
+        } else if word.try_match("space") {
+            Ok(BgRepeatPart::Space)
+        } else if word.try_match("round") {
+            Ok(BgRepeatPart::Round)
+        } else if word.try_match("no-repeat") {
+            Ok(BgRepeatPart::NoRepeat)
+        } else {
+            Err(word.error())
+        }
+    }
+}
+
+impl Parse for BackgroundSize {
+    fn parse(s: ParseStream) -> syn::Result<Self> {
+        let word: HyphenWord = s.parse()?;
+        if word.try_match("cover") {
+            Ok(BackgroundSize::Cover)
+        } else if word.try_match("contain") {
+            Ok(BackgroundSize::Contain)
+        } else if let Ok(v) = s.parse() {
+            Ok(BackgroundSize::SingleOrDouble(v))
+        } else {
+            word.add_expected("<length>");
+            word.add_expected("<percentage>");
+            word.add_expected("auto");
             Err(word.error())
         }
     }
@@ -533,46 +801,21 @@ impl Parse for Border {
     }
 }
 
-impl Parse for BorderColor {
-    fn parse(s: ParseStream) -> syn::Result<Self> {
-        let first: Color = s.parse()?;
-        if finished_rule(s) {
-            return Ok(BorderColor::All(first));
-        }
-        let second: Color = s.parse()?;
-        if finished_rule(s) {
-            return Ok(BorderColor::VerticalHorizontal(first, second));
-        }
-        let third: Color = s.parse()?;
-        if finished_rule(s) {
-            return Ok(BorderColor::TopHorizontalBottom(first, second, third));
-        }
-        let fourth: Color = s.parse()?;
-        Ok(BorderColor::TopRightBottomLeft(
-            first, second, third, fourth,
-        ))
-    }
-}
-
 #[test]
 fn test_border_color() {
     for (input, output) in vec![
-        ("black", BorderColor::All(Color::Black)),
+        ("black", Rect::All(Color::Black)),
         (
             "#fff blue",
-            BorderColor::VerticalHorizontal(Color::HexRGB(255, 255, 255), Color::Blue),
+            Rect::VerticalHorizontal(Color::HexRGB(255, 255, 255), Color::Blue),
         ),
         (
             "blue hsl(20, 5%, 100%) white",
-            BorderColor::TopHorizontalBottom(
-                Color::Blue,
-                Color::HSL(20.0, 5.0, 100.0),
-                Color::White,
-            ),
+            Rect::TopHorizontalBottom(Color::Blue, Color::HSL(20.0, 5.0, 100.0), Color::White),
         ),
         (
             "hsla(20, 5%, 100%, 0.2) #fff #ccc white",
-            BorderColor::TopRightBottomLeft(
+            Rect::TopRightBottomLeft(
                 Color::HSLA(20.0, 5.0, 100.0, 0.2),
                 Color::HexRGB(255, 255, 255),
                 Color::HexRGB(204, 204, 204),
@@ -580,54 +823,7 @@ fn test_border_color() {
             ),
         ),
     ] {
-        assert_eq!(syn::parse_str::<BorderColor>(input).unwrap(), output);
-    }
-}
-
-impl Parse for BorderStyle {
-    fn parse(s: ParseStream) -> syn::Result<Self> {
-        let first: LineStyle = s.parse()?;
-        if finished_rule(s) {
-            return Ok(BorderStyle::All(first));
-        }
-        let second: LineStyle = s.parse()?;
-        if finished_rule(s) {
-            return Ok(BorderStyle::VerticalHorizontal(first, second));
-        }
-        let third: LineStyle = s.parse()?;
-        if finished_rule(s) {
-            return Ok(BorderStyle::TopHorizontalBottom(first, second, third));
-        }
-        let fourth: LineStyle = s.parse()?;
-        Ok(BorderStyle::TopRightBottomLeft(
-            first, second, third, fourth,
-        ))
-    }
-}
-
-// Assumes no trailing tokens.
-impl Parse for BorderWidth {
-    fn parse(s: ParseStream) -> syn::Result<Self> {
-        let first: LineWidth = s.parse()?;
-        if finished_rule(s) {
-            return Ok(BorderWidth::All(first));
-        }
-        let second: LineWidth = s.parse()?;
-        if finished_rule(s) {
-            return Ok(BorderWidth::VerticalHorizontal(first, second));
-        }
-        let third: LineWidth = s.parse()?;
-        if finished_rule(s) {
-            return Ok(BorderWidth::TopHorizontalBottom(first, second, third));
-        }
-        let fourth: LineWidth = s.parse()?;
-        if finished_rule(s) {
-            Ok(BorderWidth::TopRightBottomLeft(
-                first, second, third, fourth,
-            ))
-        } else {
-            Err(s.error("trailing characters"))
-        }
+        assert_eq!(syn::parse_str::<Rect<Color>>(input).unwrap(), output);
     }
 }
 
@@ -668,6 +864,19 @@ fn test_border_width() {
     }
 }
 
+impl Parse for BorderCollapse {
+    fn parse(s: ParseStream) -> syn::Result<Self> {
+        let word: HyphenWord = s.parse()?;
+        if word.try_match("collapse") {
+            Ok(BorderCollapse::Collapse)
+        } else if word.try_match("separate") {
+            Ok(BorderCollapse::Separate)
+        } else {
+            Err(word.error())
+        }
+    }
+}
+
 impl Parse for BoxShadow {
     fn parse(s: ParseStream) -> syn::Result<Self> {
         syn::custom_keyword!(none);
@@ -675,13 +884,7 @@ impl Parse for BoxShadow {
             s.parse::<none>()?;
             Ok(BoxShadow::None)
         } else {
-            let punctuated = Punctuated::<Shadow, Token![,]>::parse_separated_nonempty(s)?;
-            let mut iter = punctuated.into_iter();
-            let first = iter.next().unwrap();
-            Ok(BoxShadow::Shadows {
-                first,
-                rest: iter.collect(),
-            })
+            Ok(BoxShadow::Shadows(s.parse()?))
         }
     }
 }
@@ -723,16 +926,7 @@ impl Parse for Clear {
 impl Parse for ColumnCount {
     fn parse(s: ParseStream) -> syn::Result<Self> {
         if s.peek(syn::LitInt) {
-            let fixed = s.parse::<syn::LitInt>()?;
-            if fixed.suffix().is_empty() {
-                let fixed = fixed.base10_parse()?;
-                Ok(ColumnCount::Fixed(fixed))
-            } else {
-                Err(syn::Error::new(
-                    fixed.span(),
-                    "the number should not have a suffix",
-                ))
-            }
+            Ok(ColumnCount::Fixed(s.parse::<Integer<u32>>()?.into_inner()))
         } else {
             let word: HyphenWord = s.parse()?;
             word.add_expected("integer");
@@ -936,18 +1130,6 @@ impl Parse for Font {
                 Err(name.error())
             }
         }
-    }
-}
-
-impl Parse for FontFamily {
-    fn parse(s: ParseStream) -> syn::Result<Self> {
-        let punctuated = Punctuated::<Font, Token![,]>::parse_separated_nonempty(s)?;
-        let mut iter = punctuated.into_iter();
-        let first = iter.next().unwrap();
-        Ok(FontFamily {
-            first,
-            rest: iter.collect(),
-        })
     }
 }
 
@@ -1310,18 +1492,26 @@ where
 {
     fn parse(s: ParseStream) -> syn::Result<Self> {
         let first = s.parse::<T>()?;
-        let second = match s.parse::<T>() {
-            Ok(v) => v,
+        let fork = s.fork();
+        let second = match fork.parse::<T>() {
+            Ok(v) => {
+                s.advance_to(&fork);
+                v
+            }
             Err(_) => return Ok(Rect::All(first)),
         };
-        let third = match s.parse::<T>() {
-            Ok(v) => v,
+        let third = match fork.parse::<T>() {
+            Ok(v) => {
+                s.advance_to(&fork);
+                v
+            }
             Err(_) => return Ok(Rect::VerticalHorizontal(first, second)),
         };
-        // todo could make the error message better here by looking for `;` and assuming next token
-        // is an incorrect number if not.
-        match s.parse::<T>() {
-            Ok(v) => Ok(Rect::LeftTopRightBottom(first, second, third, v)),
+        match fork.parse::<T>() {
+            Ok(v) => {
+                s.advance_to(&fork);
+                Ok(Rect::TopRightBottomLeft(first, second, third, v))
+            }
             Err(_) => Ok(Rect::TopHorizontalBottom(first, second, third)),
         }
     }
@@ -1835,7 +2025,48 @@ fn test_color() {
 // Util
 // ====
 
+impl<T> Parse for NonemptyCommaList<T>
+where
+    T: Parse,
+{
+    fn parse(s: ParseStream) -> syn::Result<Self> {
+        let punctuated = Punctuated::<T, Token![,]>::parse_separated_nonempty(s)?;
+        let mut iter = punctuated.into_iter();
+        let first = iter.next().unwrap();
+        Ok(Self {
+            first,
+            rest: iter.collect(),
+        })
+    }
+}
+
+impl<T> Parse for SingleOrDouble<T>
+where
+    T: Parse,
+{
+    fn parse(s: ParseStream) -> syn::Result<Self> {
+        let first = T::parse(s)?;
+        let fork = s.fork();
+        Ok(match T::parse(&fork) {
+            Ok(second) => {
+                s.advance_to(&fork);
+                SingleOrDouble::Double {
+                    vert: first,
+                    horiz: second,
+                }
+            }
+            Err(_) => SingleOrDouble::Single(first),
+        })
+    }
+}
+
 /// Either a float or an int, converted in either case to f64.
+///
+/// A trailing percent (`%`) character will be consumed if the number has no suffix. This is valid
+/// according to the CSS tokeniser spec.
+///
+/// TODO This only works for floats for now. Although JS only supports floats, integer literals are
+/// used in css.
 #[derive(Debug)]
 struct Number {
     value: f64,
@@ -1870,7 +2101,7 @@ impl Parse for Number {
             (num, tok.span(), tok.suffix().to_string())
         } else if lookahead.peek(syn::LitInt) {
             let tok = s.parse::<syn::LitInt>()?;
-            // u32 can be safely converted into f64
+            // u32 chosen because it can be safely converted into f64
             let num = tok.base10_parse::<u32>()?;
             (num.into(), tok.span(), tok.suffix().to_string())
         } else {
@@ -1934,6 +2165,8 @@ impl HyphenWord {
         }
     }
 
+    /// This allows HyphenWords to be empty. In this case the token cursor will not advance and the
+    /// returned word will be blank.
     pub fn new_no_word(span: Span) -> Self {
         HyphenWord {
             span,
@@ -1960,8 +2193,18 @@ impl HyphenWord {
         self.tried.to_error(self.span)
     }
 
+    /// This is cheaper than peek-specific
     pub fn peek(s: ParseStream) -> bool {
         s.peek(Ident)
+    }
+
+    /// Peek the next HyphenWord without advancing the parser.
+    pub fn peek_specific(s: ParseStream) -> Option<String> {
+        let fork = s.fork();
+        match HyphenWord::parse(&fork) {
+            Ok(hw) => Some(hw.word.unwrap()),
+            Err(_) => None,
+        }
     }
 }
 
@@ -2038,6 +2281,68 @@ fn finished_rule(s: ParseStream) -> bool {
     s.is_empty() || s.peek(Token![;])
 }
 
+// Parsing integers
+
+#[derive(Debug, PartialEq)]
+struct Integer<T> {
+    value: T,
+}
+
+impl<T> Integer<T> {
+    fn into_inner(self) -> T {
+        self.value
+    }
+}
+
+impl<T> Parse for Integer<T>
+where
+    T: str::FromStr + fmt::Display + PartialOrd<T>,
+    <T as str::FromStr>::Err: fmt::Display,
+{
+    fn parse(s: ParseStream) -> syn::Result<Self> {
+        Ok(Integer {
+            value: integer(s, ..)?,
+        })
+    }
+}
+
+/// Parse an integer, with an optional allowed range.
+fn integer<T, R>(s: ParseStream, range: R) -> syn::Result<T>
+where
+    R: RangeBounds<T> + fmt::Debug,
+    T: str::FromStr + fmt::Display + PartialOrd<T>,
+    <T as str::FromStr>::Err: fmt::Display,
+{
+    let fixed = s.parse::<syn::LitInt>()?;
+    let span = fixed.span();
+    if fixed.suffix().is_empty() {
+        let fixed = fixed.base10_parse()?;
+        if range.contains(&fixed) {
+            Ok(fixed)
+        } else {
+            Err(syn::Error::new(
+                span,
+                format!(
+                    "expected a number in the range {:?}, found {}",
+                    range, fixed
+                ),
+            ))
+        }
+    } else {
+        Err(syn::Error::new(span, "the number should not have a suffix"))
+    }
+}
+
+#[test]
+fn test_parse_integer() {
+    let x: Integer<u8> = syn::parse_str("123").unwrap();
+    assert_eq!(x.into_inner(), 123);
+    let x: syn::Result<Integer<u8>> = syn::parse_str("256");
+    assert!(x.is_err());
+}
+
+// tests
+
 #[test]
 fn downstream_bug1() {
     let s: Styles = syn::parse_str(
@@ -2062,4 +2367,43 @@ fn downstream_bug1() {
 #[ignore]
 fn inline_logic() {
     todo!()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// Use if you want to test that something parses, but not if it looks the same when
+    /// stringified. Example "border: 1px" -> "border:1px" but we still might want to check that
+    /// the former parses.
+    fn parse(input: &str) -> Style {
+        syn::parse_str(input).unwrap()
+    }
+
+    /// This function can be used to quickly write tests to check that a parse and a stringify are
+    /// opposites.
+    fn round_trip_style(input: &str) {
+        assert_eq!(&parse(input).to_string(), input);
+    }
+
+    #[test]
+    fn border_bottom_left_radius() {
+        round_trip_style("border-bottom-left-radius:30% 3px");
+    }
+
+    #[test]
+    fn border_bottom_right_radius() {
+        round_trip_style("border-bottom-right-radius:0 0");
+    }
+
+    #[test]
+    fn border_collapse() {
+        round_trip_style("border-collapse:collapse");
+    }
+
+    #[test]
+    fn border_width() {
+        round_trip_style("border-width:1px");
+        round_trip_style("border-width:0 2px 50pt 0");
+    }
 }
