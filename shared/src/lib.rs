@@ -2005,8 +2005,8 @@ impl fmt::Display for Width21 {
 /// A generic container for a non-empty comma-separated list of values
 #[derive(Debug, Clone, PartialEq)]
 pub struct NonemptyCommaList<T> {
-    first: T,
-    rest: Vec<T>,
+    pub first: T,
+    pub rest: Vec<T>,
 }
 
 impl<T> fmt::Display for NonemptyCommaList<T>
